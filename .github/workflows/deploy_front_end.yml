@@ -90,7 +90,7 @@ jobs:
         # One of the two shared keys of the storage account
         storage-account-key: ${{ secrets.STORAGE_TOKEN }}
         # Connection String of the Azure Storage Container
-        #connection-string: # optional
+        connection-string: ${{ secrets.CONNECTION_STRING }}
         # Name of the Blob Container Storage
         blob-container-name: $web
         # Access Policy to update in the Container (container | blob | <none>). For private containers do not specity any value.
