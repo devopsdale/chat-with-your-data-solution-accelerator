@@ -25,7 +25,6 @@ jobs:
       with:
         inlineScript: |
             az storage blob upload-batch --account-name aasdoprontofrontend  --sas-token ${{ secrets.STORAGE_TOKEN }} -d '$web' -s . --overwrite
-        useGlobalConfig: true
             
             
     - name: Purge CDN endpoint
