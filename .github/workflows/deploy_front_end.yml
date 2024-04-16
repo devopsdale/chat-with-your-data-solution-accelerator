@@ -43,9 +43,8 @@ jobs:
         cache: 'npm'
 
     - name: npm install, build, and test
+      working-directory: code/frontend
       run: |
-        pwd
-        cd ./code/frontend
         npm install
         npm run build --if-present
         npm run test --if-present
