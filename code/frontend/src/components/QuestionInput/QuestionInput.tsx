@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Stack, TextField } from "@fluentui/react";
 import { SendRegular } from "@fluentui/react-icons";
-import Send from "../../assets/Send.svg";
-import MicrophoneIcon from "../../assets/mic-outline.svg";
 import styles from "./QuestionInput.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
@@ -119,7 +117,7 @@ export const QuestionInput = ({
             />
           ) : (
             <img
-              src={MicrophoneIcon}
+              src="./assets/mic-outline.svg"
               className={styles.microphoneIcon}
               alt="Microphone"
             />
@@ -141,7 +139,7 @@ export const QuestionInput = ({
             <SendRegular className={styles.questionInputSendButtonDisabled} />
           ) : (
             <img
-              src={Send}
+              src="./assets/Send.svg"
               className={styles.questionInputSendButton}
               alt="Send"
             />

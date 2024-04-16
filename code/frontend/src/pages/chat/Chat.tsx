@@ -17,7 +17,6 @@ import rehypeRaw from "rehype-raw";
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "./Chat.module.css";
-import Azure from "../../assets/Azure.svg";
 
 import {
   ChatMessage,
@@ -269,7 +268,7 @@ const Chat = () => {
         <div className={`${styles.chatContainer} ${styles.MobileChatContainer}`}>
           {!lastQuestionRef.current ? (
             <Stack className={styles.chatEmptyState}>
-              <img src="../../src/assets/logo_blue.webp" className={styles.chatIcon} aria-hidden="true" />
+              <img src="./assets/logo_blue.webp" className={styles.chatIcon} aria-hidden="true" />
               <h2 className={styles.chatEmptyStateSubtitle}>
                 Let's explore together
               </h2>
