@@ -1,7 +1,7 @@
 name: deploy to azure
 on:
   push:
-    branches: [ "main", "refactor-frontend-airbus" ]
+    branches: [ "main", "refactor-frontend-airbus", "fix-build" ]
   workflow_dispatch:
 
 jobs:
