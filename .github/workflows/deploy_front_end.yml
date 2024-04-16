@@ -25,7 +25,6 @@ jobs:
       with:
         inlineScript: |
             az storage blob upload-batch --account-name aasdoprontofrontend  --auth-mode key -d '$web' -s . --overwrite
-        addSpnToEnvironment: true
         useGlobalConfig: true
             
             
