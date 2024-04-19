@@ -1,7 +1,9 @@
 import { ConversationRequest } from "./models";
 
+const apiURL = 'https://rsta4xey-test-website-6eg6fe2yksguu.azurewebsites.net';
+
 export async function conversationApi(options: ConversationRequest, abortSignal: AbortSignal): Promise<Response> {
-    const response = await fetch("/api/conversation/azure_byod", {
+    const response = await fetch(apiURL + "/api/conversation/azure_byod", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -17,7 +19,7 @@ export async function conversationApi(options: ConversationRequest, abortSignal:
 
 
 export async function customConversationApi(options: ConversationRequest, abortSignal: AbortSignal): Promise<Response> {
-    const response = await fetch("/api/conversation/custom", {
+    const response = await fetch(apiURL + "/api/conversation/custom", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

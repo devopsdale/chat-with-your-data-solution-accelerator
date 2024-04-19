@@ -5,9 +5,11 @@ import {
     AutoDetectSourceLanguageConfig,
   } from "microsoft-cognitiveservices-speech-sdk";
 
+const apiURL = 'https://rsta4xey-test-website-6eg6fe2yksguu.azurewebsites.net';
+
 const fetchSpeechConfig = async (): Promise<{ token: string, region: string, languages: string[]; }> => {
   try {
-    const response = await fetch("/api/speech");
+    const response = await fetch(apiURL + "/api/speech");
 
     if (!response.ok) {
       console.error("Error fetching speech config:", response);
