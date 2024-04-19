@@ -1,6 +1,13 @@
 import { Outlet, Link } from "react-router-dom";
 import styles from "./Layout.module.css";
-import { CopyRegular, ShareRegular } from "@fluentui/react-icons";
+// import Azure from "../../assets/Azure.svg";
+import {
+  CopyRegular,
+  ShareRegular,
+  ShareAndroid16Filled,
+  NoteAdd16Filled,
+  ArrowBidirectionalUpDown16Filled
+} from "@fluentui/react-icons";
 import { Dialog, Stack, TextField } from "@fluentui/react";
 import { useEffect, useState } from "react";
 
@@ -43,19 +50,42 @@ const Layout = () => {
                             />
                             <h3 className={styles.headerTitle}>Pronto</h3>
                         </Link>
-                        {/* <div className={styles.shareButtonContainer} role="button" tabIndex={0} aria-label="Share" onClick={handleShareClick} onKeyDown={e => e.key === "Enter" || e.key === " " ? handleShareClick() : null}>
-                            <ShareRegular className={styles.shareButton} />
-                            <span className={styles.shareButtonText}>Share</span>
-                        </div> */}
+                        <div className={styles.mainNavLinks}>
+                          <div className={styles.addSourceButtonContainer}>
+                            <a href="https://rsta4xey-test-website-6eg6fe2yksguu-admin.azurewebsites.net/Ingest_Data" target="_blank" rel="noopener noreferrer">
+                              {/* <NoteAdd16Filled className={styles.addSourceButton} /> */}
+                              <img
+                                src="../../addSourceIcon.png"
+                                className={styles.addSourceButton}
+                                aria-hidden="true"
+                                />
+                            </a>
+                          </div>
+                          <div className={styles.shareButtonContainer} role="button" tabIndex={0} aria-label="Share" onClick={handleShareClick} onKeyDown={e => e.key === "Enter" || e.key === " " ? handleShareClick() : null}>
+                            {/* <ShareAndroid16Filled className={styles.shareButton} /> */}
+                            <img
+                              src="../../shareLinkIcon.png"
+                              className={styles.shareButton}
+                              aria-hidden="true"
+                              />
+                          </div>
+                          <div className={`${styles.userMenuContainer} ${styles.disabled}`}>
+                            <div className={styles.userMenuBtn}>
+                              <span>Eddie Hoover</span>
+                              <div className={styles.userMenuArrows}>{'<  >'}</div>
+                            </div>
+                            {/* <div>Future menu content</div> */}
+                          </div>
+                        </div>
                     </Stack>
                 </div>
             </header>
             <Outlet />
-            <Dialog 
+            <Dialog
                 onDismiss={handleSharePanelDismiss}
                 hidden={!isSharePanelOpen}
                 styles={{
-                    
+
                     main: [{
                         selectors: {
                           ['@media (min-width: 480px)']: {
@@ -70,17 +100,17 @@ const Layout = () => {
                       }]
                 }}
                 dialogContentProps={{
-                    title: "Share the web app",
+                    title: "Share this Pronto thread!",
                     showCloseButton: true
                 }}
             >
                 <Stack horizontal verticalAlign="center" style={{gap: "8px"}}>
                     <TextField className={styles.urlTextBox} defaultValue={window.location.href} readOnly/>
-                    <div 
-                        className={styles.copyButtonContainer} 
-                        role="button" 
-                        tabIndex={0} 
-                        aria-label="Copy" 
+                    <div
+                        className={styles.copyButtonContainer}
+                        role="button"
+                        tabIndex={0}
+                        aria-label="Copy"
                         onClick={handleCopyClick}
                         onKeyDown={e => e.key === "Enter" || e.key === " " ? handleCopyClick() : null}
                     >
