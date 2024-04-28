@@ -30,6 +30,10 @@ export const Sidebar = () => {
     alert("Threads coming soon 🎉");
   };
 
+  const threadClicked = (threadId: number) => {
+    alert("Will soon load thread: " + threadId);
+  };
+
   const detectKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case "[":
@@ -108,6 +112,7 @@ export const Sidebar = () => {
                   key={index}
                   // ↓ testing 'activeListItem' style on first <li>, should be driven by url
                   className={`${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem`}
+                  onClick={(e) => threadClicked(thread.id)}
                 >
                   <div className={`listItemLabel`}>
                     <img src="../../threadIcon.png" />
@@ -115,13 +120,19 @@ export const Sidebar = () => {
                   </div>
                   <Menu>
                     <MenuTrigger disableButtonEnhancement>
-                      <div className={`${styles.threadMenu} ghostIconBtn`}>
+                      <div
+                        className={`${styles.threadMenu} ghostIconBtn`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <img src="../../ellipsesIconBlue.png" />
                       </div>
                     </MenuTrigger>
 
                     <MenuPopover style={{ padding: "0px" }}>
-                      <ul className={`${styles.headerMenu} menuListContainer`}>
+                      <ul
+                        className={`${styles.headerMenu} menuListContainer`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <li className={`menuListItem disabled`}>
                           <div className={`listItemLabel`}>
                             <img src="../../shareLinkIcon_blue.png" />
