@@ -8,6 +8,21 @@ import {
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
 
+const threads = [
+  {
+    title: "Thread 01",
+    id: 10000001, // will be generated ThreadID
+  },
+  {
+    title: "Thread 02",
+    id: 10000002, // will be generated ThreadID
+  },
+  {
+    title: "Thread 03",
+    id: 10000003, // will be generated ThreadID
+  },
+];
+
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(true);
 
@@ -88,45 +103,48 @@ export const Sidebar = () => {
           <div className={styles.sidebarBody}>
             <span className={styles.threadsHeader}>Threads</span>
             <ul className={`menuListContainer`}>
-              {/* ↓ should be in for loop when data is hooked up */}
-              <li
-                className={`${styles.threadMenuItem} menuListItem activeListItem`}
-              >
-                <div className={`listItemLabel`}>
-                  <img src="../../threadIcon.png" />
-                  <span>Example Test Thread</span>
-                </div>
-                <Menu>
-                  <MenuTrigger disableButtonEnhancement>
-                    <div className={`${styles.threadMenu} ghostIconBtn`}>
-                      <img src="../../ellipsesIconBlue.png" />
-                    </div>
-                  </MenuTrigger>
+              {threads.map((thread, index) => (
+                <li
+                  key={index}
+                  // ↓ testing 'activeListItem' style on first <li>, should be driven by url
+                  className={`${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem`}
+                >
+                  <div className={`listItemLabel`}>
+                    <img src="../../threadIcon.png" />
+                    <span>{thread.title}</span>
+                  </div>
+                  <Menu>
+                    <MenuTrigger disableButtonEnhancement>
+                      <div className={`${styles.threadMenu} ghostIconBtn`}>
+                        <img src="../../ellipsesIconBlue.png" />
+                      </div>
+                    </MenuTrigger>
 
-                  <MenuPopover style={{ padding: "0px" }}>
-                    <ul className={`${styles.headerMenu} menuListContainer`}>
-                      <li className={`menuListItem disabled`}>
-                        <div className={`listItemLabel`}>
-                          <img src="../../shareLinkIcon_blue.png" />
-                          <span>Share Thread</span>
-                        </div>
-                      </li>
-                      <li className={`menuListItem disabled`}>
-                        <div className={`listItemLabel`}>
-                          <img src="../../editIcon.png" />
-                          <span>Rename</span>
-                        </div>
-                      </li>
-                      <li className={`menuListItem disabled`}>
-                        <div className={`listItemLabel`}>
-                          <img src="../../deleteIcon.png" />
-                          <span>Delete Thread</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </MenuPopover>
-                </Menu>
-              </li>
+                    <MenuPopover style={{ padding: "0px" }}>
+                      <ul className={`${styles.headerMenu} menuListContainer`}>
+                        <li className={`menuListItem disabled`}>
+                          <div className={`listItemLabel`}>
+                            <img src="../../shareLinkIcon_blue.png" />
+                            <span>Share Thread</span>
+                          </div>
+                        </li>
+                        <li className={`menuListItem disabled`}>
+                          <div className={`listItemLabel`}>
+                            <img src="../../editIcon.png" />
+                            <span>Rename</span>
+                          </div>
+                        </li>
+                        <li className={`menuListItem disabled`}>
+                          <div className={`listItemLabel`}>
+                            <img src="../../deleteIcon.png" />
+                            <span>Delete Thread</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </MenuPopover>
+                  </Menu>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
