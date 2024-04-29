@@ -99,7 +99,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
               >
                 <Link to={`/thread/${threadId}`} className={`listItemLabel`}>
                   <img src="../../threadIcon.png" />
-                  <span>Example Test Thread</span>
+                  <span>Thread {threadId}</span>
                 </Link>
                 <Menu>
                   <MenuTrigger disableButtonEnhancement>
