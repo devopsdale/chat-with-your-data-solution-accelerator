@@ -7,8 +7,13 @@ import {
   MenuPopover,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
+import { Link } from "react-router-dom";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  threadId: string;
+}
+
+export const Sidebar = ({ threadId }: SidebarProps) => {
   const [isOpen, setIsOpen] = React.useState(true);
 
   const createNewThread = () => {
@@ -92,10 +97,10 @@ export const Sidebar = () => {
               <li
                 className={`${styles.threadMenuItem} menuListItem activeListItem`}
               >
-                <div className={`listItemLabel`}>
+                <Link to={`/thread/${threadId}`} className={`listItemLabel`}>
                   <img src="../../threadIcon.png" />
                   <span>Example Test Thread</span>
-                </div>
+                </Link>
                 <Menu>
                   <MenuTrigger disableButtonEnhancement>
                     <div className={`${styles.threadMenu} ghostIconBtn`}>

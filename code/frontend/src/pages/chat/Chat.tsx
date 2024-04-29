@@ -32,10 +32,12 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
+  const { threadId = 'default' } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -53,7 +55,7 @@ const Chat = () => {
     useState<boolean>(false);
   const [answers, setAnswers] = useState<ChatMessage[]>([]);
   const abortFuncs = useRef([] as AbortController[]);
-  const [conversationId, setConversationId] = useState<string>(uuidv4());
+  const [conversationId, setConversationId] = useState<string>(threadId);
   const [userMessage, setUserMessage] = useState("");
   const [recognizedText, setRecognizedText] = useState<string>("");
   const [isRecognizing, setIsRecognizing] = useState(false);
@@ -291,7 +293,7 @@ const Chat = () => {
   return (
     <div className={styles.container}>
 
-      <Sidebar />
+      <Sidebar threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div
