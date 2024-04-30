@@ -45,7 +45,7 @@ export const Header = () => {
         <Stack horizontal verticalAlign="center">
           <Link to="/" className={styles.headerTitleContainer}>
             <img
-              src="../../src/assets/logo.svg"
+              src="../../logo.svg"
               className={styles.headerIcon}
               aria-hidden="true"
             />
