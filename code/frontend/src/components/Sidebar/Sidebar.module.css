@@ -94,7 +94,32 @@
   transition: all 0.35s;
 }
 
+.threadLink {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.threadItemLabel span{
+  font-size: 14px;
+  color: #14171D;
+}
 
 .headerMenu {
   margin-top: 0px;
+}
+
+
+.copiedToClipboard, .dataSourceToolTipInner{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copiedToClipboard img{
+
+}
+
+.copiedToClipboard span{
+  font-size: 14px !important;
+  font-weight: 400 !important;
 }

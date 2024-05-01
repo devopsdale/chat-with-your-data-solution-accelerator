@@ -43,12 +43,12 @@
 }
 
 .listItemLabel img {
-  width: 14px;
+  /* width: 14px; */
   height: 14px;
 }
 
 .listItemLabel svg {
-  width: 14px;
+  /* width: 14px; */
   height: 14px;
   color: #063b9e;
 }

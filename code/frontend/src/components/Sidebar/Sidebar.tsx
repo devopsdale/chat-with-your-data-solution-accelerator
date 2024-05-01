@@ -5,9 +5,13 @@ import {
   Menu,
   MenuTrigger,
   MenuPopover,
+  MenuProps,
+  MenuList,
+  MenuItem,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
 
+// ↓ mocking Threads list until API is ready
 const threads = [
   {
     title: "Thread 01",
@@ -25,6 +29,7 @@ const threads = [
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(true);
+  const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
 
   const createNewThread = () => {
     alert("Threads coming soon 🎉");
@@ -32,6 +37,17 @@ export const Sidebar = () => {
 
   const threadClicked = (threadId: number) => {
     alert("Will soon load thread: " + threadId);
+  };
+
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopyClicked(true);
+  };
+
+  const resetCopyClick = () => {
+    setTimeout(() => {
+      setCopyClicked(false);
+    }, 500);
   };
 
   const detectKeyDown = (e: KeyboardEvent) => {
@@ -122,36 +138,58 @@ export const Sidebar = () => {
                     <MenuTrigger disableButtonEnhancement>
                       <div
                         className={`${styles.threadMenu} ghostIconBtn`}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
                       >
                         <img src="../../ellipsesIconBlue.png" />
                       </div>
+                      {/*  <div className={styles.copiedToClipboard}>
+                          <img
+                            src="../../copiedIcon.png"
+                            alt="Pronto link copied to clipbaord"
+                          />
+                          <span>Link copied to clipboard!</span>
+                        </div> */}
                     </MenuTrigger>
 
                     <MenuPopover style={{ padding: "0px" }}>
-                      <ul
+                      <MenuList
                         className={`${styles.headerMenu} menuListContainer`}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <li className={`menuListItem disabled`}>
-                          <div className={`listItemLabel`}>
+                        <MenuItem
+                          className={`${styles.threadLink} menuListItem`}
+                          onClick={handleCopyClick}
+                        >
+                          <div
+                            className={`${styles.threadItemLabel} listItemLabel`}
+                          >
                             <img src="../../shareLinkIcon_blue.png" />
                             <span>Share Thread</span>
                           </div>
-                        </li>
-                        <li className={`menuListItem disabled`}>
-                          <div className={`listItemLabel`}>
+                        </MenuItem>
+                        <MenuItem
+                          className={`${styles.threadLink} menuListItem`}
+                        >
+                          <div
+                            className={`${styles.threadItemLabel} listItemLabel`}
+                          >
                             <img src="../../editIcon.png" />
                             <span>Rename</span>
                           </div>
-                        </li>
-                        <li className={`menuListItem disabled`}>
-                          <div className={`listItemLabel`}>
+                        </MenuItem>
+                        <MenuItem
+                          className={`${styles.threadLink} menuListItem`}
+                        >
+                          <div
+                            className={`${styles.threadItemLabel} listItemLabel`}
+                          >
                             <img src="../../deleteIcon.png" />
                             <span>Delete Thread</span>
                           </div>
-                        </li>
-                      </ul>
+                        </MenuItem>
+                      </MenuList>
                     </MenuPopover>
                   </Menu>
                 </li>
