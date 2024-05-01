@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import styles from "./LogIn.module.css";
 import { Input, Label, useId } from "@fluentui/react-components";
@@ -23,7 +23,7 @@ const LogIn = (props: InputProps) => {
     }
   };
 
-  useEffect(() => {});
+  // useEffect(() => {});
 
   return (
     <div className={styles.container}>
