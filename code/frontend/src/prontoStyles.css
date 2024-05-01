@@ -83,6 +83,30 @@
   background-color: #58585817;
 }
 
+.closeModalBtn {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 16px;
+  right: 16px;
+}
+.closeModalBtn img{
+  width: 12px;
+  height: 12px;
+}
+
+/* Input styling */
+.prontoInput {
+  width: -webkit-fill-available;
+  height: 40px;
+  border-radius: 3px 3px 0px 0px !important;
+}
+.prontoInput::placeholder {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
 /* Fluent UI overrides */
 .fui-DialogSurface__backdrop {
   background: #00205bcc !important;
@@ -97,4 +121,8 @@
   font-size: 20px;
   font-weight: 500;
   line-height: 32px;
+}
+
+.fui-DialogActions {
+  padding-top: 24px;
 }

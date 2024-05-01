@@ -5,7 +5,7 @@ import {
   Menu,
   MenuTrigger,
   MenuPopover,
-  MenuProps,
+  // MenuProps,
   MenuList,
   MenuItem,
   Dialog,
@@ -16,6 +16,8 @@ import {
   DialogActions,
   DialogTrigger,
   Button,
+  useId,
+  Input,
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
@@ -44,6 +46,11 @@ export const Sidebar = () => {
     React.useState(false);
   const [deleteThreadModalOpen, setDeleteThreadModalOpen] =
     React.useState(false);
+
+  const [currentThread, setCurrentThread] = React.useState<any>({});
+  const inputId = useId("input");
+  const [liveRecognizedText, setLiveRecognizedText] =
+    React.useState<string>("");
 
   const createNewThread = () => {
     alert("Threads coming soon 🎉");
@@ -87,6 +94,14 @@ export const Sidebar = () => {
     /* if (e.key === "Shift" || e.key === "Control") {
       // console.log("Control un-clicked");
     } */
+  };
+
+  const renameCurrentThread = (newName: string) => {
+    if (newName.length > 0) {
+      // this is where we can hit the API to rename the thread
+      // can use `currentThread` to get threadId until routes established
+      alert("✏ Will soon rename this Thread to '" + newName + "'");
+    }
   };
 
   useEffect(() => {
@@ -186,7 +201,7 @@ export const Sidebar = () => {
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
-                            // it is the user responsibility to open the dialog
+                            setCurrentThread(thread);
                             setRenameThreadModalOpen(true);
                           }}
                         >
@@ -238,18 +253,53 @@ export const Sidebar = () => {
         <DialogSurface className={`${styles.renameThreadModal} prontoModal`}>
           <DialogBody>
             <DialogTitle>Rename Thread</DialogTitle>
+            <div
+              className={`ghostIconBtn closeModalBtn`}
+              onClick={() => setRenameThreadModalOpen(false)}
+            >
+              <img src="../../closeIconBlue.png" />
+            </div>
             <DialogContent>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-              exercitationem cumque repellendus eaque est dolor eius expedita
-              nulla ullam? Tenetur reprehenderit aut voluptatum impedit
-              voluptates in natus iure cumque eaque?
+              <div className={`${styles.renameInfo}`}>
+                Rename the <b>{currentThread.title || "current"}</b> thread
+              </div>
+              <Input
+                className={"prontoInput"}
+                id={inputId}
+                // {...props}
+                placeholder={"Type a new thread name"}
+                /*contentAfter={
+                  {
+                     <ArrowEnterFilled
+                    aria-label="Enter with password"
+                    onClick={(e) => submitLogInField(liveRecognizedText)}
+                  />
+                  }
+                }*/
+                onChange={(e, newValue) => {
+                  if (newValue !== undefined) {
+                    setLiveRecognizedText(newValue.value);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    renameCurrentThread(liveRecognizedText);
+                  }
+                }}
+              />
             </DialogContent>
 
             <DialogActions>
               <DialogTrigger disableButtonEnhancement>
                 <Button appearance="secondary">Cancel</Button>
               </DialogTrigger>
-              <Button appearance="primary">Rename</Button>
+              <Button
+                appearance="primary"
+                className={`${liveRecognizedText.length > 0 ? "" : "disabled"}`}
+                onClick={(e) => renameCurrentThread(liveRecognizedText)}
+              >
+                Rename
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
