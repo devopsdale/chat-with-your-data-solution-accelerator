@@ -74,7 +74,9 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: |
+          mkdir static
           unzip release.zip
+          cp -r frontend/* static
           pwd
           ls -ltrh ./frontend
 
