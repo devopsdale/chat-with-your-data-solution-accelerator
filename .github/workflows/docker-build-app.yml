@@ -28,6 +28,13 @@ jobs:
       #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
       #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}
 
+      - name: setup-azd
+        uses: Azure/setup-azd@v1.0.0
+
+                
+
       - name: azd deploy 
         run: |
+          azd env set AZURE_AUTH_TYPE rbac
+          azd env set USE_KEY_VAULT false
           azd deploy web --preview
