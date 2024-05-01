@@ -32,7 +32,7 @@ jobs:
     #     password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t pronto/fontend -f /docker/Frontend.Dockerfile
+        docker build . -t pronto/fontend -f ./docker/Frontend.Dockerfile
 
     - name: Login to Azure
       uses: azure/login@v1
