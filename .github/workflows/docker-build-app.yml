@@ -21,20 +21,27 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
     steps:
-      # - name: Login to Azure
-      #   uses: azure/login@v1
-      #   with:
-      #     client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
-      #     tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
-      #     subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}
+    # checkout the repo
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
 
-      - name: setup-azd
-        uses: Azure/setup-azd@v1.0.0
+    - uses: azure/docker-login@v1
+      with:
+        login-server: contoso.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
 
-                
+    - run: |
+        docker build . -t pronto/fontend -f /docker/Frontend.Dockerfile
 
-      - name: azd deploy 
-        run: |
-          azd env set AZURE_AUTH_TYPE rbac
-          azd env set USE_KEY_VAULT false
-          azd deploy web --preview
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
+    
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'web-rlbjfs6vicfds'
+        images:  'pronto/fontend'
