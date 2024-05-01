@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { initializeIcons } from "@fluentui/react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 
@@ -28,18 +28,19 @@ export default function App() {
   });
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         {userLoggedIn ? (
           <Route path="/" element={<Layout />}>
             <Route index element={<Chat />} />
+            <Route path="/thread/:threadId" element={<Chat />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         ) : (
           <Route path="/" element={<LogIn />}></Route>
         )}
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
