@@ -8,6 +8,15 @@ import {
   MenuProps,
   MenuList,
   MenuItem,
+  Dialog,
+  DialogSurface,
+  DialogBody,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogTrigger,
+  Button,
+  // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
 
@@ -30,6 +39,11 @@ const threads = [
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
+
+  const [renameThreadModalOpen, setRenameThreadModalOpen] =
+    React.useState(false);
+  const [deleteThreadModalOpen, setDeleteThreadModalOpen] =
+    React.useState(false);
 
   const createNewThread = () => {
     alert("Threads coming soon 🎉");
@@ -171,6 +185,10 @@ export const Sidebar = () => {
                         </MenuItem>
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
+                          onClick={() => {
+                            // it is the user responsibility to open the dialog
+                            setRenameThreadModalOpen(true);
+                          }}
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
@@ -181,6 +199,10 @@ export const Sidebar = () => {
                         </MenuItem>
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
+                          onClick={() => {
+                            // it is the user responsibility to open the dialog
+                            setDeleteThreadModalOpen(true);
+                          }}
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
@@ -205,6 +227,60 @@ export const Sidebar = () => {
       >
         <img src="../../dock_to_right_outline.png" />
       </div>
+
+      {/* ↓ Dialog for renaming a Thread */}
+      <Dialog
+        open={renameThreadModalOpen}
+        onOpenChange={(event, data) => {
+          setRenameThreadModalOpen(data.open);
+        }}
+      >
+        <DialogSurface className={`${styles.renameThreadModal} prontoModal`}>
+          <DialogBody>
+            <DialogTitle>Rename Thread</DialogTitle>
+            <DialogContent>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+              exercitationem cumque repellendus eaque est dolor eius expedita
+              nulla ullam? Tenetur reprehenderit aut voluptatum impedit
+              voluptates in natus iure cumque eaque?
+            </DialogContent>
+
+            <DialogActions>
+              <DialogTrigger disableButtonEnhancement>
+                <Button appearance="secondary">Cancel</Button>
+              </DialogTrigger>
+              <Button appearance="primary">Rename</Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
+
+      {/* ↓ Dialog for deleting a Thread */}
+      <Dialog
+        open={deleteThreadModalOpen}
+        onOpenChange={(event, data) => {
+          setDeleteThreadModalOpen(data.open);
+        }}
+      >
+        <DialogSurface>
+          <DialogBody>
+            <DialogTitle>Delete Thread</DialogTitle>
+            <DialogContent>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+              exercitationem cumque repellendus eaque est dolor eius expedita
+              nulla ullam? Tenetur reprehenderit aut voluptatum impedit
+              voluptates in natus iure cumque eaque?
+            </DialogContent>
+
+            <DialogActions>
+              <DialogTrigger disableButtonEnhancement>
+                <Button appearance="secondary">Cancel</Button>
+              </DialogTrigger>
+              <Button appearance="primary">Delete</Button>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </div>
   );
 };
