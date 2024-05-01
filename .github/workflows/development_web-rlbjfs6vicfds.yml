@@ -76,7 +76,7 @@ jobs:
         run: |
           unzip release.zip
           pwd
-          ls -ltrh
+          ls -ltrh ./frontend
 
       
       - name: Login to Azure
