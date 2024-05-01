@@ -78,7 +78,7 @@ jobs:
           unzip release.zip
           cp -r frontend/* static
           pwd
-          ls -ltrh ./frontend
+          ls -ltrh
 
       
       - name: Login to Azure
