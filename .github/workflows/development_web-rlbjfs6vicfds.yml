@@ -18,14 +18,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-    - name: npm install, build, and test
-      working-directory: ./code/frontend
-      run: |
-        pwd
-        ls -ltrh
-        npm install
-        npm run build --if-present
-        npm run test --if-present      
+      - name: npm install, build, and test
+        working-directory: ./code/frontend
+        run: |
+          pwd
+          ls -ltrh
+          npm install
+          npm run build --if-present
+          npm run test --if-present      
 
       - name: Set up Python version
         uses: actions/setup-python@v1
