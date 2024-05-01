@@ -22,6 +22,7 @@ import {
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
+import { Link } from "react-router-dom";
 import { EditFilled } from "@fluentui/react-icons";
 
 // ↓ mocking Threads list until API is ready
@@ -40,7 +41,11 @@ const threads = [
   },
 ];
 
-export const Sidebar = () => {
+interface SidebarProps {
+  threadId: string;
+}
+
+export const Sidebar = ({ threadId }: SidebarProps) => {
   const [isOpen, setIsOpen] = React.useState(true);
   const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
 
@@ -171,13 +176,13 @@ export const Sidebar = () => {
             <span className={styles.threadsHeader}>Threads</span>
             <ul className={`menuListContainer`}>
               {threads.map((thread, index) => (
-                <li
+                <Link to={`/thread/${thread.id}`}
                   key={index}
                   // ↓ testing 'activeListItem' style on first <li>, should be driven by url
                   className={`
                     ${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem
                   `}
-                  onClick={(e) => threadClicked(thread.id)}
+                  // onClick={(e) => threadClicked(thread.id)}
                 >
                   <div className={`listItemLabel`}>
                     <img src="../../threadIcon.png" />
@@ -190,8 +195,9 @@ export const Sidebar = () => {
                         ${threadListMenuOpen && threadListMenuSelected === index ? styles.threadMenuOpen : ""}
                         ${styles.threadMenu} ghostIconBtn`}
                         onClick={(e) => {
-                          setThreadListMenuSelected(index);
+                          e.preventDefault();
                           e.stopPropagation();
+                          setThreadListMenuSelected(index);
                         }}
                       >
                         <img src="../../ellipsesIconBlue.png" />
@@ -261,7 +267,7 @@ export const Sidebar = () => {
                     />
                     <span>Link copied to clipboard!</span>
                   </div>
-                </li>
+                </Link>
               ))}
             </ul>
           </div>

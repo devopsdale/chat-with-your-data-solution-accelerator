@@ -7,8 +7,8 @@ import {
   SendFilled,
   MicRecordRegular,
 } from "@fluentui/react-icons";
-import Send from "../../assets/Send.svg";
-// import MicrophoneIcon from "../../assets/mic-outline.svg";
+// import Send from "../../Send.svg";
+// import MicrophoneIcon from "../../mic-outline.svg";
 import styles from "./QuestionInput.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
