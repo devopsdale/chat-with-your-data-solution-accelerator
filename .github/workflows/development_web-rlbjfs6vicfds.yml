@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Backend App - Build and deploy Python app to Azure Web App - web-rlbjfs6vicfds
+name: Build and deploy Python app to Azure Web App - web-rlbjfs6vicfds
 
 on:
   push:
@@ -27,18 +27,13 @@ jobs:
           python -m venv venv
           source venv/bin/activate
       
-      - name: Poetry Install
-        # You may pin to the exact commit or the version.
-        # uses: knowsuchagency/poetry-install@7ed80d49910319d3e14ac262a5c81f681de48de0
-        uses: knowsuchagency/poetry-install@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run:  |
-          #cd code
-          zip -r release.zip ./code/*
-          #cd ..
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -64,18 +59,15 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
-        run: |
-          unzip release.zip
-          pwd
-          ls -ltrh
+        run: unzip release.zip
 
       
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0A687756CA134DC5A3AD915988CA20CB }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5F1B6BC2685C4227BA3C27310CAED8F0 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ED90CA6177E04C7D81DD0EAB276E6FA2 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
