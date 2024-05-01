@@ -60,6 +60,8 @@ export const Sidebar = () => {
     setThreadListMenuOpen(data.open);
   };
 
+  const [copiedThreadNotice, setCopiedThreadNotice] = React.useState(false);
+
   const createNewThread = () => {
     alert("Threads coming soon 🎉");
   };
@@ -71,12 +73,15 @@ export const Sidebar = () => {
   const handleCopyClick = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopyClicked(true);
+    setCopiedThreadNotice(true);
+    resetCopyClick();
   };
 
   const resetCopyClick = () => {
     setTimeout(() => {
       setCopyClicked(false);
-    }, 500);
+      setCopiedThreadNotice(false);
+    }, 2000);
   };
 
   const detectKeyDown = (e: KeyboardEvent) => {
@@ -135,6 +140,7 @@ export const Sidebar = () => {
           width: "auto",
           borderRight: "1px solid #D4D4D4",
           boxShadow: "0px 1px 4px 0px #0000003D",
+          overflow: "initial"
         }}
       >
         <div className={styles.sidebarMain}>
@@ -190,23 +196,12 @@ export const Sidebar = () => {
                       >
                         <img src="../../ellipsesIconBlue.png" />
                       </div>
-                      {/*  <div className={styles.copiedToClipboard}>
-                          <img
-                            src="../../copiedIcon.png"
-                            alt="Pronto link copied to clipbaord"
-                          />
-                          <span>Link copied to clipboard!</span>
-                        </div> */}
                     </MenuTrigger>
 
                     <MenuPopover
                       className={styles.threadMenuContainer}
                       style={{ padding: "0px" }}
                     >
-                      {/* <img
-                        className={styles.trianglePointer}
-                        src="../../triangleWhite.png"
-                      /> */}
                       <div className={styles.trianglePointer}></div>
                       <MenuList
                         className={`${styles.headerMenu} menuListContainer`}
@@ -255,6 +250,17 @@ export const Sidebar = () => {
                       </MenuList>
                     </MenuPopover>
                   </Menu>
+                  <div className={`
+                    ${styles.copiedToClipboard}
+                    ${copiedThreadNotice  && threadListMenuSelected === index ? styles.showThreadCopiedNotice : ''}
+                  `}>
+                    <div className={styles.sideTriangle}></div>
+                    <img
+                      src="../../copiedIcon.png"
+                      alt="Pronto link copied to clipboard"
+                    />
+                    <span>Link copied to clipboard!</span>
+                  </div>
                 </li>
               ))}
             </ul>

@@ -147,12 +147,43 @@
   gap: 6px;
 }
 
+.copiedToClipboard {
+  position: absolute;
+  left: 100%;
+  margin-left: 16px;
+  white-space: nowrap;
+  background-color: #00205b;
+  padding: 6px 16px;
+  border-radius: 3px;
+  pointer-events: none;
+  transform: translateX(-10px);
+  opacity: 0;
+  transition: all 0.45s;
+}
+.showThreadCopiedNotice {
+  transform: translateX(0px);
+  opacity: 1.0;
+}
+
+.sideTriangle {
+  position: absolute;
+  left: -3px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 3px 3px 3px 0;
+  border-color: transparent #00205b transparent transparent;
+  transform: rotate(0deg);
+}
+
 .copiedToClipboard img {
 }
 
 .copiedToClipboard span {
   font-size: 14px !important;
   font-weight: 400 !important;
+  line-height: 20px;
+  color: #ffffff;
 }
 
 .renameThreadModal,
