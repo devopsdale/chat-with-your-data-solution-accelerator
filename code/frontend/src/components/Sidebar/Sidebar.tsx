@@ -195,8 +195,9 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                         ${threadListMenuOpen && threadListMenuSelected === index ? styles.threadMenuOpen : ""}
                         ${styles.threadMenu} ghostIconBtn`}
                         onClick={(e) => {
-                          setThreadListMenuSelected(index);
+                          e.preventDefault();
                           e.stopPropagation();
+                          setThreadListMenuSelected(index);
                         }}
                       >
                         <img src="../../ellipsesIconBlue.png" />
