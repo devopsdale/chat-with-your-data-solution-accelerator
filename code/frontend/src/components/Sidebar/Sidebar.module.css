@@ -86,46 +86,77 @@
   justify-content: space-between;
 }
 .threadMenuItem:hover .threadMenu {
-  opacity: 1.0 !important;
+  opacity: 1 !important;
 }
 
 .threadMenu {
-  opacity: 0.0;
+  opacity: 0;
   transition: all 0.35s;
 }
 
-.threadLink {
-  display: flex !important;
-  align-items: center !important;
-}
-
-.threadItemLabel span{
-  font-size: 14px;
-  color: #14171D;
+.threadMenuOpen {
+  opacity: 1 !important;
+  background-color: #58585829;
 }
 
 .headerMenu {
   margin-top: 0px;
 }
 
+.threadMenuContainer {
+  margin-top: 12px !important;
+  margin-left: -5px !important;
+  background-color: transparent;
+  overflow: initial !important;
+}
 
-.copiedToClipboard, .dataSourceToolTipInner{
+.trianglePointer {
+  position: absolute;
+  margin-top: -8px;
+  margin-left: 8px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent #ffffff transparent;
+  transform: rotate(0deg);
+  -webkit-filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.threadLink {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 208px;
+  padding: 8px 16px !important;
+}
+
+.threadItemLabel span {
+  font-size: 14px;
+  color: #14171d;
+}
+.threadItemLabel img {
+  width: auto;
+  height: auto;
+}
+
+.copiedToClipboard,
+.dataSourceToolTipInner {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.copiedToClipboard img{
-
+.copiedToClipboard img {
 }
 
-.copiedToClipboard span{
+.copiedToClipboard span {
   font-size: 14px !important;
   font-weight: 400 !important;
 }
 
-
-.renameThreadModal, .deleteThreadModal {
+.renameThreadModal,
+.deleteThreadModal {
   width: 432px;
 }
 

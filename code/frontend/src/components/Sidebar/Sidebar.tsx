@@ -18,6 +18,7 @@ import {
   Button,
   useId,
   Input,
+  MenuProps,
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
@@ -53,6 +54,12 @@ export const Sidebar = () => {
   const [liveRecognizedText, setLiveRecognizedText] =
     React.useState<string>("");
 
+  const [threadListMenuOpen, setThreadListMenuOpen] = React.useState(false);
+  const [threadListMenuSelected, setThreadListMenuSelected] = React.useState(0);
+  const onThreadOpenChange: MenuProps["onOpenChange"] = (e, data) => {
+    setThreadListMenuOpen(data.open);
+  };
+
   const createNewThread = () => {
     alert("Threads coming soon 🎉");
   };
@@ -81,10 +88,6 @@ export const Sidebar = () => {
       case "]":
         setIsOpen(true);
         break;
-
-      /* case "[":
-        setIsOpen(false);
-        break; */
 
       default:
         break;
@@ -165,18 +168,23 @@ export const Sidebar = () => {
                 <li
                   key={index}
                   // ↓ testing 'activeListItem' style on first <li>, should be driven by url
-                  className={`${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem`}
+                  className={`
+                    ${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem
+                  `}
                   onClick={(e) => threadClicked(thread.id)}
                 >
                   <div className={`listItemLabel`}>
                     <img src="../../threadIcon.png" />
                     <span>{thread.title}</span>
                   </div>
-                  <Menu>
+                  <Menu onOpenChange={onThreadOpenChange}>
                     <MenuTrigger disableButtonEnhancement>
                       <div
-                        className={`${styles.threadMenu} ghostIconBtn`}
+                        className={`
+                        ${threadListMenuOpen && threadListMenuSelected === index ? styles.threadMenuOpen : ""}
+                        ${styles.threadMenu} ghostIconBtn`}
                         onClick={(e) => {
+                          setThreadListMenuSelected(index);
                           e.stopPropagation();
                         }}
                       >
@@ -191,7 +199,15 @@ export const Sidebar = () => {
                         </div> */}
                     </MenuTrigger>
 
-                    <MenuPopover style={{ padding: "0px" }}>
+                    <MenuPopover
+                      className={styles.threadMenuContainer}
+                      style={{ padding: "0px" }}
+                    >
+                      {/* <img
+                        className={styles.trianglePointer}
+                        src="../../triangleWhite.png"
+                      /> */}
+                      <div className={styles.trianglePointer}></div>
                       <MenuList
                         className={`${styles.headerMenu} menuListContainer`}
                         onClick={(e) => e.stopPropagation()}
