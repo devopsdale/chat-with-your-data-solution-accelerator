@@ -95,16 +95,79 @@
   height: 12px;
 }
 
+button {
+  height: 40px;
+  border-radius: 3px;
+  gap: 8px;
+  padding: 12px 16px !important;
+}
+
+.primary {
+  background-color: #002D80 !important;
+  color: #ffffff !important;
+}
+
+.secondary {
+  background-color: #ffffff !important;
+  border: 1px solid #00205B !important;
+  color: #063B9E !important;
+}
+.secondary:hover {
+  background-color: #F1F1F1 !important;
+}
+.secondary:active {
+  background-color: #E5ECF7 !important;
+}
+.secondary:focus {
+  border: 1px solid #255FCC !important;
+}
+
+.error {
+  background-color: #E4002B !important;
+  color: #ffffff !important;
+}
+.error:hover {
+  background-color: #BB0023 !important;
+}
+.error:focus {
+  border: 2px solid #255FCC !important;
+}
+.error:active {
+  background-color: #92001C !important;
+  border: none !important;
+}
+
+
+.disabledBtn {
+  background-color: #00205b40 !important;
+  color: #ffffff !important;
+}
+
+
 /* Input styling */
 .prontoInput {
   width: -webkit-fill-available;
   height: 40px;
   border-radius: 3px 3px 0px 0px !important;
+  transition: all 0.45s;
+  /* border: none !important; */
+}
+.prontoInput:hover {
+  background-color: #F1F1F1;
+}
+.prontoInput input {
+  border: 1px solid #ccc;
+  border-radius: 3px 3px 0px 0px !important;
+}
+.prontoInput input:active, .prontoInput input:focus{
+  background-color: #E5ECF7 !important;
+  border: 1px solid #255FCC !important;
 }
 .prontoInput::placeholder {
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
+  color: #63728A;
 }
 
 /* Fluent UI overrides */
