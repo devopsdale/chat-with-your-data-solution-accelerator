@@ -125,7 +125,7 @@
 }
 
 
-.renameThreadModal {
+.renameThreadModal, .deleteThreadModal {
   width: 432px;
 }
 

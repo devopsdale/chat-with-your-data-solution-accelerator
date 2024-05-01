@@ -21,6 +21,7 @@ import {
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
+import { EditFilled } from "@fluentui/react-icons";
 
 // ↓ mocking Threads list until API is ready
 const threads = [
@@ -101,7 +102,15 @@ export const Sidebar = () => {
       // this is where we can hit the API to rename the thread
       // can use `currentThread` to get threadId until routes established
       alert("✏ Will soon rename this Thread to '" + newName + "'");
+      setRenameThreadModalOpen(false);
     }
+  };
+
+  const deleteCurrentThread = () => {
+    // this is where we can hit the API to delete the thread
+    // can use `currentThread` to get threadId until routes established
+    alert("🚮 Will soon delete thread id: " + currentThread.id);
+    setDeleteThreadModalOpen(false);
   };
 
   useEffect(() => {
@@ -202,6 +211,7 @@ export const Sidebar = () => {
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
                             setCurrentThread(thread);
+                            setLiveRecognizedText("");
                             setRenameThreadModalOpen(true);
                           }}
                         >
@@ -215,7 +225,7 @@ export const Sidebar = () => {
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
-                            // it is the user responsibility to open the dialog
+                            setCurrentThread(thread);
                             setDeleteThreadModalOpen(true);
                           }}
                         >
@@ -266,16 +276,7 @@ export const Sidebar = () => {
               <Input
                 className={"prontoInput"}
                 id={inputId}
-                // {...props}
                 placeholder={"Type a new thread name"}
-                /*contentAfter={
-                  {
-                     <ArrowEnterFilled
-                    aria-label="Enter with password"
-                    onClick={(e) => submitLogInField(liveRecognizedText)}
-                  />
-                  }
-                }*/
                 onChange={(e, newValue) => {
                   if (newValue !== undefined) {
                     setLiveRecognizedText(newValue.value);
@@ -291,13 +292,13 @@ export const Sidebar = () => {
 
             <DialogActions>
               <DialogTrigger disableButtonEnhancement>
-                <Button appearance="secondary">Cancel</Button>
+                <Button className={`secondary`}>Cancel</Button>
               </DialogTrigger>
               <Button
-                appearance="primary"
-                className={`${liveRecognizedText.length > 0 ? "" : "disabled"}`}
+                className={`${liveRecognizedText.length > 0 ? "" : "disabledBtn"} primary`}
                 onClick={(e) => renameCurrentThread(liveRecognizedText)}
               >
+                <EditFilled />
                 Rename
               </Button>
             </DialogActions>
@@ -312,21 +313,30 @@ export const Sidebar = () => {
           setDeleteThreadModalOpen(data.open);
         }}
       >
-        <DialogSurface>
+        <DialogSurface className={`${styles.deleteThreadModal} prontoModal`}>
           <DialogBody>
-            <DialogTitle>Delete Thread</DialogTitle>
+            <DialogTitle>Delete Thread?</DialogTitle>
+            <div
+              className={`ghostIconBtn closeModalBtn`}
+              onClick={() => setDeleteThreadModalOpen(false)}
+            >
+              <img src="../../closeIconBlue.png" />
+            </div>
             <DialogContent>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-              exercitationem cumque repellendus eaque est dolor eius expedita
-              nulla ullam? Tenetur reprehenderit aut voluptatum impedit
-              voluptates in natus iure cumque eaque?
+              Please confirm you are ready to delete this thread.
             </DialogContent>
 
             <DialogActions>
               <DialogTrigger disableButtonEnhancement>
-                <Button appearance="secondary">Cancel</Button>
+                <Button className={`secondary`}>Cancel</Button>
               </DialogTrigger>
-              <Button appearance="primary">Delete</Button>
+              <Button
+                className={`error`}
+                onClick={(e) => deleteCurrentThread()}
+              >
+                <img src="../../deleteIconWhite.png" />
+                Delete
+              </Button>
             </DialogActions>
           </DialogBody>
         </DialogSurface>
