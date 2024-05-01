@@ -11,6 +11,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  frontend-build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
+    steps:  
+    - name: npm install, build, and test
+      working-directory: ./code/frontend
+      run: |
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+        
   build:
     runs-on: ubuntu-latest
 
