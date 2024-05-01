@@ -19,10 +19,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: npm install, build, and test
-        working-directory: ./code/frontend
+        working-directory: ./code
         run: |
-          pwd
-          ls -ltrh
+          mkdir -p dist
+          rm -rf dist/*
+          poetry install
+          poetry export -o dist/requirements.txt
+          cp *.py dist
+          cp -r backend dist
+
+          cd frontend
           npm install
           npm run build --if-present
           npm run test --if-present      
