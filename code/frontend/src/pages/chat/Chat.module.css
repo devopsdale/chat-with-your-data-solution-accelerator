@@ -224,7 +224,7 @@
 
 .chatThreadActive {
   margin-bottom: 40px;
-  transition: margin 0.60s ease-in 0.15s;
+  transition: margin 0.6s ease-in 0.15s;
 }
 
 .clearChatBroom {
@@ -432,4 +432,169 @@
   position: absolute;
   width: 100%;
   overflow: hidden;
+}
+
+/* ↓ animating the aurora loading/generating */
+.generatingAnim {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -11%;
+  z-index: -1;
+  width: 100vw;
+  left: 0%;
+  animation: scaleInOut forwards 7s infinite;
+  animation-timing-function: ease-in-out;
+  overflow: hidden;
+  bottom: 0%;
+  width: 100vw;
+  height: 34vh;
+}
+.generatingAnim img {
+  position: absolute;
+}
+
+.hue01 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sideToSide01 forwards 4s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue01img01 {
+  animation: fadeInOut01 forwards 8s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue01img02 {
+  animation: fadeInOut03 forwards 6s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.hue02 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sideToSide02 forwards 7s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue02img01 {
+  animation: fadeInOut02 forwards 68s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue02img02 {
+  animation: fadeInOut04 forwards 8s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes sideToSide01 {
+  0% {
+    transform: translateX(10vw);
+  }
+  50% {
+    transform: translateX(-10vw);
+  }
+  100% {
+    transform: translateX(10vw);
+  }
+}
+
+@keyframes sideToSide02 {
+  0% {
+    transform: translateX(-10vw);
+  }
+  50% {
+    transform: translateX(10vw);
+  }
+  100% {
+    transform: translateX(-10vw);
+  }
+}
+
+@keyframes fadeInOut01 {
+  0% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+  25% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+  75% {
+    opacity: 0.5;
+    transform: rotate(15deg);
+  }
+  100% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes fadeInOut02 {
+  0% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+  25% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+  75% {
+    opacity: 0.35;
+    transform: rotate(-15deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes fadeInOut03 {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.35;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut04 {
+  0% {
+    opacity: 0.35;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes scaleInOut {
+  0% {
+    transform: scale(1, 1);
+  }
+  15% {
+    transform: scale(1.25, 1);
+  }
+  50% {
+    transform: scale(1, 1.2);
+  }
+  75% {
+    transform: scale(1.25, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }

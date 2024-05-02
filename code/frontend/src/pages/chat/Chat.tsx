@@ -36,7 +36,7 @@ import { useParams } from "react-router-dom";
 const Chat = () => {
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
-  const { threadId = 'default' } = useParams();
+  const { threadId = "default" } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -291,7 +291,6 @@ const Chat = () => {
 
   return (
     <div className={styles.container}>
-
       <Sidebar threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
@@ -480,6 +479,30 @@ const Chat = () => {
         )}
       </Stack>
 
+      { isLoading &&
+        <div className={styles.generatingAnim}>
+          <div className={styles.hue01}>
+            <img
+              className={styles.hue01img01}
+              src="../../auroraLoading/hue01_shape01.png"
+            />
+            <img
+              className={styles.hue01img02}
+              src="../../auroraLoading/hue01_shape02.png"
+            />
+          </div>
+          <div className={styles.hue02}>
+            <img
+              className={styles.hue02img01}
+              src="../../auroraLoading/hue02_shape01.png"
+            />
+            <img
+              className={styles.hue02img02}
+              src="../../auroraLoading/hue02_shape02.png"
+            />
+          </div>
+        </div>
+      }
       <div className={`${styles.bgPatternImgContainer}`}>
         <img
           src="../../Airbus_CarbonGrid.png"
