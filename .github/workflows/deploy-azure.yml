@@ -8,8 +8,6 @@ on:
       - main
       - master
 
-
-
 jobs:
   build:
     runs-on: ubuntu-latest
