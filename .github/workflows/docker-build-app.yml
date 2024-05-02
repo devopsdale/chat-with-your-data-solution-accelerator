@@ -33,7 +33,7 @@ jobs:
     #     password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t fontend -f ./docker/Frontend.Dockerfile
+        docker build . -t prontofontend -f ./docker/Frontend.Dockerfile
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -45,4 +45,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'web-rlbjfs6vicfds'
-        images:  fontend
+        images:  pronto/fontend
