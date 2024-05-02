@@ -349,12 +349,9 @@ const Chat = () => {
                                 ? parseCitationFromMessage(answers[index - 1])
                                 : [],
                           }}
-                          // onCitationClicked={(c, isKeyPressed) =>
                           onCitationClicked={(c) =>
-                            // onShowCitation(c, isKeyPressed)
                             onShowCitation(c)
                           }
-                          // onCitationHover={(e, c, k) => onCitationHover(e, c, k)}
                           index={index}
                         />
                       </div>
