@@ -7,7 +7,7 @@ RUN npm ci
 COPY --chown=node:node ./code/frontend ./frontend
 WORKDIR /home/node/app/frontend
 RUN npm run build
-RUN ls /home/node/app
+RUN ls /home/node/app/frontend
 
 FROM python:3.11.7-bookworm
 RUN apt-get update && apt-get install python3-tk tk-dev -y
