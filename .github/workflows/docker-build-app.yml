@@ -26,14 +26,15 @@ jobs:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
 
-    # - uses: azure/docker-login@v1
-    #   with:
-    #     login-server: contoso.azurecr.io
-    #     username: ${{ secrets.REGISTRY_USERNAME }}
-    #     password: ${{ secrets.REGISTRY_PASSWORD }}
+    - uses: azure/docker-login@v1
+      with:
+        login-server: crazureaiairage126138845861.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
-        docker build . -t prontofontend -f ./docker/Frontend.Dockerfile
+        docker build . -t pronto/fontend -f ./docker/Frontend.Dockerfile
+        docker push crazureaiairage126138845861.azurecr.io/pronto-fontend
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -45,4 +46,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'web-rlbjfs6vicfds'
-        images:  pronto/fontend
+        images:  crazureaiairage126138845861.azurecr.io/pronto-fontend
