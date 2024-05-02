@@ -99,5 +99,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'web-rlbjfs6vicfds'
-          slot-name: 'Production'
           
