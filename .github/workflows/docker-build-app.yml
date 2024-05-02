@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: azure cli
+name: build container and release api
 
 on:
   push:
@@ -11,66 +11,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+        
+
+  deploy:
     runs-on: ubuntu-latest
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
-    env:
-      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    # checkout the repo
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
 
-      - name: Install azd
-        uses: Azure/setup-azd@v0.1.0
+    # - uses: azure/docker-login@v1
+    #   with:
+    #     login-server: contoso.azurecr.io
+    #     username: ${{ secrets.REGISTRY_USERNAME }}
+    #     password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      # - name: Log in with Azure (Federated Credentials)
-      #   if: ${{ env.AZURE_CLIENT_ID != '' }}
-      #   run: |
-      #     azd auth login `
-      #       --client-id "$Env:AZURE_CLIENT_ID" `
-      #       --federated-credential-provider "github" `
-      #       --tenant-id "$Env:AZURE_TENANT_ID"
-      #   shell: pwsh
+    - run: |
+        docker build . -t pronto/fontend -f ./docker/Frontend.Dockerfile
 
-      - name: Log in with Azure (Client Credentials)
-        if: ${{ env.AZURE_CREDENTIALS != '' }}
-        run: |
-          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
-          Write-Host "::add-mask::$($info.clientSecret)"
-
-          azd auth login `
-            --client-id "$($info.clientId)" `
-            --client-secret "$($info.clientSecret)" `
-            --tenant-id "$($info.tenantId)"
-        shell: pwsh
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Azd Init
-        run: azd init -t chat-with-your-data-solution-accelerator@1.7.0 
-        env:
-          AZURE_ENV_NAME: rg-rsta4xey-temp
-          AZURE_LOCATION: East US
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}           
-
-      - name: Provision Infrastructure
-        run: azd provision --no-prompt --preview   
-        env:
-          AZURE_ENV_NAME: rg-rsta4xey-temp
-          AZURE_LOCATION: East US
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-
-
-      - name: Deploy Application
-        run: azd deploy --no-prompt --preview   
-        env:
-          AZURE_ENV_NAME: rg-rsta4xey-temp
-          AZURE_LOCATION: East US
-          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
+    
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'web-rlbjfs6vicfds'
+        images:  'pronto/fontend'
