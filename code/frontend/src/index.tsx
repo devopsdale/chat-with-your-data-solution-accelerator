@@ -12,6 +12,7 @@ import NoPage from "./pages/NoPage";
 import Chat from "./pages/chat/Chat";
 import LogIn from "./pages/login/LogIn";
 
+import ChatHistory from "./components/ChatHistory/ChatHistory";
 initializeIcons();
 
 export default function App() {
@@ -34,7 +35,7 @@ export default function App() {
       <Routes>
         {userLoggedIn ? (
           <Route path="/" element={<Layout />}>
-            <Route index element={<Chat />} />
+            <Route index element={<ChatHistory />} />
             <Route path="/thread/:threadId" element={<Chat />} />
             <Route path="*" element={<NoPage />} />
           </Route>
