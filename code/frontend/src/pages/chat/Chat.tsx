@@ -464,36 +464,41 @@ const Chat = () => {
         )}
       </Stack>
 
-      {/* {true && ( */}
-      {isLoading && (
-        <div className={`
+      {/* {isLoading && ( */}
+      {true && (
+        <div
+          className={`
           ${styles.generatingAnim}
           ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
-        `}>
-          <div className={`
-          ${styles.generatingAnimInner}
-          ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
-        `}>
-          <div className={styles.hue01}>
-            <img
-              className={styles.hue01img01}
-              src="../../auroraLoading/hue01_shape01.png"
-            />
-            <img
-              className={styles.hue01img02}
-              src="../../auroraLoading/hue01_shape02.png"
-            />
-          </div>
-          <div className={styles.hue02}>
-            <img
-              className={styles.hue02img01}
-              src="../../auroraLoading/hue02_shape01.png"
-            />
-            <img
-              className={styles.hue02img02}
-              src="../../auroraLoading/hue02_shape02.png"
-            />
-          </div>
+          ${isLoading ? styles.fadeOnAurora : styles.fadeOffAurora}
+        `}
+        >
+          <div
+            className={`
+            ${styles.generatingAnimInner}
+            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+          `}
+          >
+            <div className={styles.hue01}>
+              <img
+                className={styles.hue01img01}
+                src="../../auroraLoading/hue01_shape01.png"
+              />
+              <img
+                className={styles.hue01img02}
+                src="../../auroraLoading/hue01_shape02.png"
+              />
+            </div>
+            <div className={styles.hue02}>
+              <img
+                className={styles.hue02img01}
+                src="../../auroraLoading/hue02_shape01.png"
+              />
+              <img
+                className={styles.hue02img02}
+                src="../../auroraLoading/hue02_shape02.png"
+              />
+            </div>
           </div>
         </div>
       )}
