@@ -263,84 +263,55 @@ const Chat = () => {
           {/* {!lastQuestionRef.current ? ( */}
 
           {/* ↓ this should only show when no chats */}
-            <Stack className={`
+          <Stack
+            className={`
               ${styles.chatEmptyState}
+              ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOn}
               ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
-            `}>
-              <h6 className={styles.chatHomeText03}>Let's explore together</h6>
-              <h5 className={styles.chatHomeText02}>Let's explore together</h5>
-              <h3 className={styles.chatHomeText01}>Let's explore together</h3>
-            </Stack>
+            `}
+          >
+            <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
+              <span>Let's explore together</span>
+            </h6>
+            <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
+              <span>Let's explore together</span>
+            </h5>
+            <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
+              <span>Let's explore together</span>
+            </h3>
+          </Stack>
 
-            {/* this should show when chat is engaged */}
-            <div
-              className={`
+          {/* this should show when chat is engaged */}
+          <div
+            className={`
                 ${styles.chatMessageStream}
                 ${lastQuestionRef.current ? styles.screenOn : styles.screenOff}
               `}
-              style={{ marginBottom: isLoading ? "40px" : "0px" }}
-            >
-              <div className={styles.chatMessageStreamInner}>
-                {answers.map((answer, index) => (
-                  <div key={index}>
-                    {answer.role === "user" ? (
-                      <div className={`${styles.chatMessageUser}`} key={index}>
-                        <Avatar
-                          image={{ src: "../../eddie-hoover-user-avatar.png" }}
-                          aria-label="Guest"
-                          className={styles.chatAvatar}
-                        />
-                        <div className={styles.chatMessageUserMessage}>
-                          {answer.content}
-                        </div>
-                        <div className={` ${styles.timeStamp}`}>
-                          {/* ↓ TEMP - this will need to be timestamp from BE */}
-                          <div>{moment().calendar()}</div>
-                        </div>
-                      </div>
-                    ) : answer.role === "assistant" ||
-                      answer.role === "error" ? (
-                      <div
-                        className={`${styles.chatMessageGpt} ${styles.answerShowing}`}
-                        key={index}
-                      >
-                        <Avatar
-                          image={{ src: "../../pronto-avatar-anim-close.gif" }}
-                          aria-label="Guest"
-                          className={styles.chatAvatar}
-                        />
-                        <Answer
-                          answer={{
-                            answer:
-                              answer.role === "assistant"
-                                ? answer.content
-                                : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
-                                  answer.content,
-                            citations:
-                              answer.role === "assistant"
-                                ? parseCitationFromMessage(answers[index - 1])
-                                : [],
-                          }}
-                          onCitationClicked={(c) => onShowCitation(c)}
-                          index={index}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                ))}
-                {showLoadingMessage && (
-                  <>
-                    <div className={styles.chatMessageUser}>
+            style={{ marginBottom: isLoading ? "40px" : "0px" }}
+          >
+            <div className={styles.chatMessageStreamInner}>
+              {answers.map((answer, index) => (
+                <div key={index}>
+                  {answer.role === "user" ? (
+                    <div className={`${styles.chatMessageUser}`} key={index}>
                       <Avatar
                         image={{ src: "../../eddie-hoover-user-avatar.png" }}
                         aria-label="Guest"
                         className={styles.chatAvatar}
                       />
                       <div className={styles.chatMessageUserMessage}>
-                        {lastQuestionRef.current}
+                        {answer.content}
+                      </div>
+                      <div className={` ${styles.timeStamp}`}>
+                        {/* ↓ TEMP - this will need to be timestamp from BE */}
+                        <div>{moment().calendar()}</div>
                       </div>
                     </div>
-                    <div className={styles.chatMessageGpt}>
+                  ) : answer.role === "assistant" || answer.role === "error" ? (
+                    <div
+                      className={`${styles.chatMessageGpt} ${styles.answerShowing}`}
+                      key={index}
+                    >
                       <Avatar
                         image={{ src: "../../pronto-avatar-anim-close.gif" }}
                         aria-label="Guest"
@@ -349,24 +320,61 @@ const Chat = () => {
                       <Answer
                         answer={{
                           answer:
-                            "Generating Answer... AI-generated content may be incorrect",
-                          citations: [],
+                            answer.role === "assistant"
+                              ? answer.content
+                              : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
+                                answer.content,
+                          citations:
+                            answer.role === "assistant"
+                              ? parseCitationFromMessage(answers[index - 1])
+                              : [],
                         }}
-                        onCitationClicked={() => null}
-                        index={0}
-                      />
-                      <Spinner
-                        size="extra-small"
-                        className={styles.thinkingSpinner}
-                        labelPosition="after"
-                        label="Thinking..."
+                        onCitationClicked={(c) => onShowCitation(c)}
+                        index={index}
                       />
                     </div>
-                  </>
-                )}
-                <div ref={chatMessageStreamEnd} />
-              </div>
+                  ) : null}
+                </div>
+              ))}
+              {showLoadingMessage && (
+                <>
+                  <div className={styles.chatMessageUser}>
+                    <Avatar
+                      image={{ src: "../../eddie-hoover-user-avatar.png" }}
+                      aria-label="Guest"
+                      className={styles.chatAvatar}
+                    />
+                    <div className={styles.chatMessageUserMessage}>
+                      {lastQuestionRef.current}
+                    </div>
+                  </div>
+                  <div className={styles.chatMessageGpt}>
+                    <Avatar
+                      image={{ src: "../../pronto-avatar-anim-close.gif" }}
+                      aria-label="Guest"
+                      className={styles.chatAvatar}
+                    />
+                    <Answer
+                      answer={{
+                        answer:
+                          "Generating Answer... AI-generated content may be incorrect",
+                        citations: [],
+                      }}
+                      onCitationClicked={() => null}
+                      index={0}
+                    />
+                    <Spinner
+                      size="extra-small"
+                      className={styles.thinkingSpinner}
+                      labelPosition="after"
+                      label="Thinking..."
+                    />
+                  </div>
+                </>
+              )}
+              <div ref={chatMessageStreamEnd} />
             </div>
+          </div>
           {/* )} */}
           <div>
             {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
@@ -378,7 +386,7 @@ const Chat = () => {
             className={`
               ${styles.chatInput}
               ${!lastQuestionRef.current ? "" : styles.chatThreadActive}
-              ${pageAnimOn ? styles.pageAnimOn : ''}
+              ${pageAnimOn ? styles.pageAnimOn : ""}
             `}
           >
             {isLoading && (

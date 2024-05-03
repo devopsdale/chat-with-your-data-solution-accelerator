@@ -92,7 +92,10 @@ export const QuestionInput = ({
   const sendQuestionDisabled = disabled || !question.trim();
 
   return (
-    <Stack horizontal className={`${styles.questionInputContainer} ${!isThreadActive ? '' : styles.chatThreadActive}`}>
+    <Stack
+      horizontal
+      className={`${styles.questionInputContainer} ${!isThreadActive ? "" : styles.chatThreadActive}`}
+    >
       <div className={styles.topSearchInput}>
         {/* Text Input Field */}
         <TextField
@@ -156,7 +159,7 @@ export const QuestionInput = ({
 
           {/* Clear chat option */}
           <div
-            className={styles.clearChatButton}
+            className={`${styles.clearChatButton} ${isThreadActive ? "" : "disabled"}`}
             onClick={clearChat}
             onKeyDown={(e) =>
               e.key === "Enter" || e.key === " " ? clearChat() : null

@@ -31,6 +31,46 @@
   z-index: 10;
 }
 
+.chatEmptyState {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -18vh;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.0;
+  transform: translateY(100px);
+  /* transition: all 1.05s ease-in; */
+  transition: transform 2.05s ease-in;
+}
+.chatEmptyState.pageAnimOn {
+  opacity: 1.0;
+  transform: translateY(0px);
+  transition: transform 2.05s ease-in;
+}
+.chatEmptyState.screenOn {
+  opacity: 1.0;
+  margin-top: -18vh;
+  transition: all 1.05s ease-in;
+}
+.chatEmptyState.screenOff {
+  opacity: 0.0;
+  margin-top: -15vh;
+  transition: all 0.65s ease-out;
+}
+
+/* .exploreText span{
+  opacity: 0.0;
+  transition: opacity 1.5s;
+}
+.pageAnimOn .exploreText span{
+  opacity: 1.0;
+  transition: opacity 1.5s;
+} */
+
 .chatHomeText03 {
   font-size: 20px;
   color: #ced5dd;
@@ -47,57 +87,6 @@
   font-size: 36px;
   color: #14171d;
   margin: 15px;
-}
-
-.chatEmptyState {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 8vh;
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  opacity: 0.0;
-  transition: all 1.05s ease-in;
-}
-.chatEmptyState.screenOn {
-  opacity: 1.0;
-  margin-top: -18vh;
-  transition: all 1.05s ease-in;
-}
-.chatEmptyState.screenOff {
-  opacity: 0.0;
-  margin-top: -15vh;
-  transition: all 0.65s ease-out;
-}
-
-.chatEmptyStateTitle {
-  font-family: "Segoe UI";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 36px;
-  display: flex;
-  align-items: flex-end;
-  text-align: center;
-  line-height: 24px;
-  /* margin-top: 36px; */
-  margin-bottom: 0px;
-}
-
-.chatEmptyStateSubtitle {
-  margin-top: 20px;
-  font-family: "Segoe UI";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  display: flex;
-  align-items: flex-end;
-  text-align: center;
-  letter-spacing: -0.01em;
-  color: #616161;
 }
 
 .chatIcon {

@@ -4,7 +4,7 @@
     background-color: rgb(0, 32, 91);
     display: flex;
     z-index: 10000000; /* I know, I know */
-    transform: translateY(-36px);
+    transform: translateY(-26px);
     opacity: 0.2;
 }
 .header.animOn {
@@ -104,6 +104,12 @@
 
 .headerMenu {
   margin-top: 0px;
+}
+
+.headerMenuItem {
+  display: flex !important;
+  align-items: center !important;
+  /* padding: 8px 16px !important; */
 }
 
 

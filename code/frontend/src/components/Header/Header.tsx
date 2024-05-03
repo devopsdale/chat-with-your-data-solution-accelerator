@@ -33,10 +33,10 @@ export const Header = () => {
   };
 
   const logOut = () => {
-    setAnimOff(true);
+    // setAnimOff(true);
     localStorage.removeItem("loggedIn");
     // setTimeout(() => {
-      window.location.href = '/';
+    window.location.href = "/";
     // }, 1000);
   };
 
@@ -156,20 +156,23 @@ export const Header = () => {
               </MenuTrigger>
 
               <MenuPopover style={{ padding: "0px" }}>
-                <ul className={`${styles.headerMenu} menuListContainer`}>
-                  <li className={`menuListItem disabled`}>
+                <MenuList className={`${styles.headerMenu} menuListContainer`}>
+                  <MenuItem className={`${styles.headerMenuItem} menuListItem disabled`}>
                     <div className={`listItemLabel`}>
                       <PersonSettingsFilled />
                       <span>Settings</span>
                     </div>
-                  </li>
-                  <li className={`menuListItem`} onClick={(e) => logOut()}>
+                  </MenuItem>
+                  <MenuItem
+                    className={`${styles.headerMenuItem} menuListItem`}
+                    onClick={(e) => logOut()}
+                  >
                     <div className={`listItemLabel`}>
                       <DoorArrowLeftFilled />
                       <span>Log Out</span>
                     </div>
-                  </li>
-                </ul>
+                  </MenuItem>
+                </MenuList>
               </MenuPopover>
             </Menu>
           </div>

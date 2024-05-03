@@ -1,7 +1,7 @@
 .sidebar {
   position: absolute; /*comment out to take up space on page*/
   z-index: 50;
-  transform: translateX(-35px);
+  transform: translateX(-25px);
   opacity: 0.15;
 }
 .sidebar.pageAnimOn {
