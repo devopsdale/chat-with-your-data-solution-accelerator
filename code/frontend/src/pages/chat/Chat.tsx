@@ -33,6 +33,12 @@ import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
 import { useParams } from "react-router-dom";
 
+//  Import CONTEXT
+//
+// import { useChatHistory } from "../../store/ChatHistoryContext";
+// import { mockChatHistory } from "../../store/mock_chat";
+
+
 const Chat = () => {
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
@@ -61,6 +67,15 @@ const Chat = () => {
   const [isListening, setIsListening] = useState(false);
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
 
+  //  Use CONTEXT
+  // const { state, dispatch } = useChatHistory();
+
+
+  // useEffect(() => {
+  //   dispatch({ type: "USE_MOCK_DATA", payload: mockChatHistory });
+
+  // }, []);
+  // console.log(state.messages)
   const makeApiRequest = async (question: string) => {
     lastQuestionRef.current = question;
 
@@ -288,6 +303,7 @@ const Chat = () => {
     }
     return [];
   };
+
 
   return (
     <div className={styles.container}>

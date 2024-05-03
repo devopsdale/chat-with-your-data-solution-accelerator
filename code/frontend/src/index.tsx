@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { initializeIcons } from "@fluentui/react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
-
+import ChatHistoryProvider from "./store/ChatHistoryContext";
 import "./index.css";
 import "./prontoStyles.css";
 
@@ -25,10 +25,12 @@ export default function App() {
       // console.log("User is logged in, should display chat");
       setUserLoggedIn(true);
     }
-  });
+  }, []);
+
 
   return (
     <BrowserRouter>
+    <ChatHistoryProvider>
       <Routes>
         {userLoggedIn ? (
           <Route path="/" element={<Layout />}>
@@ -40,6 +42,7 @@ export default function App() {
           <Route path="/" element={<LogIn />}></Route>
         )}
       </Routes>
+      </ChatHistoryProvider>
     </BrowserRouter>
   );
 }
