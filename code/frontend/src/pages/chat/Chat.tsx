@@ -212,7 +212,7 @@ const Chat = () => {
   useEffect(() => {
     setTimeout(() => {
       setPageAnimOn(true);
-    }, 150);
+    }, 250);
   });
 
   const onShowCitation = (citation: Citation) => {
@@ -266,19 +266,25 @@ const Chat = () => {
           <Stack
             className={`
               ${styles.chatEmptyState}
-              ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOn}
               ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
             `}
           >
-            <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
-              <span>Let's explore together</span>
-            </h6>
-            <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
-              <span>Let's explore together</span>
-            </h5>
-            <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
-              <span>Let's explore together</span>
-            </h3>
+            <div
+              className={`
+               ${styles.exploreTextContainer}
+               ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
+              `}
+            >
+              <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
+                <span>Let's explore together</span>
+              </h6>
+              <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
+                <span>Let's explore together</span>
+              </h5>
+              <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
+                <span>Let's explore together</span>
+              </h3>
+            </div>
           </Stack>
 
           {/* this should show when chat is engaged */}
@@ -458,8 +464,16 @@ const Chat = () => {
         )}
       </Stack>
 
+      {/* {true && ( */}
       {isLoading && (
-        <div className={styles.generatingAnim}>
+        <div className={`
+          ${styles.generatingAnim}
+          ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+        `}>
+          <div className={`
+          ${styles.generatingAnimInner}
+          ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+        `}>
           <div className={styles.hue01}>
             <img
               className={styles.hue01img01}
@@ -480,12 +494,21 @@ const Chat = () => {
               src="../../auroraLoading/hue02_shape02.png"
             />
           </div>
+          </div>
         </div>
       )}
-      <div className={`${styles.bgPatternImgContainer}`}>
+      <div
+        className={`
+        ${styles.bgPatternImgContainer}
+        ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
+      `}
+      >
         <img
           src="../../Airbus_CarbonGrid.png"
-          className={styles.bgPatternImg}
+          className={`
+            ${styles.bgPatternImg}
+            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+          `}
           aria-hidden="true"
         />
       </div>

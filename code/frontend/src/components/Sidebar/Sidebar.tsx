@@ -323,7 +323,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
+                  if (e.key === "Enter") {
                     renameCurrentThread(liveRecognizedText);
                   }
                 }}
