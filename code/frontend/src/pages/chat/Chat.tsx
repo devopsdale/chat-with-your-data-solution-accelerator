@@ -251,7 +251,7 @@ const Chat = () => {
       className={`
       ${styles.container}
       ${pageAnimOn ? styles.pageAnimOn : ""}
-      ${pageAnimOff ? styles.pageAnimOn : ""}
+      ${pageAnimOff ? styles.pageAnimOff : ""}
     `}
     >
       <Sidebar threadId={threadId} />
@@ -260,15 +260,24 @@ const Chat = () => {
         <div
           className={`${styles.chatContainer} ${styles.MobileChatContainer}`}
         >
-          {!lastQuestionRef.current ? (
-            <Stack className={styles.chatEmptyState}>
+          {/* {!lastQuestionRef.current ? ( */}
+
+          {/* ↓ this should only show when no chats */}
+            <Stack className={`
+              ${styles.chatEmptyState}
+              ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+            `}>
               <h6 className={styles.chatHomeText03}>Let's explore together</h6>
               <h5 className={styles.chatHomeText02}>Let's explore together</h5>
               <h3 className={styles.chatHomeText01}>Let's explore together</h3>
             </Stack>
-          ) : (
+
+            {/* this should show when chat is engaged */}
             <div
-              className={styles.chatMessageStream}
+              className={`
+                ${styles.chatMessageStream}
+                ${lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+              `}
               style={{ marginBottom: isLoading ? "40px" : "0px" }}
             >
               <div className={styles.chatMessageStreamInner}>
@@ -358,7 +367,7 @@ const Chat = () => {
                 <div ref={chatMessageStreamEnd} />
               </div>
             </div>
-          )}
+          {/* )} */}
           <div>
             {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
             {isListening && <p>Listening...</p>}{" "}
@@ -366,7 +375,11 @@ const Chat = () => {
 
           <Stack
             horizontal
-            className={`${styles.chatInput} ${!lastQuestionRef.current ? "" : styles.chatThreadActive}`}
+            className={`
+              ${styles.chatInput}
+              ${!lastQuestionRef.current ? "" : styles.chatThreadActive}
+              ${pageAnimOn ? styles.pageAnimOn : ''}
+            `}
           >
             {isLoading && (
               <Stack

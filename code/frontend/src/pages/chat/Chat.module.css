@@ -55,7 +55,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: -20vh;
+  margin-top: 8vh;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.0;
+  transition: all 1.05s ease-in;
+}
+.chatEmptyState.screenOn {
+  opacity: 1.0;
+  margin-top: -18vh;
+  transition: all 1.05s ease-in;
+}
+.chatEmptyState.screenOff {
+  opacity: 0.0;
+  margin-top: -15vh;
+  transition: all 0.65s ease-out;
 }
 
 .chatEmptyStateTitle {
@@ -120,6 +135,15 @@
     rgba(0, 0, 0, 0.05),
     rgba(0, 0, 0, 0)
   );
+  opacity: 0.0;
+}
+.chatMessageStream.screenOn {
+  opacity: 1.0;
+  transition: opacity 1s;
+}
+.chatMessageStream.screenOff {
+  opacity: 0.0;
+  transition: opacity 1s;
 }
 
 .chatMessageStreamInner {
@@ -201,6 +225,7 @@
 
 .chatInput {
   /* position: sticky; */
+  position: fixed;
   flex: 0 0 100px;
   padding-top: 12px;
   padding-bottom: 24px;
@@ -212,10 +237,16 @@
   margin-bottom: 80px;
   margin-top: 8px;
   z-index: 10;
-  transition: margin 0.45s ease-in 0s;
-
-  position: absolute;
   bottom: 64px;
+  opacity: 0.0;
+  /* transition: margin 0.45s ease-in 0s; */
+  transform: translateY(50px);
+  transition: all 0.65s ease-in 0s;
+}
+.chatInput.pageAnimOn {
+  opacity: 1.0;
+  transform: translateY(0px);
+  transition: all 1.25s ease-out 0s;
 }
 
 .chatThreadActive {
