@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   InlineDrawer,
   Menu,
@@ -46,6 +46,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ threadId }: SidebarProps) => {
+  const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
+  const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState(true);
   const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
 
@@ -136,8 +138,18 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setPageAnimOn(true);
+    }, 150);
+  });
+
   return (
-    <div className={styles.sidebar}>
+    <div className={`
+      ${styles.sidebar}
+      ${pageAnimOn ? styles.pageAnimOn : ""}
+      ${pageAnimOff ? styles.pageAnimOn : ""}
+    `}>
       <InlineDrawer
         open={isOpen}
         // onOpenChange={(_, { open }) => setIsOpen(open)}
@@ -311,7 +323,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
+                  if (e.key === "Enter") {
                     renameCurrentThread(liveRecognizedText);
                   }
                 }}

@@ -4,4 +4,9 @@
     /* height: 100%; */
     height: 100vh;
     margin-bottom: -24px;
+    opacity: 0.0;
+}
+.layout.pageAnimOn {
+    opacity: 1.0;
+    transition: opacity 1.25s;
 }
