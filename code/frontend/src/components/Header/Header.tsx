@@ -18,6 +18,8 @@ import {
 
 export const Header = () => {
   const [copyClicked, setCopyClicked] = useState<boolean>(false);
+  const [animOn, setAnimOn] = useState<boolean>(false);
+  const [animOff, setAnimOff] = useState<boolean>(false);
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -31,16 +33,28 @@ export const Header = () => {
   };
 
   const logOut = () => {
-      localStorage.removeItem('loggedIn');
-      location.reload();
+    setAnimOff(true);
+    localStorage.removeItem("loggedIn");
+    // setTimeout(() => {
+      window.location.href = '/';
+    // }, 1000);
   };
 
-  /* useEffect(() => {
-
-    },); */
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimOn(true);
+    }, 150);
+  });
 
   return (
-    <header className={styles.header} role={"banner"}>
+    <header
+      className={`
+        ${styles.header}
+        ${animOn ? styles.animOn : ""}
+        ${animOff ? styles.animOff : ""}
+      `}
+      role={"banner"}
+    >
       <div className={styles.headerContainer}>
         <Stack horizontal verticalAlign="center">
           <Link to="/" className={styles.headerTitleContainer}>

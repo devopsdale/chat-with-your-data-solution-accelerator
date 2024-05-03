@@ -38,8 +38,8 @@ const LogIn = (props: InputProps) => {
     <div
       className={`
         ${styles.container}
-        ${animOn? styles.animOn : ""}
-        ${animOff ? styles.animOff : ""}
+          ${animOn? styles.animOn : ""}
+          ${animOff ? styles.animOff : ""}
       `}
     >
       <img

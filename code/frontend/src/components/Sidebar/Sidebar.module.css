@@ -1,6 +1,13 @@
 .sidebar {
   position: absolute; /*comment out to take up space on page*/
   z-index: 50;
+  transform: translateX(-260px);
+  opacity: 0.0;
+}
+.sidebar.pageAnimOn {
+  transform: translateX(0px);
+  opacity: 1.0;
+  transition: all 0.75s;
 }
 
 .openSideMenuBtn {

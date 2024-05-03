@@ -34,6 +34,8 @@ import moment from "moment";
 import { useParams } from "react-router-dom";
 
 const Chat = () => {
+  const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
+  const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const { threadId = "default" } = useParams();
@@ -202,40 +204,17 @@ const Chat = () => {
     setIsLoading(false);
   };
 
-  /* const detectKeyDown = (e: KeyboardEvent) => {
-    // console.log("Key clicked: ", e.key);
-
-    if (e.key === "Control") {
-      setControlIsPressed(true);
-      // console.log("Control clicked");
-    }
-  };
-
-  const detectKeyUp = (e: KeyboardEvent) => {
-    // console.log("Key clicked: ", e.key);
-
-    if (e.key === "Control") {
-      setControlIsPressed(false);
-      // console.log("Control un-clicked");
-    }
-  }; */
-
   useEffect(
     () => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "smooth" }),
     [showLoadingMessage]
   );
 
-  /* useEffect(() => {
-    document.addEventListener("keydown", detectKeyDown, true);
-    document.addEventListener("keyup", detectKeyUp, true);
+  useEffect(() => {
+    setTimeout(() => {
+      setPageAnimOn(true);
+    }, 150);
+  });
 
-    return () => {
-      document.removeEventListener("keydown", detectKeyDown, true);
-      document.removeEventListener("keyup", detectKeyUp, true);
-    };
-  }, []); */
-
-  // const onShowCitation = (citation: Citation, isKeyPressed: boolean) => {
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
 
@@ -253,29 +232,7 @@ const Chat = () => {
     } else {
       alert("No source URL found");
     }
-
-    /* if (isKeyPressed) {
-      setIsCitationPanelOpen(true);
-    } else {
-      // console.log(citation?.metadata?.original_url);
-      if (citation?.metadata?.original_url) {
-        window.open(citation.metadata.original_url, "_blank");
-      } else {
-        alert("No source URL found");
-      }
-    } */
   };
-
-  /* const onCitationHover = (
-    e: MouseEvent,
-    citation: Citation,
-    isKeyPressed: boolean
-  ) => {
-    // console.log('HOVERED!!!!!!!!!');
-    // console.log(e, citation, isKeyPressed);
-    // console.log(isKeyPressed);
-    console.log("should trigger to show tooltip");
-  }; */
 
   const parseCitationFromMessage = (message: ChatMessage) => {
     if (message.role === "tool") {
@@ -290,7 +247,13 @@ const Chat = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`
+      ${styles.container}
+      ${pageAnimOn ? styles.pageAnimOn : ""}
+      ${pageAnimOff ? styles.pageAnimOn : ""}
+    `}
+    >
       <Sidebar threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
@@ -349,9 +312,7 @@ const Chat = () => {
                                 ? parseCitationFromMessage(answers[index - 1])
                                 : [],
                           }}
-                          onCitationClicked={(c) =>
-                            onShowCitation(c)
-                          }
+                          onCitationClicked={(c) => onShowCitation(c)}
                           index={index}
                         />
                       </div>
@@ -476,7 +437,7 @@ const Chat = () => {
         )}
       </Stack>
 
-      { isLoading &&
+      {isLoading && (
         <div className={styles.generatingAnim}>
           <div className={styles.hue01}>
             <img
@@ -499,7 +460,7 @@ const Chat = () => {
             />
           </div>
         </div>
-      }
+      )}
       <div className={`${styles.bgPatternImgContainer}`}>
         <img
           src="../../Airbus_CarbonGrid.png"
