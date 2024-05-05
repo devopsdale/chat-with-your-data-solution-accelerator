@@ -276,13 +276,19 @@ const Chat = () => {
               `}
             >
               <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h6>
               <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h5>
               <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h3>
             </div>
           </Stack>
@@ -508,14 +514,16 @@ const Chat = () => {
         ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
       `}
       >
-        <img
-          src="../../Airbus_CarbonGrid.png"
-          className={`
-            ${styles.bgPatternImg}
-            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
-          `}
-          aria-hidden="true"
-        />
+        <div className={styles.drift}>
+          <img
+            src="../../Airbus_CarbonGrid.png"
+            className={`
+              ${styles.bgPatternImg}
+              ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+            `}
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </div>
   );
