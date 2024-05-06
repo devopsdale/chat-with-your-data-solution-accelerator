@@ -32,6 +32,7 @@ import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
 import { useParams } from "react-router-dom";
+import { OnboardingModule } from "../../components/OnboardingModule";
 
 const Chat = () => {
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
@@ -508,6 +509,9 @@ const Chat = () => {
           </div>
         </div>
       )}
+
+      <OnboardingModule isOpen={true}></OnboardingModule>
+
       <div
         className={`
         ${styles.bgPatternImgContainer}
