@@ -33,6 +33,9 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - run: |
+        docker login -u app-service-api -p ${{ secrets.REGISTRY_PASSWORD }} crazureaiairage126138845861.azurecr.io
+
+    - run: |
         docker build . -t crazureaiairage126138845861.azurecr.io/pronto-fontend -f ./docker/Frontend.Dockerfile
         docker push crazureaiairage126138845861.azurecr.io/pronto-fontend
 
