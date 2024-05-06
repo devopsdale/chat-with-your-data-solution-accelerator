@@ -34,51 +34,61 @@ interface OnboardingModuleProps {
   closeNotice: (closeModal: boolean) => void;
 }
 
-export const OnboardingModule = ({ isOpen, closeNotice }: OnboardingModuleProps) => {
+export const OnboardingModule = ({
+  isOpen,
+  closeNotice,
+}: OnboardingModuleProps) => {
   const [isOpenLocal, setIsOpenLocal] = React.useState(true);
 
   const closeNoticeTrigger = (close: boolean) => {
     closeNotice(close);
-  }
+  };
 
- /*  useEffect(() => {
+  /*  useEffect(() => {
     console.log('got update from parent');
     setIsOpenLocal(isOpen);
   }, [isOpen]); */
 
   return (
-    <div>
+    <div className={styles.onboardingModuleContainer}>
       <Dialog
         open={isOpen}
         onOpenChange={(event, data) => {
           closeNoticeTrigger(data.open);
         }}
       >
-        <DialogSurface className={`${styles.deleteThreadModal} prontoModal`}>
+        <DialogSurface className={`${styles.onboardingModal} prontoModal`}>
           <DialogBody>
-            <DialogTitle>Onboarding</DialogTitle>
+            {/* <DialogTitle>Onboarding</DialogTitle> */}
             <div
+              tabIndex={1}
               className={`ghostIconBtn closeModalBtn`}
               onClick={() => closeNoticeTrigger(false)}
             >
               <img src="../../closeIconBlue.png" />
             </div>
             <DialogContent>
-              Coming soon!
+              <div className={`${styles.onboardingContent}`}>
+                <div className={`${styles.leftContentContainer}`}>
+                  <div className={`${styles.copyContainer}`}>
+                    {/* text slider content will go here */}
+                  </div>
+                  <div className={`${styles.onboardingSlideControls}`}>
+                    {/* slider content controls will go here */}
+                  </div>
+                </div>
+                <div className={`${styles.rightContentContainer}`}>
+                  <ul className={`${styles.mediaContainer}`}>
+                    {/* images/media supporting copy will go here */}
+                  </ul>
+                  <img
+                    className={`${styles.mediaContainerSizer}`}
+                    src="../../onboarding/overviewSlide.png"
+                    alt=""
+                  />
+                </div>
+              </div>
             </DialogContent>
-
-            {/* <DialogActions>
-              <DialogTrigger disableButtonEnhancement>
-                <Button className={`secondary`}>Cancel</Button>
-              </DialogTrigger>
-              <Button
-                className={`error`}
-                onClick={(e) => console.log('test')}
-              >
-                <img src="../../deleteIconWhite.png" />
-                Delete
-              </Button>
-            </DialogActions> */}
           </DialogBody>
         </DialogSurface>
       </Dialog>

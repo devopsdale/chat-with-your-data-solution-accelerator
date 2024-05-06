@@ -1,0 +1,49 @@
+.onboardingModuleContainer {
+}
+
+.onboardingModal {
+  width: 80%;
+  max-width: 1155px !important;
+  padding: 0px !important;
+}
+
+.onboardingModal [class*="fui-DialogBody"] {
+  gap: 0px !important;
+  background: transparent;
+}
+.onboardingModal [class*="fui-DialogBody"] [class*="fui-DialogContent"] {
+  padding: 0px !important;
+}
+
+.onboardingContent {
+  display: flex;
+  flex-direction: row;
+}
+
+.leftContentContainer {
+  position: relative;
+  display: flex;
+  width: 35%;
+  background: #ffffff;
+}
+
+.copyContainer {
+}
+
+.onboardingSlideControls {
+}
+
+.rightContentContainer {
+  display: flex;
+  width: 65%;
+  background-color: #282E3A;
+}
+
+.mediaContainer {
+  position: absolute;
+}
+
+.mediaContainerSizer {
+  position: relative;
+  width: 100%;
+}

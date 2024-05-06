@@ -538,6 +538,19 @@
   }
 }
 
+.launchOnboardingBtn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  cursor: pointer;
+  z-index: 80;
+}
+
+.launchOnboardingIcon {
+  color: #00205b;
+  width: 14px;
+}
+
 .bgPatternImgContainer {
   position: fixed;
   width: 100vw;

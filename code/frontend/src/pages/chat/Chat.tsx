@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, MouseEvent } from "react";
 import { Stack } from "@fluentui/react";
 import {
+  BookInformationFilled,
   BroomRegular,
   DismissRegular,
   RecordStopFilled,
@@ -221,7 +222,7 @@ const Chat = () => {
     // check if User should see onboarding, delay until page load anim is done
     setTimeout(() => {
       if (localStorage.getItem("firstVisit") === null) {
-        console.log("User is seeing site for first time, show OnboardingModule");
+        // console.log("User is seeing site for first time, show OnboardingModule");
         setOpenOnboardingModule(true);
         localStorage.setItem("firstVisit", "true");
       }
@@ -521,6 +522,13 @@ const Chat = () => {
           </div>
         </div>
       )}
+
+      <div
+        className={styles.launchOnboardingBtn}
+        onClick={(e) => setOpenOnboardingModule(true)}
+      >
+        <BookInformationFilled className={styles.launchOnboardingIcon}/>
+      </div>
 
       <OnboardingModule
         isOpen={openOnboardingModule}
