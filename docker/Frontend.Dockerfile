@@ -7,7 +7,8 @@ RUN npm ci
 COPY --chown=node:node ./code/frontend ./frontend
 WORKDIR /home/node/app/frontend
 RUN npm run build
-RUN ls /home/node/app/frontend/build
+RUN mkdir -p /home/node/app/dist/static
+RUN cp -r /home/node/app/frontend/build /home/node/app/dist/static
 
 FROM python:3.11.7-bookworm
 RUN apt-get update && apt-get install python3-tk tk-dev -y
@@ -19,7 +20,7 @@ RUN pip install --upgrade pip && pip install poetry uwsgi && poetry export -o re
 
 COPY ./code/*.py /usr/src/app/
 COPY ./code/backend /usr/src/app/backend
-COPY --from=frontend /home/node/app/frontend/build /usr/src/app/static/
+COPY --from=frontend /home/node/app/dist/static /usr/src/app/static/
 ENV PYTHONPATH "${PYTHONPATH}:/usr/src/app"
 EXPOSE 80
 CMD ["uwsgi", "--http", ":80", "--wsgi-file", "app.py", "--callable", "app", "-b", "32768", "--http-timeout", "230"]
