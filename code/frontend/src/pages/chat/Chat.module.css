@@ -12,10 +12,6 @@
   flex: 1;
   display: flex;
   margin-top: 0px;
-  /* margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    gap: 20px; */
   z-index: 10;
 }
 
@@ -26,31 +22,13 @@
   align-items: center;
   /* background: radial-gradient(108.78% 108.78% at 50.02% 19.78%, #FFFFFF 57.29%, #EEF6FE 100%); */
   background: transparent;
-  box-shadow:
+  /* box-shadow:
     0px 2px 4px rgba(0, 0, 0, 0.14),
-    0px 0px 2px rgba(0, 0, 0, 0.12);
+    0px 0px 2px rgba(0, 0, 0, 0.12); */
   border-radius: 8px;
   overflow-y: auto;
   min-height: calc(100vh - 100px);
   z-index: 10;
-}
-
-.chatHomeText03 {
-  font-size: 20px;
-  color: #ced5dd;
-  margin: 5px;
-}
-
-.chatHomeText02 {
-  font-size: 28px;
-  color: #63728a;
-  margin: 10px;
-}
-
-.chatHomeText01 {
-  font-size: 36px;
-  color: #14171d;
-  margin: 15px;
 }
 
 .chatEmptyState {
@@ -59,34 +37,131 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: -20vh;
+  margin-top: -18vh;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  opacity: 0.0;
+  transform: translateY(100px);
+  /* transition: all 1.05s ease-in; */
+  transition: transform 2.05s ease-in;
+}
+.chatEmptyState.pageAnimOn {
+  opacity: 1.0;
+  transform: translateY(0px);
+  transition: transform 2.25s ease-out;
+}
+.chatEmptyState.screenOn {
+  opacity: 1.0;
+  margin-top: -18vh;
+  transition: margin-top 1.45s, opacity 1.85s ease-out 0.15s;
+}
+.chatEmptyState.screenOff {
+  opacity: 0.0;
+  margin-top: -8vh;
+  transition: margin-top 0.85s, opacity 0.65s;
 }
 
-.chatEmptyStateTitle {
-  font-family: "Segoe UI";
-  font-style: normal;
-  font-weight: 700;
+.exploreTextContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -5%;
+  opacity: 0.0;
+  /* transition: all 1.5s; */
+}
+.exploreTextContainer.pageAnimOn {
+  opacity: 1.0;
+  margin-top: -15%;
+  transition: all 1.35s ease-out;
+}
+
+/* .exploreText span{
+  opacity: 0.0;
+  transition: opacity 1.5s;
+}
+.pageAnimOn .exploreText span{
+  opacity: 1.0;
+  transition: opacity 1.5s;
+} */
+
+.chatHomeText03 {
+  font-size: 20px;
+  color: #ced5dd;
+  margin: 5px;
+}
+.chatHomeText03 span{
+  display: flex;
+  transform: translateY(60px);
+  opacity: 0.0;
+}
+.pageAnimOn .chatHomeText03 span{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 0.75s ease-out 0.5s;
+}
+.screenOn .chatHomeText03{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 0.65s ease-out 0.5s;
+}
+.screenOff .chatHomeText03{
+  transform: translateY(60px);
+  opacity: 0.0;
+  transition: all 0.65s ease-out 0.35s;
+}
+
+.chatHomeText02 {
+  font-size: 28px;
+  color: #63728a;
+  margin: 10px;
+}
+.chatHomeText02 span{
+  display: flex;
+  transform: translateY(50px);
+  opacity: 0.0;
+}
+.pageAnimOn .chatHomeText02 span{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 0.95s ease-out 0.35s;
+}
+.screenOn .chatHomeText02{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 0.75s ease-out 0.35s;
+}
+.screenOff .chatHomeText02{
+  transform: translateY(50px);
+  opacity: 0.0;
+  transition: all 0.85s ease-out 0.25s;
+}
+
+.chatHomeText01 {
   font-size: 36px;
-  display: flex;
-  align-items: flex-end;
-  text-align: center;
-  line-height: 24px;
-  /* margin-top: 36px; */
-  margin-bottom: 0px;
+  color: #14171d;
+  margin: 15px;
 }
-
-.chatEmptyStateSubtitle {
-  margin-top: 20px;
-  font-family: "Segoe UI";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
+.chatHomeText01 span{
   display: flex;
-  align-items: flex-end;
-  text-align: center;
-  letter-spacing: -0.01em;
-  color: #616161;
+  transform: translateY(40px);
+  opacity: 0.0;
+}
+.pageAnimOn .chatHomeText01 span{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 1.15s ease-out;
+}
+.screenOn .chatHomeText01{
+  transform: translateY(0px);
+  opacity: 1.0;
+  transition: all 0.95s ease-out;
+}
+.screenOff .chatHomeText01{
+  transform: translateY(40px);
+  opacity: 0.0;
+  transition: all ease-out 1.05s;
 }
 
 .chatIcon {
@@ -124,6 +199,15 @@
     rgba(0, 0, 0, 0.05),
     rgba(0, 0, 0, 0)
   );
+  opacity: 0.0;
+}
+.chatMessageStream.screenOn {
+  opacity: 1.0;
+  transition: opacity 1s;
+}
+.chatMessageStream.screenOff {
+  opacity: 0.0;
+  transition: opacity 1s;
 }
 
 .chatMessageStreamInner {
@@ -205,6 +289,7 @@
 
 .chatInput {
   /* position: sticky; */
+  position: fixed;
   flex: 0 0 100px;
   padding-top: 12px;
   padding-bottom: 24px;
@@ -216,15 +301,21 @@
   margin-bottom: 80px;
   margin-top: 8px;
   z-index: 10;
-  transition: margin 0.45s ease-in 0s;
-
-  position: absolute;
   bottom: 64px;
+  opacity: 0.0;
+  /* transition: margin 0.45s ease-in 0s; */
+  transform: translateY(50px);
+  transition: all 0.65s ease-in 0s;
+}
+.chatInput.pageAnimOn {
+  opacity: 1.0;
+  transform: translateY(0px);
+  transition: all 1.25s ease-out 0s;
 }
 
 .chatThreadActive {
   margin-bottom: 40px;
-  transition: margin 0.60s ease-in 0.15s;
+  transition: margin 0.6s ease-in 0.15s;
 }
 
 .clearChatBroom {
@@ -426,10 +517,213 @@
   z-index: 0;
   opacity: 0.15;
   pointer-events: none;
+  top: 6%;
+}
+.bgPatternImgContainer.pageAnimOn {
+  top: 0px;
+  transition: top 1.35s ease-out;
 }
 
 .bgPatternImg {
   position: absolute;
   width: 100%;
   overflow: hidden;
+  top: 0%;
+}
+.bgPatternImg.screenOn {
+  top: 0%;
+  transition: top 1.55s ease-out;
+}
+.bgPatternImg.screenOff {
+  top: 4%;
+  transition: top 1.5s ease-out;
+}
+
+/* ↓ animating the aurora loading/generating */
+.generatingAnim {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -11%;
+  z-index: -1;
+  width: 100vw;
+  left: 0%;
+  animation: scaleInOut forwards 7s infinite;
+  animation-timing-function: ease-in-out;
+  overflow: hidden;
+  bottom: 0%;
+  width: 100vw;
+  height: 240px;
+  opacity: 0.0;
+}
+.generatingAnim.fadeOnAurora {
+  opacity: 1.0;
+  transition: opacity 0.35s;
+}
+.generatingAnim.fadeOffAurora {
+  opacity: 0.0;
+  transition: opacity 0.85s ease-out;
+}
+.generatingAnim img {
+  position: absolute;
+}
+.generatingAnimInner {
+
+}
+.generatingAnimInner.screenOn {
+  margin-top: -1%;
+  transform: scale(0.45);
+  opacity: 0.0;
+  transition: transform 1.25s ease-out, opacity 0.45s;
+}
+.generatingAnimInner.screenOff {
+  margin-top: 0%;
+  transform: scale(1);
+  opacity: 1.0;
+  transition: transform 0.65s ease-out, opacity 0.65s;
+}
+
+.hue01 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sideToSide01 forwards 4s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue01img01 {
+  animation: fadeInOut01 forwards 8s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue01img02 {
+  animation: fadeInOut03 forwards 6s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.hue02 {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sideToSide02 forwards 7s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue02img01 {
+  animation: fadeInOut02 forwards 68s infinite;
+  animation-timing-function: ease-in-out;
+}
+.hue02img02 {
+  animation: fadeInOut04 forwards 8s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes sideToSide01 {
+  0% {
+    transform: translateX(10vw);
+  }
+  50% {
+    transform: translateX(-10vw);
+  }
+  100% {
+    transform: translateX(10vw);
+  }
+}
+
+@keyframes sideToSide02 {
+  0% {
+    transform: translateX(-10vw);
+  }
+  50% {
+    transform: translateX(10vw);
+  }
+  100% {
+    transform: translateX(-10vw);
+  }
+}
+
+@keyframes fadeInOut01 {
+  0% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+  25% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+  75% {
+    opacity: 0.5;
+    transform: rotate(15deg);
+  }
+  100% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes fadeInOut02 {
+  0% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+  25% {
+    opacity: 0.5;
+    transform: rotate(-15deg);
+  }
+  75% {
+    opacity: 0.35;
+    transform: rotate(-15deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes fadeInOut03 {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.35;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut04 {
+  0% {
+    opacity: 0.35;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes scaleInOut {
+  0% {
+    transform: scale(1, 1);
+  }
+  15% {
+    transform: scale(1.25, 1);
+  }
+  50% {
+    transform: scale(1, 1.2);
+  }
+  75% {
+    transform: scale(1.25, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
 }
