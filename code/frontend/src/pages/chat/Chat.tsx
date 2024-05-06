@@ -25,6 +25,8 @@ import {
   ToolMessageContent,
   ChatResponse,
   // CitationMetadata,
+  thread10000001,
+  thread10000002
 } from "../../api";
 import { Answer } from "../../components/Answer";
 import { QuestionInput } from "../../components/QuestionInput";
@@ -214,6 +216,21 @@ const Chat = () => {
       setPageAnimOn(true);
     }, 250);
   });
+
+  useEffect(() => {
+    console.log(threadId);
+    if(threadId === '10000001') {
+      setAnswers(thread10000001)
+      const question = thread10000001[thread10000001.length - 1]
+      lastQuestionRef.current = question.content;
+    } else if(threadId === '10000002') {
+      setAnswers(thread10000002)
+      const question = thread10000002[thread10000002.length - 1]
+      lastQuestionRef.current = question.content;
+    } else {
+      clearChat();
+    }
+  }, [threadId]);
 
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
