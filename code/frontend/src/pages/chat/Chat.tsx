@@ -37,6 +37,8 @@ import { OnboardingModule } from "../../components/OnboardingModule";
 const Chat = () => {
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
+  const [openOnboardingModule, setOpenOnboardingModule] =
+    useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const { threadId = "default" } = useParams();
@@ -211,10 +213,20 @@ const Chat = () => {
   );
 
   useEffect(() => {
+    // anim page on after slight pause
     setTimeout(() => {
       setPageAnimOn(true);
     }, 250);
-  });
+
+    // check if User should see onboarding, delay until page load anim is done
+    setTimeout(() => {
+      if (localStorage.getItem("firstVisit") === null) {
+        console.log("User is seeing site for first time, show OnboardingModule");
+        setOpenOnboardingModule(true);
+        localStorage.setItem("firstVisit", "true");
+      }
+    }, 2500);
+  }, []);
 
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
@@ -510,7 +522,10 @@ const Chat = () => {
         </div>
       )}
 
-      <OnboardingModule isOpen={true}></OnboardingModule>
+      <OnboardingModule
+        isOpen={openOnboardingModule}
+        closeNotice={(close) => setOpenOnboardingModule(close)}
+      ></OnboardingModule>
 
       <div
         className={`

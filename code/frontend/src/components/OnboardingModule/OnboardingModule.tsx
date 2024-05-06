@@ -31,21 +31,27 @@ import styles from "./OnboardingModule.module.css";
 
 interface OnboardingModuleProps {
   isOpen: boolean;
+  closeNotice: (closeModal: boolean) => void;
 }
 
-export const OnboardingModule = ({ isOpen }: OnboardingModuleProps) => {
+export const OnboardingModule = ({ isOpen, closeNotice }: OnboardingModuleProps) => {
   const [isOpenLocal, setIsOpenLocal] = React.useState(true);
 
-  useEffect(() => {
+  const closeNoticeTrigger = (close: boolean) => {
+    closeNotice(close);
+  }
+
+ /*  useEffect(() => {
+    console.log('got update from parent');
     setIsOpenLocal(isOpen);
-  }, []);
+  }, [isOpen]); */
 
   return (
     <div>
       <Dialog
-        open={isOpenLocal}
+        open={isOpen}
         onOpenChange={(event, data) => {
-          setIsOpenLocal(data.open);
+          closeNoticeTrigger(data.open);
         }}
       >
         <DialogSurface className={`${styles.deleteThreadModal} prontoModal`}>
@@ -53,7 +59,7 @@ export const OnboardingModule = ({ isOpen }: OnboardingModuleProps) => {
             <DialogTitle>Onboarding</DialogTitle>
             <div
               className={`ghostIconBtn closeModalBtn`}
-              onClick={() => setIsOpenLocal(false)}
+              onClick={() => closeNoticeTrigger(false)}
             >
               <img src="../../closeIconBlue.png" />
             </div>
