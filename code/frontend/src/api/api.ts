@@ -31,3 +31,9 @@ export async function customConversationApi(options: ConversationRequest, abortS
 
     return response;
 }
+
+
+type ChatConversation = {
+    conversation_id: string;
+    messages: any[];
+}

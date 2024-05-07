@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { initializeIcons } from "@fluentui/react";
 import { FluentProvider, webLightTheme } from "@fluentui/react-components";
-
+import ChatHistoryProvider from "./store/ChatHistoryContext";
+import ChatHistory from "./components/ChatHistory/ChatHistory";
 import "./index.css";
 import "./prontoStyles.css";
 
@@ -32,7 +33,7 @@ export default function App() {
       <Routes>
         {userLoggedIn ? (
           <Route path="/" element={<Layout />}>
-            <Route index element={<Chat />} />
+            <Route index element={<ChatHistory />} />
             <Route path="/thread/:threadId" element={<Chat />} />
             <Route path="*" element={<NoPage />} />
           </Route>
@@ -44,10 +45,13 @@ export default function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
   <React.StrictMode>
     <FluentProvider theme={webLightTheme}>
-      <App />
+      <ChatHistoryProvider>
+        <App />
+      </ChatHistoryProvider>
     </FluentProvider>
   </React.StrictMode>
 );
