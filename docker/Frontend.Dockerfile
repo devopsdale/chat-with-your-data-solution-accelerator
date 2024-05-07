@@ -6,7 +6,7 @@ USER node
 RUN npm ci
 COPY --chown=node:node ./code/frontend ./frontend
 WORKDIR /home/node/app/frontend
-RUN npm run build
+RUN npm run build:${STAGE}
 RUN ls /home/node/app/frontend/build
 
 FROM python:3.11.7-bookworm
