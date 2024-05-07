@@ -1,4 +1,3 @@
-ARG STAGE="dev"
 FROM node:20-alpine AS frontend
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -7,6 +6,7 @@ USER node
 RUN npm ci
 COPY --chown=node:node ./code/frontend ./frontend
 WORKDIR /home/node/app/frontend
+ARG STAGE
 RUN npm run build:${STAGE}
 RUN ls /home/node/app/frontend/build
 
