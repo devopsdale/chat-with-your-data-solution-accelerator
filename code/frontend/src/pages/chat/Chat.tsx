@@ -15,7 +15,6 @@ import rehypeRaw from "rehype-raw";
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "./Chat.module.css";
-// import Azure from "../../assets/Azure.svg";
 import { multiLingualSpeechRecognizer } from "../../util/SpeechToText";
 
 import {
@@ -32,10 +31,14 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
+  const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
+  const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
+  const { threadId = "default" } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -53,7 +56,7 @@ const Chat = () => {
     useState<boolean>(false);
   const [answers, setAnswers] = useState<ChatMessage[]>([]);
   const abortFuncs = useRef([] as AbortController[]);
-  const [conversationId, setConversationId] = useState<string>(uuidv4());
+  const [conversationId, setConversationId] = useState<string>(threadId);
   const [userMessage, setUserMessage] = useState("");
   const [recognizedText, setRecognizedText] = useState<string>("");
   const [isRecognizing, setIsRecognizing] = useState(false);
@@ -201,40 +204,17 @@ const Chat = () => {
     setIsLoading(false);
   };
 
-  /* const detectKeyDown = (e: KeyboardEvent) => {
-    // console.log("Key clicked: ", e.key);
-
-    if (e.key === "Control") {
-      setControlIsPressed(true);
-      // console.log("Control clicked");
-    }
-  };
-
-  const detectKeyUp = (e: KeyboardEvent) => {
-    // console.log("Key clicked: ", e.key);
-
-    if (e.key === "Control") {
-      setControlIsPressed(false);
-      // console.log("Control un-clicked");
-    }
-  }; */
-
   useEffect(
     () => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "smooth" }),
     [showLoadingMessage]
   );
 
-  /* useEffect(() => {
-    document.addEventListener("keydown", detectKeyDown, true);
-    document.addEventListener("keyup", detectKeyUp, true);
+  useEffect(() => {
+    setTimeout(() => {
+      setPageAnimOn(true);
+    }, 250);
+  });
 
-    return () => {
-      document.removeEventListener("keydown", detectKeyDown, true);
-      document.removeEventListener("keyup", detectKeyUp, true);
-    };
-  }, []); */
-
-  // const onShowCitation = (citation: Citation, isKeyPressed: boolean) => {
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
 
@@ -252,29 +232,7 @@ const Chat = () => {
     } else {
       alert("No source URL found");
     }
-
-    /* if (isKeyPressed) {
-      setIsCitationPanelOpen(true);
-    } else {
-      // console.log(citation?.metadata?.original_url);
-      if (citation?.metadata?.original_url) {
-        window.open(citation.metadata.original_url, "_blank");
-      } else {
-        alert("No source URL found");
-      }
-    } */
   };
-
-  /* const onCitationHover = (
-    e: MouseEvent,
-    citation: Citation,
-    isKeyPressed: boolean
-  ) => {
-    // console.log('HOVERED!!!!!!!!!');
-    // console.log(e, citation, isKeyPressed);
-    // console.log(isKeyPressed);
-    console.log("should trigger to show tooltip");
-  }; */
 
   const parseCitationFromMessage = (message: ChatMessage) => {
     if (message.role === "tool") {
@@ -289,91 +247,77 @@ const Chat = () => {
   };
 
   return (
-    <div className={styles.container}>
-
-      <Sidebar />
+    <div
+      className={`
+      ${styles.container}
+      ${pageAnimOn ? styles.pageAnimOn : ""}
+      ${pageAnimOff ? styles.pageAnimOff : ""}
+    `}
+    >
+      <Sidebar threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div
           className={`${styles.chatContainer} ${styles.MobileChatContainer}`}
         >
-          {!lastQuestionRef.current ? (
-            <Stack className={styles.chatEmptyState}>
-              <h6 className={styles.chatHomeText03}>Let's explore together</h6>
-              <h5 className={styles.chatHomeText02}>Let's explore together</h5>
-              <h3 className={styles.chatHomeText01}>Let's explore together</h3>
-            </Stack>
-          ) : (
+          {/* {!lastQuestionRef.current ? ( */}
+
+          {/* ↓ this should only show when no chats */}
+          <Stack
+            className={`
+              ${styles.chatEmptyState}
+              ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+            `}
+          >
             <div
-              className={styles.chatMessageStream}
-              style={{ marginBottom: isLoading ? "40px" : "0px" }}
+              className={`
+               ${styles.exploreTextContainer}
+               ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
+              `}
             >
-              <div className={styles.chatMessageStreamInner}>
-                {answers.map((answer, index) => (
-                  <div key={index}>
-                    {answer.role === "user" ? (
-                      <div className={`${styles.chatMessageUser}`} key={index}>
-                        <Avatar
-                          image={{ src: "../../eddie-hoover-user-avatar.png" }}
-                          aria-label="Guest"
-                          className={styles.chatAvatar}
-                        />
-                        <div className={styles.chatMessageUserMessage}>
-                          {answer.content}
-                        </div>
-                        <div className={` ${styles.timeStamp}`}>
-                          {/* ↓ TEMP - this will need to be timestamp from BE */}
-                          <div>{moment().calendar()}</div>
-                        </div>
-                      </div>
-                    ) : answer.role === "assistant" ||
-                      answer.role === "error" ? (
-                      <div
-                        className={`${styles.chatMessageGpt} ${styles.answerShowing}`}
-                        key={index}
-                      >
-                        <Avatar
-                          image={{ src: "../../pronto-avatar-anim-close.gif" }}
-                          aria-label="Guest"
-                          className={styles.chatAvatar}
-                        />
-                        <Answer
-                          answer={{
-                            answer:
-                              answer.role === "assistant"
-                                ? answer.content
-                                : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
-                                  answer.content,
-                            citations:
-                              answer.role === "assistant"
-                                ? parseCitationFromMessage(answers[index - 1])
-                                : [],
-                          }}
-                          // onCitationClicked={(c, isKeyPressed) =>
-                          onCitationClicked={(c) =>
-                            // onShowCitation(c, isKeyPressed)
-                            onShowCitation(c)
-                          }
-                          // onCitationHover={(e, c, k) => onCitationHover(e, c, k)}
-                          index={index}
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                ))}
-                {showLoadingMessage && (
-                  <>
-                    <div className={styles.chatMessageUser}>
+              <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
+                <span>Let's explore together</span>
+              </h6>
+              <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
+                <span>Let's explore together</span>
+              </h5>
+              <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
+                <span>Let's explore together</span>
+              </h3>
+            </div>
+          </Stack>
+
+          {/* this should show when chat is engaged */}
+          <div
+            className={`
+                ${styles.chatMessageStream}
+                ${lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+              `}
+            style={{ marginBottom: isLoading ? "40px" : "0px" }}
+          >
+            <div className={styles.chatMessageStreamInner}>
+              {answers.map((answer, index) => (
+                <div key={index}>
+                  {answer.role === "user" ? (
+                    <div className={`${styles.chatMessageUser}`} key={index}>
                       <Avatar
                         image={{ src: "../../eddie-hoover-user-avatar.png" }}
                         aria-label="Guest"
                         className={styles.chatAvatar}
                       />
                       <div className={styles.chatMessageUserMessage}>
-                        {lastQuestionRef.current}
+                        {answer.content}
+                      </div>
+                      <div className={` ${styles.timeStamp}`}>
+                        {/* ↓ TEMP - this will need to be timestamp from BE */}
+                        <div>{moment().calendar()}</div>
                       </div>
                     </div>
-                    <div className={styles.chatMessageGpt}>
+                  ) : answer.role === "assistant" || answer.role === "error" ? (
+                    <div
+                      className={`${styles.chatMessageGpt} ${styles.answerShowing}`}
+                      key={index}
+                    >
                       <Avatar
                         image={{ src: "../../pronto-avatar-anim-close.gif" }}
                         aria-label="Guest"
@@ -382,25 +326,62 @@ const Chat = () => {
                       <Answer
                         answer={{
                           answer:
-                            "Generating Answer... AI-generated content may be incorrect",
-                          citations: [],
+                            answer.role === "assistant"
+                              ? answer.content
+                              : "Sorry, an error occurred. Try refreshing the conversation or waiting a few minutes. If the issue persists, contact your system administrator. Error: " +
+                                answer.content,
+                          citations:
+                            answer.role === "assistant"
+                              ? parseCitationFromMessage(answers[index - 1])
+                              : [],
                         }}
-                        onCitationClicked={() => null}
-                        index={0}
-                      />
-                      <Spinner
-                        size="extra-small"
-                        className={styles.thinkingSpinner}
-                        labelPosition="after"
-                        label="Thinking..."
+                        onCitationClicked={(c) => onShowCitation(c)}
+                        index={index}
                       />
                     </div>
-                  </>
-                )}
-                <div ref={chatMessageStreamEnd} />
-              </div>
+                  ) : null}
+                </div>
+              ))}
+              {showLoadingMessage && (
+                <>
+                  <div className={styles.chatMessageUser}>
+                    <Avatar
+                      image={{ src: "../../eddie-hoover-user-avatar.png" }}
+                      aria-label="Guest"
+                      className={styles.chatAvatar}
+                    />
+                    <div className={styles.chatMessageUserMessage}>
+                      {lastQuestionRef.current}
+                    </div>
+                  </div>
+                  <div className={styles.chatMessageGpt}>
+                    <Avatar
+                      image={{ src: "../../pronto-avatar-anim-close.gif" }}
+                      aria-label="Guest"
+                      className={styles.chatAvatar}
+                    />
+                    <Answer
+                      answer={{
+                        answer:
+                          "Generating Answer... AI-generated content may be incorrect",
+                        citations: [],
+                      }}
+                      onCitationClicked={() => null}
+                      index={0}
+                    />
+                    <Spinner
+                      size="extra-small"
+                      className={styles.thinkingSpinner}
+                      labelPosition="after"
+                      label="Thinking..."
+                    />
+                  </div>
+                </>
+              )}
+              <div ref={chatMessageStreamEnd} />
             </div>
-          )}
+          </div>
+          {/* )} */}
           <div>
             {isRecognizing && !isListening && <p>Please wait...</p>}{" "}
             {isListening && <p>Listening...</p>}{" "}
@@ -408,7 +389,11 @@ const Chat = () => {
 
           <Stack
             horizontal
-            className={`${styles.chatInput} ${!lastQuestionRef.current ? "" : styles.chatThreadActive}`}
+            className={`
+              ${styles.chatInput}
+              ${!lastQuestionRef.current ? "" : styles.chatThreadActive}
+              ${pageAnimOn ? styles.pageAnimOn : ""}
+            `}
           >
             {isLoading && (
               <Stack
@@ -479,10 +464,56 @@ const Chat = () => {
         )}
       </Stack>
 
-      <div className={`${styles.bgPatternImgContainer}`}>
+      {/* {isLoading && ( */}
+      {true && (
+        <div
+          className={`
+          ${styles.generatingAnim}
+          ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+          ${isLoading ? styles.fadeOnAurora : styles.fadeOffAurora}
+        `}
+        >
+          <div
+            className={`
+            ${styles.generatingAnimInner}
+            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+          `}
+          >
+            <div className={styles.hue01}>
+              <img
+                className={styles.hue01img01}
+                src="../../auroraLoading/hue01_shape01.png"
+              />
+              <img
+                className={styles.hue01img02}
+                src="../../auroraLoading/hue01_shape02.png"
+              />
+            </div>
+            <div className={styles.hue02}>
+              <img
+                className={styles.hue02img01}
+                src="../../auroraLoading/hue02_shape01.png"
+              />
+              <img
+                className={styles.hue02img02}
+                src="../../auroraLoading/hue02_shape02.png"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      <div
+        className={`
+        ${styles.bgPatternImgContainer}
+        ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
+      `}
+      >
         <img
           src="../../Airbus_CarbonGrid.png"
-          className={styles.bgPatternImg}
+          className={`
+            ${styles.bgPatternImg}
+            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+          `}
           aria-hidden="true"
         />
       </div>

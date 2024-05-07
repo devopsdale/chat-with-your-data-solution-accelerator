@@ -1,6 +1,13 @@
 .sidebar {
   position: absolute; /*comment out to take up space on page*/
   z-index: 50;
+  transform: translateX(-25px);
+  opacity: 0.15;
+}
+.sidebar.pageAnimOn {
+  transform: translateX(0px);
+  opacity: 1.0;
+  transition: all 0.95s ease-out;
 }
 
 .openSideMenuBtn {
@@ -86,15 +93,114 @@
   justify-content: space-between;
 }
 .threadMenuItem:hover .threadMenu {
-  opacity: 1.0 !important;
+  opacity: 1 !important;
 }
 
 .threadMenu {
-  opacity: 0.0;
+  opacity: 0;
   transition: all 0.35s;
 }
 
+.threadMenuOpen {
+  opacity: 1 !important;
+  background-color: #58585829;
+}
 
 .headerMenu {
   margin-top: 0px;
+}
+
+.threadMenuContainer {
+  margin-top: 12px !important;
+  margin-left: -5px !important;
+  background-color: transparent;
+  overflow: initial !important;
+}
+
+.trianglePointer {
+  position: absolute;
+  margin-top: -8px;
+  margin-left: 8px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 8px 8px 8px;
+  border-color: transparent transparent #ffffff transparent;
+  transform: rotate(0deg);
+  -webkit-filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.threadLink {
+  display: flex !important;
+  align-items: center !important;
+  min-width: 208px;
+  padding: 8px 16px !important;
+}
+
+.threadItemLabel span {
+  font-size: 14px;
+  color: #14171d;
+}
+.threadItemLabel img {
+  width: auto;
+  height: auto;
+}
+
+.copiedToClipboard,
+.dataSourceToolTipInner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copiedToClipboard {
+  position: absolute;
+  left: 100%;
+  margin-left: 16px;
+  white-space: nowrap;
+  background-color: #00205b;
+  padding: 6px 16px;
+  border-radius: 3px;
+  pointer-events: none;
+  transform: translateX(-10px);
+  opacity: 0;
+  transition: all 0.45s;
+}
+.showThreadCopiedNotice {
+  transform: translateX(0px);
+  opacity: 1.0;
+}
+
+.sideTriangle {
+  position: absolute;
+  left: -3px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 3px 3px 3px 0;
+  border-color: transparent #00205b transparent transparent;
+  transform: rotate(0deg);
+}
+
+.copiedToClipboard img {
+}
+
+.copiedToClipboard span {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 20px;
+  color: #ffffff;
+}
+
+.renameThreadModal,
+.deleteThreadModal {
+  width: 432px;
+}
+
+.renameInfo {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 8px 0px 32px 0px;
 }
