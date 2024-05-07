@@ -35,7 +35,7 @@ jobs:
 
     - run: |
         docker build --build-arg STAGE=dev . -t prontoacr.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
-        docker push prontoacr.azurecr.io/pronto-fontend
+        docker push prontoacr.azurecr.io/pronto-fontend:dev
 
     - name: Login to Azure
       uses: azure/login@v1
