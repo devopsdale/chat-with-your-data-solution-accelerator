@@ -1,12 +1,40 @@
-name: deploy frontend container
+name: deploy to azure
 on:
   push:
-    branches: [ "main", "refactor-frontend-airbus" ]
+    branches: [ "main", "development" ]
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy_dev:
     runs-on: ubuntu-latest
+    environment: 
+      name: dev
+      url: https://aasdoprontodev.z13.web.core.windows.net/
+    steps:
+    - uses: actions/checkout@v3
+    - uses: azure/login@v1
+      with:
+          creds: ${{ secrets.DEV_AZURE_CREDENTIALS }}
+
+    - name: npm install, build, and test
+      working-directory: ./code/frontend
+      run: |
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+
+        
+    - name: Upload to blob storage
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |            
+            az storage blob upload-batch --account-name aasdoprontodev    -d '$web' -s ./code/frontend/build --overwrite
+      
+  deploy_prod:
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://aasdoprontofrontend.z13.web.core.windows.net/    
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1
@@ -25,9 +53,6 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |            
-            #az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build  --connection-string ${{ secrets.CONNECTION_STRING }}
-            #az storage blob upload-batch --account-name aasdoprontofrontend   -d $web -s ./code/frontend/build --overwrite --sas-token ${{ secrets.STORAGE_TOKEN }} 
-            #az storage blob sync -c $web --account-name aasdoprontofrontend  -s ./code/frontend/build --sas-token ${{ secrets.STORAGE_TOKEN }}
             az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build --overwrite
             
     - name: Purge CDN endpoint
