@@ -9,24 +9,39 @@ const LogIn = (props: InputProps) => {
   const inputId = useId("input");
   const [liveRecognizedText, setLiveRecognizedText] = useState<string>("");
   const [isWrongPW, setIsWrongPW] = useState<boolean>(false);
+  const [animOn, setAnimOn] = useState<boolean>(false);
+  const [animOff, setAnimOff] = useState<boolean>(false);
 
   const submitLogInField = (passwordEntered: string) => {
     if (passwordEntered.trim() === import.meta.env.VITE_TEMP_PW) {
       localStorage.setItem("loggedIn", "true");
-      location.reload();
+      setAnimOff(true);
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
     } else {
       setLiveRecognizedText("");
       setIsWrongPW(true);
       setTimeout(() => {
         setIsWrongPW(false);
-      }, 1000);
+      }, 150);
     }
   };
 
-  useEffect(() => {});
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimOn(true);
+    }, 1000);
+  });
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`
+        ${styles.container}
+          ${animOn? styles.animOn : ""}
+          ${animOff ? styles.animOff : ""}
+      `}
+    >
       <img
         className={styles.prontoAvatar}
         src="../../pronto-avatar-anim-white-bg.gif"

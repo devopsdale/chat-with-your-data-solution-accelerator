@@ -18,6 +18,8 @@ import {
 
 export const Header = () => {
   const [copyClicked, setCopyClicked] = useState<boolean>(false);
+  const [animOn, setAnimOn] = useState<boolean>(false);
+  const [animOff, setAnimOff] = useState<boolean>(false);
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -31,21 +33,33 @@ export const Header = () => {
   };
 
   const logOut = () => {
-      localStorage.removeItem('loggedIn');
-      location.reload();
+    // setAnimOff(true);
+    localStorage.removeItem("loggedIn");
+    // setTimeout(() => {
+    window.location.href = "/";
+    // }, 1000);
   };
 
-  /* useEffect(() => {
-
-    },); */
+  useEffect(() => {
+    setTimeout(() => {
+      setAnimOn(true);
+    }, 150);
+  });
 
   return (
-    <header className={styles.header} role={"banner"}>
+    <header
+      className={`
+        ${styles.header}
+        ${animOn ? styles.animOn : ""}
+        ${animOff ? styles.animOff : ""}
+      `}
+      role={"banner"}
+    >
       <div className={styles.headerContainer}>
         <Stack horizontal verticalAlign="center">
           <Link to="/" className={styles.headerTitleContainer}>
             <img
-              src="../../src/assets/logo.svg"
+              src="../../logo.svg"
               className={styles.headerIcon}
               aria-hidden="true"
             />
@@ -142,20 +156,23 @@ export const Header = () => {
               </MenuTrigger>
 
               <MenuPopover style={{ padding: "0px" }}>
-                <ul className={`${styles.headerMenu} menuListContainer`}>
-                  <li className={`menuListItem disabled`}>
+                <MenuList className={`${styles.headerMenu} menuListContainer`}>
+                  <MenuItem className={`${styles.headerMenuItem} menuListItem disabled`}>
                     <div className={`listItemLabel`}>
                       <PersonSettingsFilled />
                       <span>Settings</span>
                     </div>
-                  </li>
-                  <li className={`menuListItem`} onClick={(e) => logOut()}>
+                  </MenuItem>
+                  <MenuItem
+                    className={`${styles.headerMenuItem} menuListItem`}
+                    onClick={(e) => logOut()}
+                  >
                     <div className={`listItemLabel`}>
                       <DoorArrowLeftFilled />
                       <span>Log Out</span>
                     </div>
-                  </li>
-                </ul>
+                  </MenuItem>
+                </MenuList>
               </MenuPopover>
             </Menu>
           </div>
