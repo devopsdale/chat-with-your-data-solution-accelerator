@@ -16,7 +16,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: 'development'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
@@ -34,7 +34,7 @@ jobs:
 
 
     - run: |
-        docker build --build-arg STAGE=dev . -t prontoacr.azurecr.io/pronto-fontend -f ./docker/Frontend.Dockerfile
+        docker build --build-arg STAGE=dev . -t prontoacr.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
         docker push prontoacr.azurecr.io/pronto-fontend
 
     - name: Login to Azure
@@ -47,4 +47,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'web-rlbjfs6vicfds'
-        images:  prontoacr.azurecr.io/pronto-fontend
+        images:  prontoacr.azurecr.io/pronto-fontend:dev
