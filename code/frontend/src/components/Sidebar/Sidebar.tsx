@@ -19,33 +19,20 @@ import {
   useId,
   Input,
   MenuProps,
+  Label,
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EditFilled } from "@fluentui/react-icons";
-
-// ↓ mocking Threads list until API is ready
-const threads = [
-  {
-    title: "Thread 01",
-    id: 10000001, // will be generated ThreadID
-  },
-  {
-    title: "Thread 02",
-    id: 10000002, // will be generated ThreadID
-  },
-  {
-    title: "Thread 03",
-    id: 10000003, // will be generated ThreadID
-  },
-];
+import { v4 as uuidv4 } from "uuid";
 
 interface SidebarProps {
-  threadId: string;
+  data: any[];
 }
 
-export const Sidebar = ({ threadId }: SidebarProps) => {
+export const Sidebar = ({ data, threadId }: SidebarProps) => {
+  const [threads, setThreads] = useState(data);
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const [isOpen, setIsOpen] = React.useState(true);
@@ -68,9 +55,27 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
   };
 
   const [copiedThreadNotice, setCopiedThreadNotice] = React.useState(false);
+  const [inputThread, setInputThread] = React.useState("");
+
+  const navigate = useNavigate();
 
   const createNewThread = () => {
-    alert("Threads coming soon 🎉");
+    // alert("Threads coming soon 🎉");
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const id = uuidv4();
+      const t = [
+        ...threads,
+        {
+          id,
+          title: inputThread,
+          answers: []
+        }
+      ];
+      setThreads(t);
+      navigate(`/thread/${id}`)
+      localStorage.setItem('threads', JSON.stringify(t));
+    }
   };
 
   const threadClicked = (threadId: number) => {
@@ -162,7 +167,16 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
       >
         <div className={styles.sidebarMain}>
           <div className={styles.sidebarHeader}>
-            <div
+          <div className={styles.newThreadActions}>
+            <Input
+              placeholder="New Thread"
+              contentAfter={<img src="../../plusIcon.png"  onClick={(e) => createNewThread()} />}
+              onChange={(e, data) => {
+                setInputThread(data?.value);
+              }}
+            />
+          </div>
+            {/* <div
               className={styles.newThreadActions}
               onClick={(e) => createNewThread()}
             >
@@ -174,7 +188,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                 <img src="../../Cntrl_key_icon.png" />
                 <img src="../../K_key_icon.png" />
               </div>
-            </div>
+            </div> */}
 
             <div
               className={`${styles.closeSideBarBtn} ghostIconBtn`}
@@ -187,18 +201,18 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
           <div className={styles.sidebarBody}>
             <span className={styles.threadsHeader}>Threads</span>
             <ul className={`menuListContainer`}>
-              {threads.map((thread, index) => (
-                <Link to={`/thread/${thread.id}`}
+              {threads?.map((thread: any, index: number) => (
+                <Link to={`/thread/${thread?.id}`}
                   key={index}
                   // ↓ testing 'activeListItem' style on first <li>, should be driven by url
                   className={`
-                    ${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem
+                    ${styles.threadMenuItem} ${thread?.id === threadId ? "activeListItem" : ""} menuListItem
                   `}
                   // onClick={(e) => threadClicked(thread.id)}
                 >
                   <div className={`listItemLabel`}>
                     <img src="../../threadIcon.png" />
-                    <span>{thread.title}</span>
+                    <span>{thread?.title}</span>
                   </div>
                   <Menu onOpenChange={onThreadOpenChange}>
                     <MenuTrigger disableButtonEnhancement>

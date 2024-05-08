@@ -31,14 +31,14 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const Chat = () => {
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
-  const { threadId = "default" } = useParams();
+  const { threadId = "" } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -109,6 +109,11 @@ const Chat = () => {
                 ]);
               } else {
                 setAnswers([
+                  ...answers,
+                  userMessage,
+                  ...result.choices[0].messages,
+                ]);
+                saveThreads([
                   ...answers,
                   userMessage,
                   ...result.choices[0].messages,
@@ -215,6 +220,52 @@ const Chat = () => {
     }, 250);
   });
 
+  const location = useLocation();
+
+  const [threads, setThread] = useState(() => {
+      const savedTodos = localStorage.getItem("threads");
+      if (savedTodos) {
+        return JSON.parse(savedTodos);
+      } else {
+        return [
+          {
+            id: 'default',
+            title: 'Default thread',
+            answers: []
+          }
+        ];
+      }
+  });
+
+  const saveThreads = (answers: any[]) => {
+    const t = [
+      {
+        id: 'default',
+        title: 'Default thread',
+        answers 
+      }
+    ];
+    setThread(t);
+    localStorage.setItem('threads', JSON.stringify(t));
+  };
+
+  useEffect(() => {
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      setThread(threads);
+    }
+  }, []);
+
+  useEffect(() => {
+    if(threadId === 'default') {
+      setAnswers(threads[0]?.answers);
+      const question = threads[0]?.answers[threads[0]?.answers?.length - 1]
+      lastQuestionRef.current = question?.content || '';
+    } else {
+      clearChat();
+    }
+  }, [location.pathname]);
+
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
 
@@ -254,7 +305,7 @@ const Chat = () => {
       ${pageAnimOff ? styles.pageAnimOff : ""}
     `}
     >
-      <Sidebar threadId={threadId} />
+      <Sidebar data={threads} threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div
