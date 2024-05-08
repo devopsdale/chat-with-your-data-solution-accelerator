@@ -252,11 +252,23 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                           </div>
                         </MenuItem>
                         <MenuItem
-                          className={`${styles.threadLink} menuListItem`}
+                          className={`${styles.threadLink} menuListItem disabled`}
+                          disabled
                           onClick={() => {
                             setCurrentThread(thread);
-                            setLiveRecognizedText("");
-                            setRenameThreadModalOpen(true);
+                            // setLiveRecognizedText("");
+                            // setRenameThreadModalOpen(true);
+                            // const threads = JSON.parse(localStorage.getItem('threads'));
+                            // if (threads) {
+                            //   const newThreads = threads.map((obj: any) => {
+                            //     if (obj.id === threadId) {
+                            //       return {...obj, title: 'New title'};
+                            //     }
+                            //     return obj;
+                            //   });
+                            //   setThreads(newThreads);
+                            //   localStorage.setItem('threads', JSON.stringify(newThreads));
+                            // }
                           }}
                         >
                           <div
@@ -267,10 +279,16 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                           </div>
                         </MenuItem>
                         <MenuItem
-                          className={`${styles.threadLink} menuListItem`}
+                          className={`${styles.threadLink} menuListItem ${thread?.id === 'default' ? "disabled" : ""}`}
                           onClick={() => {
                             setCurrentThread(thread);
-                            setDeleteThreadModalOpen(true);
+                            const threads = JSON.parse(localStorage.getItem('threads'));
+                            if (threads) {
+                              const newThreads = threads.filter((item: any) => item.id !== threadId);
+                              setThreads(newThreads);
+                              localStorage.setItem('threads', JSON.stringify(newThreads));
+                              navigate(`/thread/default`);
+                            }
                           }}
                         >
                           <div

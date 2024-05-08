@@ -223,17 +223,19 @@ const Chat = () => {
   const location = useLocation();
 
   const [threads, setThread] = useState(() => {
-      const savedTodos = localStorage.getItem("threads");
-      if (savedTodos) {
-        return JSON.parse(savedTodos);
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        return threads;
       } else {
-        return [
+        const threads = [
           {
             id: 'default',
             title: 'Default thread',
             answers: []
           }
-        ];
+        ]
+        localStorage.setItem('threads', JSON.stringify(threads));
+        return threads;
       }
   });
 
