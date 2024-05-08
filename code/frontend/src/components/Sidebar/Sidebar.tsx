@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from "uuid";
 
 interface SidebarProps {
   data: any[];
+  threadId: string;
 }
 
 export const Sidebar = ({ data, threadId }: SidebarProps) => {

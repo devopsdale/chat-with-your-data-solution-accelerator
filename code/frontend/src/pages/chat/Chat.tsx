@@ -38,7 +38,7 @@ const Chat = () => {
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
-  const { threadId = "" } = useParams();
+  const { threadId = "default" } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -238,15 +238,18 @@ const Chat = () => {
   });
 
   const saveThreads = (answers: any[]) => {
-    const t = [
-      {
-        id: 'default',
-        title: 'Default thread',
-        answers 
-      }
-    ];
-    setThread(t);
-    localStorage.setItem('threads', JSON.stringify(t));
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const newThreads = threads.map((obj: any) => {
+        if (obj.id === threadId) {
+          return {...obj, answers};
+        }
+        return obj;
+      });
+
+      setThread(newThreads);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
   };
 
   useEffect(() => {
@@ -257,10 +260,14 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    if(threadId === 'default') {
-      setAnswers(threads[0]?.answers);
-      const question = threads[0]?.answers[threads[0]?.answers?.length - 1]
-      lastQuestionRef.current = question?.content || '';
+    if(threadId) {
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        const newAnswers = threads.find((item: any) => item.id === threadId);
+        setAnswers(newAnswers?.answers);
+        const question = newAnswers?.answers[newAnswers?.answers?.length - 1]
+        lastQuestionRef.current = question?.content || '';
+      }
     } else {
       clearChat();
     }
