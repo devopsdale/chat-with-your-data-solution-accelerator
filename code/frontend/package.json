@@ -6,6 +6,7 @@
     "scripts": {
         "start": "vite --host --mode development",
         "build": "tsc && vite build",
+        "build:prod": "tsc && vite build",
         "build:dev": "tsc && vite build --mode development",
         "watch": "tsc && vite build --watch",
         "test": "vitest run"
