@@ -2,18 +2,16 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: dev - buildand release api
+name: DEV - buildand release api
 
 on:
   push:
     branches:
       - development
-      - main
   workflow_dispatch:
 
 jobs:
         
-
   deploy-to-dev:
     runs-on: ubuntu-latest
     environment:
@@ -50,38 +48,38 @@ jobs:
         app-name: 'web-rlbjfs6vicfds'
         images:  prontoacr.azurecr.io/pronto-fontend:dev
 
-  deploy-to-prod:
-    runs-on: ubuntu-latest
-    environment:
-      name: 'prod'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
+  # deploy-to-prod:
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: 'prod'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  #   permissions:
+  #     id-token: write #This is required for requesting the JWT
       
-    steps:
-    # checkout the repo
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+  #   steps:
+  #   # checkout the repo
+  #   - name: 'Checkout Github Action'
+  #     uses: actions/checkout@master
 
-    - uses: azure/docker-login@v1
-      with:
-        login-server: prontoacr.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+  #   - uses: azure/docker-login@v1
+  #     with:
+  #       login-server: prontoacr.azurecr.io
+  #       username: ${{ secrets.REGISTRY_USERNAME }}
+  #       password: ${{ secrets.REGISTRY_PASSWORD }}
 
 
-    - run: |
-        docker build --build-arg STAGE=prod . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
-        docker push prontoacr.azurecr.io/pronto-fontend:prod
+  #   - run: |
+  #       docker build --build-arg STAGE=prod . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
+  #       docker push prontoacr.azurecr.io/pronto-fontend:prod
 
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
+  #   - name: Login to Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
+  #       tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
+  #       subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
     
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'web-5cmvhl67t5ruq'
-        images:  prontoacr.azurecr.io/pronto-fontend:prod        
+  #   - uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: 'web-5cmvhl67t5ruq'
+  #       images:  prontoacr.azurecr.io/pronto-fontend:prod        
