@@ -36,7 +36,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
   const [threads, setThreads] = useState(data);
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(data?.length > 0);
   const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
 
   const [renameThreadModalOpen, setRenameThreadModalOpen] =
@@ -291,7 +291,11 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                               const newThreads = threads.filter((item: any) => item.id !== threadId);
                               setThreads(newThreads);
                               localStorage.setItem('threads', JSON.stringify(newThreads));
-                              navigate(`/`);
+                              if(newThreads?.length > 0) {
+                                navigate(`/thread/${newThreads[0]?.id}`);
+                              } else {
+                                navigate(`/`);
+                              }
                             }
                           }}
                         >
