@@ -1,4 +1,4 @@
-name: FE Deploy to storage
+name: DEV - FE Deploy to storage
 on:
   push:
     branches: [ "main", "development" ]
