@@ -15,7 +15,7 @@ jobs:
   deploy-to-dev:
     runs-on: ubuntu-latest
     environment:
-      name: 'dev'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
