@@ -33,7 +33,7 @@ jobs:
   deploy_prod:
     runs-on: ubuntu-latest
     environment: 
-      name: production
+      name: prod
       url: https://aasdoprontofrontend.z13.web.core.windows.net/    
     steps:
     - uses: actions/checkout@v3
