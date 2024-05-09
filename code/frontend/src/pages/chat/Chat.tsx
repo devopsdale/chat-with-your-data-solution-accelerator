@@ -199,6 +199,11 @@ const Chat = () => {
   const clearChat = () => {
     lastQuestionRef.current = "";
     setActiveCitation(undefined);
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const newThreads = threads.filter((item: any) => item.id !== threadId);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
     setAnswers([]);
     setConversationId(uuidv4());
   };
