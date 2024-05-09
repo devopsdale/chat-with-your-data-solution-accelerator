@@ -227,15 +227,8 @@ const Chat = () => {
       if (threads) {
         return threads;
       } else {
-        const threads = [
-          {
-            id: 'default',
-            title: 'Default thread',
-            answers: []
-          }
-        ]
-        localStorage.setItem('threads', JSON.stringify(threads));
-        return threads;
+        localStorage.setItem('threads', JSON.stringify([]));
+        return [];
       }
   });
 
@@ -356,7 +349,7 @@ const Chat = () => {
             style={{ marginBottom: isLoading ? "40px" : "0px" }}
           >
             <div className={styles.chatMessageStreamInner}>
-              {answers.map((answer, index) => (
+              {answers?.map((answer, index) => (
                 <div key={index}>
                   {answer.role === "user" ? (
                     <div className={`${styles.chatMessageUser}`} key={index}>
@@ -493,7 +486,7 @@ const Chat = () => {
             />
           </Stack>
         </div>
-        {answers.length > 0 && isCitationPanelOpen && activeCitation && (
+        {answers?.length > 0 && isCitationPanelOpen && activeCitation && (
           <Stack.Item
             className={`${styles.citationPanel} ${styles.mobileStyles}`}
           >

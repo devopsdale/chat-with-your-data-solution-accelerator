@@ -74,6 +74,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
         }
       ];
       setThreads(t);
+      setInputThread("");
       navigate(`/thread/${id}`)
       localStorage.setItem('threads', JSON.stringify(t));
     }
@@ -122,7 +123,18 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     if (newName.length > 0) {
       // this is where we can hit the API to rename the thread
       // can use `currentThread` to get threadId until routes established
-      alert("✏ Will soon rename this Thread to '" + newName + "'");
+      // alert("✏ Will soon rename this Thread to '" + newName + "'");
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        const newThreads = threads.map((obj: any) => {
+          if (obj.id === threadId) {
+            return {...obj, title: newName};
+          }
+          return obj;
+        });
+        setThreads(newThreads);
+        localStorage.setItem('threads', JSON.stringify(newThreads));
+      }
       setRenameThreadModalOpen(false);
     }
   };
@@ -171,7 +183,12 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
           <div className={styles.newThreadActions}>
             <Input
               placeholder="New Thread"
-              contentAfter={<img src="../../plusIcon.png"  onClick={(e) => createNewThread()} />}
+              contentAfter={<img src="../../plusIcon.png" onClick={(e) => createNewThread()} />}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  createNewThread();
+                }
+              }}
               onChange={(e, data) => {
                 setInputThread(data?.value);
               }}
@@ -252,23 +269,10 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                           </div>
                         </MenuItem>
                         <MenuItem
-                          className={`${styles.threadLink} menuListItem disabled`}
-                          disabled
+                          className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
                             setCurrentThread(thread);
-                            // setLiveRecognizedText("");
-                            // setRenameThreadModalOpen(true);
-                            // const threads = JSON.parse(localStorage.getItem('threads'));
-                            // if (threads) {
-                            //   const newThreads = threads.map((obj: any) => {
-                            //     if (obj.id === threadId) {
-                            //       return {...obj, title: 'New title'};
-                            //     }
-                            //     return obj;
-                            //   });
-                            //   setThreads(newThreads);
-                            //   localStorage.setItem('threads', JSON.stringify(newThreads));
-                            // }
+                            setRenameThreadModalOpen(true);
                           }}
                         >
                           <div
@@ -279,7 +283,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                           </div>
                         </MenuItem>
                         <MenuItem
-                          className={`${styles.threadLink} menuListItem ${thread?.id === 'default' ? "disabled" : ""}`}
+                          className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
                             setCurrentThread(thread);
                             const threads = JSON.parse(localStorage.getItem('threads'));
@@ -287,7 +291,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                               const newThreads = threads.filter((item: any) => item.id !== threadId);
                               setThreads(newThreads);
                               localStorage.setItem('threads', JSON.stringify(newThreads));
-                              navigate(`/thread/default`);
+                              navigate(`/`);
                             }
                           }}
                         >
