@@ -1,50 +1,36 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
-name: admin - build container and release admin
-
+name: DEV - admin - build container and release
 on:
   push:
     branches:
       - development
   workflow_dispatch:
-
 jobs:
-        
-
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: 'Production'
+      name: 'dev'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      
+      id-token: write #This is required for requesting the JWT 
     steps:
     # checkout the repo
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
-
     - uses: azure/docker-login@v1
       with:
         login-server: prontoacr.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
-
-
     - run: |
         docker build . -t prontoacr.azurecr.io/pronto-admin -f ./docker/Admin.Dockerfile
         docker push prontoacr.azurecr.io/pronto-admin
 
-      
     - name: Login to Azure
       uses: azure/login@v1
       with:
         client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6F9C8FAFA3A04B9B87BEFA97C1006D72 }}
         tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_672E6B31E00540D0934FE003EDFABA17 }}
         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A868D026549947B2B00C61542F45F900 }}
-
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       id: deploy-to-webapp
