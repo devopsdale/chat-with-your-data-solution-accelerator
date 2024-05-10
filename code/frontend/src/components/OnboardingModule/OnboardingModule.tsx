@@ -13,21 +13,37 @@ import {
 } from "@fluentui/react-components";
 import styles from "./OnboardingModule.module.css";
 
-// ↓ mocking Threads list until API is ready
-/* const threads = [
+// ↓ data for Onboarding slides
+const onboardingSlides = [
   {
-    title: "Thread 01",
-    id: 10000001, // will be generated ThreadID
+    title: "Title",
+    mainCopy: "Lorem Ipsum",
+    ctas: [
+      {
+        title: "CTA",
+        url: "#",
+        icon: "☻",
+      },
+    ],
+    mediaContent: {
+      imgUrl: "../../onboarding/overviewSlide.png",
+    },
   },
   {
-    title: "Thread 02",
-    id: 10000002, // will be generated ThreadID
+    title: "Title",
+    mainCopy: "Lorem Ipsum",
+    ctas: [
+      {
+        title: "CTA",
+        url: "#",
+        icon: "☻",
+      },
+    ],
+    mediaContent: {
+      imgUrl: "../../onboarding/overviewSlide.png",
+    },
   },
-  {
-    title: "Thread 03",
-    id: 10000003, // will be generated ThreadID
-  },
-]; */
+];
 
 interface OnboardingModuleProps {
   isOpen: boolean;
@@ -65,21 +81,29 @@ export const OnboardingModule = ({
               className={`ghostIconBtn closeModalBtn`}
               onClick={() => closeNoticeTrigger(false)}
             >
-              <img src="../../closeIconBlue.png" />
+              <img src="../../closeIconWhite.png" />
             </div>
             <DialogContent>
               <div className={`${styles.onboardingContent}`}>
                 <div className={`${styles.leftContentContainer}`}>
-                  <div className={`${styles.copyContainer}`}>
-                    {/* text slider content will go here */}
-                  </div>
+                  <ul className={`${styles.copyContainer}`}>
+                    {/* text slider content */}
+                    {onboardingSlides?.map((slide, index) => (
+                      <li key={index}>{slide.title}</li>
+                    ))}
+                  </ul>
                   <div className={`${styles.onboardingSlideControls}`}>
                     {/* slider content controls will go here */}
                   </div>
                 </div>
                 <div className={`${styles.rightContentContainer}`}>
                   <ul className={`${styles.mediaContainer}`}>
-                    {/* images/media supporting copy will go here */}
+                    {/* images/media */}
+                    {onboardingSlides?.map((slide, index) => (
+                      <li key={index}>
+                        <img src={slide.mediaContent?.imgUrl} />
+                      </li>
+                    ))}
                   </ul>
                   <img
                     className={`${styles.mediaContainerSizer}`}

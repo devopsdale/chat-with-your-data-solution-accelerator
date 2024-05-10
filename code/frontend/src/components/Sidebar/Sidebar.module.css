@@ -99,6 +99,7 @@
 .threadMenu {
   opacity: 0;
   transition: all 0.35s;
+  background-color: #ffffff;
 }
 
 .threadMenuOpen {
