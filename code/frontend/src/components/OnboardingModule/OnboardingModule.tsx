@@ -16,31 +16,56 @@ import styles from "./OnboardingModule.module.css";
 // ↓ data for Onboarding slides
 const onboardingSlides = [
   {
-    title: "Title",
-    mainCopy: "Lorem Ipsum",
-    ctas: [
-      {
-        title: "CTA",
-        url: "#",
-        icon: "☻",
-      },
-    ],
+    title: "🤖 Welcome to Pronto",
+    mainCopy:
+      "Pronto helps combine and analyze information about the aviation market. Pronto will help you by reducing the time spent reading, analyzing and synthesizing different market intelligence sources. It is not able to understand overarching trends and is dependent on the data it has access to for its responses.",
     mediaContent: {
       imgUrl: "../../onboarding/overviewSlide.png",
     },
   },
   {
-    title: "Title",
-    mainCopy: "Lorem Ipsum",
+    title: "📚 Adding Sources to Pronto",
+    mainCopy: `Over time, Pronto will change to become more relevant to your needs. You can help it get better by adding relevant market intelligence sources (links, text or PDFs).
+To start, you can add new publicly available sources you find to Pronto's knowledge set.`,
     ctas: [
       {
-        title: "CTA",
+        title: "Add a source",
         url: "#",
         icon: "☻",
       },
     ],
     mediaContent: {
-      imgUrl: "../../onboarding/overviewSlide.png",
+      imgUrl: "../../onboarding/addingSources.png",
+    },
+  },
+  {
+    title: "💬 Prompting Pronto",
+    mainCopy:
+      "Next, you can prompt Pronto with key questions about your market area of interest",
+    mediaContent: {
+      imgUrl: "../../onboarding/promptingPronto.png",
+    },
+  },
+  {
+    title: "🦾 Benefits",
+    mainCopy:
+      "Skip the SEO and advertisements to get right into synthesizing the relevant market intelligence and thinking about how it might impact Airbus. Use Pronto to help distill your message based on the audience you are serving.",
+    mediaContent: {
+      imgUrl: "../../onboarding/benefits.png",
+    },
+  },
+  {
+    title: "🏁 Get Started",
+    mainCopy: `Try one of these sample prompts or dive in with your own!`,
+    ctas: [
+      {
+        title: "Get Started",
+        url: "#",
+        icon: "☻",
+      },
+    ],
+    mediaContent: {
+      imgUrl: "../../onboarding/getStarted.png",
     },
   },
 ];
@@ -54,16 +79,25 @@ export const OnboardingModule = ({
   isOpen,
   closeNotice,
 }: OnboardingModuleProps) => {
-  const [isOpenLocal, setIsOpenLocal] = React.useState(true);
+  const [slideNumber, setSlideNumber] = React.useState(0);
+  let curSlide = slideNumber;
 
   const closeNoticeTrigger = (close: boolean) => {
     closeNotice(close);
   };
 
+  const moveSlide = (dir: string) => {
+    if (dir === "forward") {
+      curSlide++;
+    } else {
+      curSlide--;
+    }
+    setSlideNumber(curSlide);
+  };
+
   /*  useEffect(() => {
-    console.log('got update from parent');
-    setIsOpenLocal(isOpen);
-  }, [isOpen]); */
+
+  }); */
 
   return (
     <div className={styles.onboardingModuleContainer}>
@@ -89,18 +123,53 @@ export const OnboardingModule = ({
                   <ul className={`${styles.copyContainer}`}>
                     {/* text slider content */}
                     {onboardingSlides?.map((slide, index) => (
-                      <li key={index}>{slide.title}</li>
+                      <li
+                        key={index}
+                        className={`
+                          ${index < slideNumber ? styles.offLeft : styles.offRight}
+                          ${index === slideNumber ? styles.active : ""}
+                        `}
+                      >
+                        <h5>{slide.title}</h5>
+                        <p>{slide.mainCopy}</p>
+                      </li>
                     ))}
                   </ul>
                   <div className={`${styles.onboardingSlideControls}`}>
-                    {/* slider content controls will go here */}
+                    {/* slider content controls */}
+                    <button
+                      className={`${slideNumber === 0 ? styles.blockAction : ""} ${styles.slideLeftBtn} ghostIconBtn`}
+                      onClick={(e) => moveSlide("backward")}
+                    >
+                      <img src="../../arrowLeftBlue.png" alt="" />
+                    </button>
+                    <ul>
+                      {onboardingSlides?.map((slide, index) => (
+                        <li
+                          key={index}
+                          className={`${index === slideNumber ? styles.active : ""}`}
+                        ></li>
+                      ))}
+                    </ul>
+                    <button
+                      className={`${slideNumber === onboardingSlides.length - 1 ? styles.blockAction : ""} ${styles.slideRightBtn} ghostIconBtn`}
+                      onClick={(e) => moveSlide("forward")}
+                    >
+                      <img src="../../arrowRightBlue.png" alt="" />
+                    </button>
                   </div>
                 </div>
                 <div className={`${styles.rightContentContainer}`}>
                   <ul className={`${styles.mediaContainer}`}>
                     {/* images/media */}
                     {onboardingSlides?.map((slide, index) => (
-                      <li key={index}>
+                      <li
+                        key={index}
+                        className={`
+                          ${index < slideNumber ? styles.offLeft : styles.offRight}
+                          ${index === slideNumber ? styles.active : ""}
+                        `}
+                      >
                         <img src={slide.mediaContent?.imgUrl} />
                       </li>
                     ))}
