@@ -84,8 +84,8 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     alert("Will soon load thread: " + threadId);
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(window.location.href);
+  const handleCopyClick = (thread: any) => {
+    navigator.clipboard.writeText(`${window?.location?.origin}/thread/${thread?.id}`);
     setCopyClicked(true);
     setCopiedThreadNotice(true);
     resetCopyClick();
@@ -142,7 +142,18 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
   const deleteCurrentThread = () => {
     // this is where we can hit the API to delete the thread
     // can use `currentThread` to get threadId until routes established
-    alert("🚮 Will soon delete thread id: " + currentThread.id);
+    // alert("🚮 Will soon delete thread id: " + currentThread.id);
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const newThreads = threads.filter((item: any) => item.id !== threadId);
+      setThreads(newThreads);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+      if(newThreads?.length > 0) {
+        navigate(`/thread/${newThreads[0]?.id}`);
+      } else {
+        navigate(`/`);
+      }
+    }
     setDeleteThreadModalOpen(false);
   };
 
@@ -259,7 +270,9 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                       >
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
-                          onClick={handleCopyClick}
+                          onClick={() => {
+                            handleCopyClick(thread);
+                          }}
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
@@ -284,20 +297,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                         </MenuItem>
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
-                          onClick={() => {
-                            setCurrentThread(thread);
-                            const threads = JSON.parse(localStorage.getItem('threads'));
-                            if (threads) {
-                              const newThreads = threads.filter((item: any) => item.id !== threadId);
-                              setThreads(newThreads);
-                              localStorage.setItem('threads', JSON.stringify(newThreads));
-                              if(newThreads?.length > 0) {
-                                navigate(`/thread/${newThreads[0]?.id}`);
-                              } else {
-                                navigate(`/`);
-                              }
-                            }
-                          }}
+                          onClick={() => setDeleteThreadModalOpen(true)}
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
