@@ -1,15 +1,9 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogSurface,
   DialogBody,
-  DialogTitle,
   DialogContent,
-  DialogActions,
-  DialogTrigger,
-  Button,
-  // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./OnboardingModule.module.css";
 
@@ -19,19 +13,21 @@ const onboardingSlides = [
     title: "🤖 Welcome to Pronto",
     mainCopy:
       "Pronto helps combine and analyze information about the aviation market. Pronto will help you by reducing the time spent reading, analyzing and synthesizing different market intelligence sources. It is not able to understand overarching trends and is dependent on the data it has access to for its responses.",
+    ctas: [],
     mediaContent: {
       imgUrl: "../../onboarding/overviewSlide.png",
     },
   },
   {
     title: "📚 Adding Sources to Pronto",
-    mainCopy: `Over time, Pronto will change to become more relevant to your needs. You can help it get better by adding relevant market intelligence sources (links, text or PDFs).
-To start, you can add new publicly available sources you find to Pronto's knowledge set.`,
+    mainCopy: `Over time, Pronto will change to become more relevant to your needs. You can help it get better by adding relevant market intelligence sources (links, text or PDFs).<br>To start, you can add new <b>publicly available</b> sources you find to Pronto's knowledge set.`,
     ctas: [
       {
         title: "Add a source",
-        url: "#",
-        icon: "☻",
+        url: "https://web-5cmvhl67t5ruq-admin.azurewebsites.net/Ingest_Data",
+        action: null,
+        iconPath: "../../addSourceTooltipIcon.png",
+        iconPos: "left",
       },
     ],
     mediaContent: {
@@ -42,6 +38,7 @@ To start, you can add new publicly available sources you find to Pronto's knowle
     title: "💬 Prompting Pronto",
     mainCopy:
       "Next, you can prompt Pronto with key questions about your market area of interest",
+    ctas: [],
     mediaContent: {
       imgUrl: "../../onboarding/promptingPronto.png",
     },
@@ -50,18 +47,24 @@ To start, you can add new publicly available sources you find to Pronto's knowle
     title: "🦾 Benefits",
     mainCopy:
       "Skip the SEO and advertisements to get right into synthesizing the relevant market intelligence and thinking about how it might impact Airbus. Use Pronto to help distill your message based on the audience you are serving.",
+    ctas: [],
     mediaContent: {
       imgUrl: "../../onboarding/benefits.png",
     },
   },
   {
     title: "🏁 Get Started",
-    mainCopy: `Try one of these sample prompts or dive in with your own!`,
+    mainCopy: `
+      Try one of these sample prompts or dive in with your own!
+      `,
+    specialContent: `getStartedLinks`,
     ctas: [
       {
         title: "Get Started",
-        url: "#",
-        icon: "☻",
+        url: null,
+        action: `closeNoticeTrigger(false)`,
+        iconPath: "../../arrowRightWhite.png",
+        iconPos: "right",
       },
     ],
     mediaContent: {
@@ -84,6 +87,12 @@ export const OnboardingModule = ({
 
   const closeNoticeTrigger = (close: boolean) => {
     closeNotice(close);
+    setSlideNumber(0); // reset slider to first frame
+  };
+
+  const triggerSearch = (term: string) => {
+    console.log("Should trigger search for: ", term);
+    // closeNoticeTrigger(false);
   };
 
   const moveSlide = (dir: string) => {
@@ -95,9 +104,33 @@ export const OnboardingModule = ({
     setSlideNumber(curSlide);
   };
 
-  /*  useEffect(() => {
-
-  }); */
+  const getStartedLinks = (
+    <ul className={`${styles.getStartedLinks}`}>
+      <li
+        className={`listItemLabel`}
+        onClick={(e) =>
+          triggerSearch("What is an STC? Explain it to me like I’m 5.")
+        }
+      >
+        <img src="../../threadIconFilled.png" />
+        <span>What is an STC? Explain it to me like I’m 5.</span>
+      </li>
+      <li
+        className={`listItemLabel`}
+        onClick={(e) => triggerSearch("What’s the latest news on SAF?")}
+      >
+        <img src="../../threadIconFilled.png" />
+        <span>What’s the latest news on SAF?</span>
+      </li>
+      <li
+        className={`listItemLabel`}
+        onClick={(e) => triggerSearch("Can you summarize this text for me?:")}
+      >
+        <img src="../../threadIconFilled.png" />
+        <span>Can you summarize this text for me?:</span>
+      </li>
+    </ul>
+  );
 
   return (
     <div className={styles.onboardingModuleContainer}>
@@ -109,7 +142,6 @@ export const OnboardingModule = ({
       >
         <DialogSurface className={`${styles.onboardingModal} prontoModal`}>
           <DialogBody>
-            {/* <DialogTitle>Onboarding</DialogTitle> */}
             <div
               tabIndex={1}
               className={`ghostIconBtn closeModalBtn`}
@@ -131,10 +163,47 @@ export const OnboardingModule = ({
                         `}
                       >
                         <h5>{slide.title}</h5>
-                        <p>{slide.mainCopy}</p>
+                        <p
+                          dangerouslySetInnerHTML={{ __html: slide.mainCopy }}
+                        ></p>
+                        {slide.specialContent && eval(slide.specialContent)}
                       </li>
                     ))}
                   </ul>
+
+                  {onboardingSlides?.map((slide, i) => (
+                    <div
+                      key={i}
+                      className={`
+                      ${styles.ctaContainer}
+                      ${i < slideNumber ? styles.offLeft : styles.offRight}
+                      ${i === slideNumber ? styles.active : ""}
+                    `}
+                    >
+                      {slide.ctas?.map((cta, ii) => (
+                        <div
+                          key={ii}
+                          className={`
+                            ${styles.onboardingCTA}
+                            ${cta.iconPos === "right" ? styles.iconRight : styles.iconLeft}
+                            listItemLabel
+                          `}
+                          onClick={(e) => {
+                            if (cta.url) {
+                              window.open(cta.url, "_blank");
+                            }
+                            if (cta.action) {
+                              eval(cta.action);
+                            }
+                          }}
+                        >
+                          <img src={cta.iconPath} />
+                          <span>{cta.title}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
                   <div className={`${styles.onboardingSlideControls}`}>
                     {/* slider content controls */}
                     <button

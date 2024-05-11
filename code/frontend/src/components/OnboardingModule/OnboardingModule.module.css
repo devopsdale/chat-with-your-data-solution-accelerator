@@ -80,6 +80,40 @@
   margin: 16px 0px;
 }
 
+.ctaContainer {
+  position: absolute;
+  bottom: 17%;
+  left: 24px;
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  transition: all 0.55s ease-in-out;
+}
+.ctaContainer.offLeft {
+  transform: translateX(-10%);
+}
+.ctaContainer.offRight {
+  transform: translateX(10%);
+}
+.ctaContainer.active {
+  transform: translateX(0%);
+  opacity: 1;
+  z-index: 110;
+}
+
+.onboardingCTA {
+  padding: 8px 16px;
+  border-radius: 3px;
+  background-color: #00205b;
+  cursor: pointer;
+}
+.onboardingCTA.iconRight {
+  flex-direction: row-reverse;
+}
+.onboardingCTA span {
+  color: #ffffff;
+}
+
 .onboardingSlideControls {
   position: absolute;
   bottom: 15%;
@@ -105,7 +139,8 @@
   background-color: #00205b;
 }
 
-.slideLeftBtn, .slideRightBtn {
+.slideLeftBtn,
+.slideRightBtn {
   border: none;
   width: 32px;
   height: 32px;
@@ -165,4 +200,32 @@
   width: 100%;
   opacity: 0;
   z-index: -1;
+}
+
+
+.getStartedLinks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  opacity: 1.0;
+  padding-inline-start: 0px;
+  gap: 8px;
+}
+.getStartedLinks li{
+  position: relative;
+  display: flex;
+  z-index: 20;
+  opacity: 1.0;
+  cursor: pointer;
+  border: 1px solid #00205B;
+  border-radius: 3px;
+  padding: 4px 8px;
+  width: fit-content;
+}
+.getStartedLinks li span{
+  color: #063B9E;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
 }
