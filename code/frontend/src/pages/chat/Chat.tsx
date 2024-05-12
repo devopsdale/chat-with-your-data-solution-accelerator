@@ -38,7 +38,7 @@ const Chat = () => {
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
-  const { threadId = "default" } = useParams();
+  const { threadId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showLoadingMessage, setShowLoadingMessage] = useState<boolean>(false);
   const [activeCitation, setActiveCitation] =
@@ -56,7 +56,7 @@ const Chat = () => {
     useState<boolean>(false);
   const [answers, setAnswers] = useState<ChatMessage[]>([]);
   const abortFuncs = useRef([] as AbortController[]);
-  const [conversationId, setConversationId] = useState<string>(threadId);
+  const [conversationId, setConversationId] = useState<string>(uuidv4());
   const [userMessage, setUserMessage] = useState("");
   const [recognizedText, setRecognizedText] = useState<string>("");
   const [isRecognizing, setIsRecognizing] = useState(false);
@@ -80,7 +80,7 @@ const Chat = () => {
       id: conversationId,
       messages: [...answers, userMessage],
     };
-
+    console.log("request: ", request);
     let result = {} as ChatResponse;
     try {
       const response = await customConversationApi(
@@ -254,7 +254,7 @@ const Chat = () => {
       ${pageAnimOff ? styles.pageAnimOff : ""}
     `}
     >
-      <Sidebar threadId={threadId} />
+      <Sidebar threadId={''} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div

@@ -11,6 +11,8 @@ import functools
 from backend.batch.utilities.helpers.EnvHelper import EnvHelper
 from azure.mgmt.cognitiveservices import CognitiveServicesManagementClient
 from azure.identity import DefaultAzureCredential
+from azure.cosmos import CosmosClient
+from backend import ChatHistoryCosmosDB
 
 logger = logging.getLogger(__name__)
 
@@ -421,3 +423,96 @@ def create_app():
             return {"error": "Failed to get speech config"}, 500
 
     return app
+
+    @app.route("/history/generate", methods=["POST"])
+    async def add_conversation():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/history/update", methods=["POST"])
+    async def update_conversation():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/history/delete", methods=["POST"])
+    async def delete_conversation():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("history/list", methods=["GET"])
+    async def list_conversation():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/history/read", methods=["POST"])
+    async def read_conversation():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/history/ensure", methods=["GET"])
+    async def ensure_cosmos():
+        try:
+            cosmos_client = ChatHistoryCosmosDB()
+            if not cosmos_client:
+                return (
+                    jsonify({"error": "CosmosDB client not initialized correctly"}),
+                    500,
+                )
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    #     async def generate_title(conversation_messages):
+    # ## make sure the messages are sorted by _ts descending
+    # title_prompt = 'Summarize the conversation so far into a 4-word or less title. Do not use any quotation marks or punctuation. Respond with a json object in the format {{"title": string}}. Do not include any other commentary or description.'
+
+    # messages = [
+    #     {"role": msg["role"], "content": msg["content"]}
+    #     for msg in conversation_messages
+    # ]
+    # messages.append({"role": "user", "content": title_prompt})
+
+    # try:
+    #     azure_openai_client = init_openai_client(use_data=False)
+    #     response = await azure_openai_client.chat.completions.create(
+    #         model=AZURE_OPENAI_MODEL, messages=messages, temperature=1, max_tokens=64
+    #     )
+
+    #     title = json.loads(response.choices[0].message.content)["title"]
+    #     return title
+    # except Exception as e:
+    #     return messages[-2]["content"]
