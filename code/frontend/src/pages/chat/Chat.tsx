@@ -240,12 +240,21 @@ const Chat = () => {
   const saveThreads = (answers: any[]) => {
     const threads = JSON.parse(localStorage.getItem('threads'));
     if (threads) {
-      const newThreads = threads.map((obj: any) => {
+      let newThreads = threads.map((obj: any) => {
         if (obj.id === threadId) {
           return {...obj, answers};
         }
         return obj;
       });
+
+      // TODO: need to test when API is back with a valid answers response
+      // if (location.pathname === '/' && newThreads?.length === 0) {
+      //   newThreads = [{
+      //     id: uuidv4(),
+      //     title: 'New thread',
+      //     answers
+      //   }];
+      // }
 
       setThread(newThreads);
       localStorage.setItem('threads', JSON.stringify(newThreads));
@@ -260,16 +269,16 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    if(threadId) {
+    if (threadId) {
       const threads = JSON.parse(localStorage.getItem('threads'));
       if (threads) {
         const newAnswers = threads.find((item: any) => item.id === threadId);
-        setAnswers(newAnswers?.answers);
+        setAnswers(newAnswers?.answers || []);
         const question = newAnswers?.answers[newAnswers?.answers?.length - 1]
         lastQuestionRef.current = question?.content || '';
+      } else {
+        clearChat();
       }
-    } else {
-      clearChat();
     }
   }, [location.pathname]);
 

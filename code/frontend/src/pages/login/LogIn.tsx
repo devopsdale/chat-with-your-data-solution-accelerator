@@ -4,7 +4,6 @@ import styles from "./LogIn.module.css";
 import { Input, Label, useId } from "@fluentui/react-components";
 import type { InputProps } from "@fluentui/react-components";
 import { ArrowEnterFilled } from "@fluentui/react-icons";
-import { useNavigate } from "react-router-dom";
 
 const LogIn = (props: InputProps) => {
   const inputId = useId("input");
@@ -12,14 +11,13 @@ const LogIn = (props: InputProps) => {
   const [isWrongPW, setIsWrongPW] = useState<boolean>(false);
   const [animOn, setAnimOn] = useState<boolean>(false);
   const [animOff, setAnimOff] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const submitLogInField = (passwordEntered: string) => {
     if (passwordEntered.trim() === import.meta.env.VITE_TEMP_PW) {
       localStorage.setItem("loggedIn", "true");
       setAnimOff(true);
       setTimeout(() => {
-        navigate(`/`);
+        location.reload();
       }, 500);
     } else {
       setLiveRecognizedText("");
