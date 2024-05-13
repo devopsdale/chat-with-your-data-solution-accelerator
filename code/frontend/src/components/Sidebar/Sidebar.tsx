@@ -65,7 +65,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     const threads = JSON.parse(localStorage.getItem('threads'));
     if (threads) {
       const id = uuidv4();
-      const t = [
+      const thread = [
         ...threads,
         {
           id,
@@ -73,10 +73,10 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
           answers: []
         }
       ];
-      setThreads(t);
+      setThreads(thread);
       setInputThread("");
       navigate(`/thread/${id}`)
-      localStorage.setItem('threads', JSON.stringify(t));
+      localStorage.setItem('threads', JSON.stringify(thread));
     }
   };
 

@@ -18,7 +18,7 @@ const LogIn = (props: InputProps) => {
       setAnimOff(true);
       setTimeout(() => {
         location.reload();
-      }, 500);
+      }, 1500);
     } else {
       setLiveRecognizedText("");
       setIsWrongPW(true);
