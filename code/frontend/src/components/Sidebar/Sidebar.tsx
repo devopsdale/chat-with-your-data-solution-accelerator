@@ -127,7 +127,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
       const threads = JSON.parse(localStorage.getItem('threads'));
       if (threads) {
         const newThreads = threads.map((obj: any) => {
-          if (obj.id === threadId) {
+          if (obj?.id === currentThread?.id) {
             return {...obj, title: newName};
           }
           return obj;
@@ -145,7 +145,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     // alert("🚮 Will soon delete thread id: " + currentThread.id);
     const threads = JSON.parse(localStorage.getItem('threads'));
     if (threads) {
-      const newThreads = threads.filter((item: any) => item.id !== threadId);
+      const newThreads = threads.filter((item: any) => item?.id !== currentThread?.id);
       setThreads(newThreads);
       localStorage.setItem('threads', JSON.stringify(newThreads));
       if(newThreads?.length > 0) {
@@ -404,7 +404,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
               <img src="../../closeIconBlue.png" />
             </div>
             <DialogContent>
-              Please confirm you are ready to delete this thread.
+              Please confirm you are ready to delete <b>{currentThread?.title || "current"}</b>.
             </DialogContent>
 
             <DialogActions>
