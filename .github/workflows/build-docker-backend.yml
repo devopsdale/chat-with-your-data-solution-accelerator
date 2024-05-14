@@ -1,4 +1,4 @@
-name: Backend Docker Image
+name: og - Backend Docker Image
 
 on:
   workflow_run:

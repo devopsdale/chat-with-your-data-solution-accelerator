@@ -19,36 +19,24 @@ import {
   useId,
   Input,
   MenuProps,
+  Label,
   // useRestoreFocusTarget,
 } from "@fluentui/react-components";
 import styles from "./Sidebar.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EditFilled } from "@fluentui/react-icons";
-
-// ↓ mocking Threads list until API is ready
-const threads = [
-  {
-    title: "Thread 01",
-    id: 10000001, // will be generated ThreadID
-  },
-  {
-    title: "Thread 02",
-    id: 10000002, // will be generated ThreadID
-  },
-  {
-    title: "Thread 03",
-    id: 10000003, // will be generated ThreadID
-  },
-];
+import { v4 as uuidv4 } from "uuid";
 
 interface SidebarProps {
+  data: any[];
   threadId: string;
 }
 
-export const Sidebar = ({ threadId }: SidebarProps) => {
+export const Sidebar = ({ data, threadId }: SidebarProps) => {
+  const [threads, setThreads] = useState(data);
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(data?.length > 0);
   const [copyClicked, setCopyClicked] = React.useState<boolean>(false);
 
   const [renameThreadModalOpen, setRenameThreadModalOpen] =
@@ -68,9 +56,46 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
   };
 
   const [copiedThreadNotice, setCopiedThreadNotice] = React.useState(false);
+  const [inputThread, setInputThread] = React.useState("");
+
+  const navigate = useNavigate();
 
   const createNewThread = () => {
-    alert("Threads coming soon 🎉");
+    // alert("Threads coming soon 🎉");
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const id = uuidv4();
+      const thread = [
+        ...threads,
+        {
+          id,
+          title: inputThread,
+          answers: []
+        }
+      ];
+      setThreads(thread);
+      setInputThread("");
+      navigate(`/thread/${id}`)
+      localStorage.setItem('threads', JSON.stringify(thread));
+    }
+  };
+
+  const threadClicked = (threadId: number) => {
+    alert("Will soon load thread: " + threadId);
+  };
+
+  const handleCopyClick = (thread: any) => {
+    navigator.clipboard.writeText(`${window?.location?.origin}/thread/${thread?.id}`);
+    setCopyClicked(true);
+    setCopiedThreadNotice(true);
+    resetCopyClick();
+  };
+
+  const resetCopyClick = () => {
+    setTimeout(() => {
+      setCopyClicked(false);
+      setCopiedThreadNotice(false);
+    }, 2000);
   };
 
   const threadClicked = (threadId: number) => {
@@ -116,7 +141,18 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
     if (newName.length > 0) {
       // this is where we can hit the API to rename the thread
       // can use `currentThread` to get threadId until routes established
-      alert("✏ Will soon rename this Thread to '" + newName + "'");
+      // alert("✏ Will soon rename this Thread to '" + newName + "'");
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        const newThreads = threads.map((obj: any) => {
+          if (obj?.id === currentThread?.id) {
+            return {...obj, title: newName};
+          }
+          return obj;
+        });
+        setThreads(newThreads);
+        localStorage.setItem('threads', JSON.stringify(newThreads));
+      }
       setRenameThreadModalOpen(false);
     }
   };
@@ -124,7 +160,18 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
   const deleteCurrentThread = () => {
     // this is where we can hit the API to delete the thread
     // can use `currentThread` to get threadId until routes established
-    alert("🚮 Will soon delete thread id: " + currentThread.id);
+    // alert("🚮 Will soon delete thread id: " + currentThread.id);
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const newThreads = threads.filter((item: any) => item?.id !== currentThread?.id);
+      setThreads(newThreads);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+      if(newThreads?.length > 0) {
+        navigate(`/thread/${newThreads[0]?.id}`);
+      } else {
+        navigate(`/`);
+      }
+    }
     setDeleteThreadModalOpen(false);
   };
 
@@ -162,7 +209,21 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
       >
         <div className={styles.sidebarMain}>
           <div className={styles.sidebarHeader}>
-            <div
+          <div className={styles.newThreadActions}>
+            <Input
+              placeholder="New Thread"
+              contentAfter={<img src="../../plusIcon.png" onClick={(e) => createNewThread()} />}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  createNewThread();
+                }
+              }}
+              onChange={(e, data) => {
+                setInputThread(data?.value);
+              }}
+            />
+          </div>
+            {/* <div
               className={styles.newThreadActions}
               onClick={(e) => createNewThread()}
             >
@@ -174,7 +235,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                 <img src="../../Cntrl_key_icon.png" />
                 <img src="../../K_key_icon.png" />
               </div>
-            </div>
+            </div> */}
 
             <div
               className={`${styles.closeSideBarBtn} ghostIconBtn`}
@@ -187,18 +248,18 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
           <div className={styles.sidebarBody}>
             <span className={styles.threadsHeader}>Threads</span>
             <ul className={`menuListContainer`}>
-              {threads.map((thread, index) => (
-                <Link to={`/thread/${thread.id}`}
+              {threads?.map((thread: any, index: number) => (
+                <Link to={`/thread/${thread?.id}`}
                   key={index}
                   // ↓ testing 'activeListItem' style on first <li>, should be driven by url
                   className={`
-                    ${styles.threadMenuItem} ${index === 0 ? "activeListItem" : ""} menuListItem
+                    ${styles.threadMenuItem} ${thread?.id === threadId ? "activeListItem" : ""} menuListItem
                   `}
                   // onClick={(e) => threadClicked(thread.id)}
                 >
                   <div className={`listItemLabel`}>
                     <img src="../../threadIcon.png" />
-                    <span>{thread.title}</span>
+                    <span>{thread?.title}</span>
                   </div>
                   <Menu onOpenChange={onThreadOpenChange}>
                     <MenuTrigger disableButtonEnhancement>
@@ -227,7 +288,9 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                       >
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
-                          onClick={handleCopyClick}
+                          onClick={() => {
+                            handleCopyClick(thread);
+                          }}
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
@@ -255,8 +318,8 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
                             setCurrentThread(thread);
-                            setDeleteThreadModalOpen(true);
-                          }}
+                            setDeleteThreadModalOpen(true)}
+                          }
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
@@ -363,7 +426,7 @@ export const Sidebar = ({ threadId }: SidebarProps) => {
               <img src="../../closeIconBlue.png" />
             </div>
             <DialogContent>
-              Please confirm you are ready to delete this thread.
+              Please confirm you are ready to delete <b>{currentThread?.title || "current"}</b>.
             </DialogContent>
 
             <DialogActions>

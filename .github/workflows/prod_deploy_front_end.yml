@@ -1,12 +1,15 @@
-name: deploy frontend container
+name: PROD - FE Deploy to storage
 on:
   push:
-    branches: [ "main", "refactor-frontend-airbus" ]
+    branches: main
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy_prod:
     runs-on: ubuntu-latest
+    environment:
+      name: prod
+      url: https://aasdoprontofrontend.z13.web.core.windows.net/
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1
@@ -20,14 +23,10 @@ jobs:
         npm run build --if-present
         npm run test --if-present
 
-
     - name: Upload to blob storage
       uses: azure/CLI@v1
       with:
         inlineScript: |
-            #az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build  --connection-string ${{ secrets.CONNECTION_STRING }}
-            #az storage blob upload-batch --account-name aasdoprontofrontend   -d $web -s ./code/frontend/build --overwrite --sas-token ${{ secrets.STORAGE_TOKEN }}
-            #az storage blob sync -c $web --account-name aasdoprontofrontend  -s ./code/frontend/build --sas-token ${{ secrets.STORAGE_TOKEN }}
             az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build --overwrite
 
     - name: Purge CDN endpoint

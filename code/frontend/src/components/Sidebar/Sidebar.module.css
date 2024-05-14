@@ -46,8 +46,13 @@
   width: 196px;
   background-color: #fafafa;
   padding: 8px;
-  border-bottom: 1px solid #919cb0;
+  /* border-bottom: 1px solid #919cb0; */
   cursor: pointer;
+
+  input {
+    width: 168px;
+    height: 35px;
+  }
 }
 
 .newThreadBtn {

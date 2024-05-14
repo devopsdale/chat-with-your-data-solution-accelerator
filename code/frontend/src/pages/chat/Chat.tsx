@@ -34,6 +34,7 @@ import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
 import { useParams } from "react-router-dom";
 import { OnboardingModule } from "../../components/OnboardingModule";
+import { useLocation, useParams } from "react-router-dom";
 
 const Chat = () => {
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
@@ -113,6 +114,11 @@ const Chat = () => {
                 ]);
               } else {
                 setAnswers([
+                  ...answers,
+                  userMessage,
+                  ...result.choices[0].messages,
+                ]);
+                saveThreads([
                   ...answers,
                   userMessage,
                   ...result.choices[0].messages,
@@ -198,6 +204,11 @@ const Chat = () => {
   const clearChat = () => {
     lastQuestionRef.current = "";
     setActiveCitation(undefined);
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      const newThreads = threads.filter((item: any) => item.id !== threadId);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
     setAnswers([]);
     setConversationId(uuidv4());
   };
@@ -219,10 +230,10 @@ const Chat = () => {
   );
 
   useEffect(() => {
-    // anim page on after slight pause
     setTimeout(() => {
       setPageAnimOn(true);
     }, 250);
+
 
     // check if User should see onboarding, delay until page load anim is done
     setTimeout(() => {
@@ -232,7 +243,64 @@ const Chat = () => {
         localStorage.setItem("firstVisit", "true");
       }
     }, 2500);
+  });
+
+  const location = useLocation();
+
+  const [threads, setThread] = useState(() => {
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        return threads;
+      } else {
+        localStorage.setItem('threads', JSON.stringify([]));
+        return [];
+      }
+  });
+
+  const saveThreads = (answers: any[]) => {
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      let newThreads = threads.map((obj: any) => {
+        if (obj.id === threadId) {
+          return {...obj, answers};
+        }
+        return obj;
+      });
+
+      // TODO: need to test when API is back with a valid answers response
+      // if (location.pathname === '/' && newThreads?.length === 0) {
+      //   newThreads = [{
+      //     id: uuidv4(),
+      //     title: 'New thread',
+      //     answers
+      //   }];
+      // }
+
+      setThread(newThreads);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
+  };
+
+  useEffect(() => {
+    const threads = JSON.parse(localStorage.getItem('threads'));
+    if (threads) {
+      setThread(threads);
+    }
   }, []);
+
+  useEffect(() => {
+    if (threadId) {
+      const threads = JSON.parse(localStorage.getItem('threads'));
+      if (threads) {
+        const newAnswers = threads.find((item: any) => item.id === threadId);
+        setAnswers(newAnswers?.answers || []);
+        const question = newAnswers?.answers[newAnswers?.answers?.length - 1]
+        lastQuestionRef.current = question?.content || '';
+      } else {
+        clearChat();
+      }
+    }
+  }, [location.pathname]);
 
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
@@ -273,7 +341,7 @@ const Chat = () => {
       ${pageAnimOff ? styles.pageAnimOff : ""}
     `}
     >
-      <Sidebar threadId={threadId} />
+      <Sidebar data={threads} threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div
@@ -321,7 +389,7 @@ const Chat = () => {
             style={{ marginBottom: isLoading ? "40px" : "0px" }}
           >
             <div className={styles.chatMessageStreamInner}>
-              {answers.map((answer, index) => (
+              {answers?.map((answer, index) => (
                 <div key={index}>
                   {answer.role === "user" ? (
                     <div className={`${styles.chatMessageUser}`} key={index}>
@@ -458,7 +526,7 @@ const Chat = () => {
             />
           </Stack>
         </div>
-        {answers.length > 0 && isCitationPanelOpen && activeCitation && (
+        {answers?.length > 0 && isCitationPanelOpen && activeCitation && (
           <Stack.Item
             className={`${styles.citationPanel} ${styles.mobileStyles}`}
           >

@@ -35,6 +35,7 @@ export const Header = () => {
   const logOut = () => {
     // setAnimOff(true);
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("threads");
     // setTimeout(() => {
     window.location.href = "/";
     // }, 1000);

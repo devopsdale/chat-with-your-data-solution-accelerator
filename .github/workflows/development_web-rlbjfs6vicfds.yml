@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Backend App - Build and deploy Python app to Azure Web App - web-rlbjfs6vicfds
+name: Build adirectly to app service
 
 on:
   push:
@@ -11,11 +11,32 @@ on:
   workflow_dispatch:
 
 jobs:
+        
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Poetry Install
+        # You may pin to the exact commit or the version.
+        # uses: knowsuchagency/poetry-install@7ed80d49910319d3e14ac262a5c81f681de48de0
+        uses: knowsuchagency/poetry-install@v2      
+
+      - name: npm install, build, and test
+        working-directory: ./code
+        run: |
+          mkdir -p dist
+          rm -rf dist/*
+          poetry install
+          poetry export -o dist/requirements.txt
+          cp *.py dist
+          cp -r backend dist
+
+          cd frontend
+          npm install
+          npm run build --if-present
+          npm run test --if-present      
 
       - name: Set up Python version
         uses: actions/setup-python@v1
@@ -24,19 +45,14 @@ jobs:
 
       - name: Create and start virtual environment
         run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Poetry Install
-        # You may pin to the exact commit or the version.
-        # uses: knowsuchagency/poetry-install@7ed80d49910319d3e14ac262a5c81f681de48de0
-        uses: knowsuchagency/poetry-install@v2
+          python -m venv antenv
+          source antenv/bin/activate
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run:  |
-          #cd code
+        run: |
+          cd code
           zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
@@ -44,7 +60,7 @@ jobs:
         with:
           name: python-app
           path: |
-            release.zip
+            ./code/release.zip
             !venv/
 
   deploy:
@@ -64,22 +80,23 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: |
+          mkdir static
           unzip release.zip
+          cp -r frontend/* static
           pwd
-          ls -ltrh
+          ls -ltrh static
 
       
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0A687756CA134DC5A3AD915988CA20CB }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_5F1B6BC2685C4227BA3C27310CAED8F0 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ED90CA6177E04C7D81DD0EAB276E6FA2 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'web-rlbjfs6vicfds'
-          slot-name: 'Production'
           
