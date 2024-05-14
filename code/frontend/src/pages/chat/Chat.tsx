@@ -32,7 +32,6 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
-import { useParams } from "react-router-dom";
 import { OnboardingModule } from "../../components/OnboardingModule";
 import { useLocation, useParams } from "react-router-dom";
 
