@@ -208,6 +208,11 @@ const Chat = () => {
     setIsLoading(false);
   };
 
+  const triggerSearch = (term: string) => {
+    console.log('got it from modal: ', term);
+    // setRecognizedText(term);
+  };
+
   useEffect(
     () => chatMessageStreamEnd.current?.scrollIntoView({ behavior: "smooth" }),
     [showLoadingMessage]
@@ -533,6 +538,7 @@ const Chat = () => {
       <OnboardingModule
         isOpen={openOnboardingModule}
         closeNotice={(close) => setOpenOnboardingModule(close)}
+        searchTerm={(term) => triggerSearch(term)}
       ></OnboardingModule>
 
       <div

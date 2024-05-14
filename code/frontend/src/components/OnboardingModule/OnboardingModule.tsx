@@ -76,11 +76,13 @@ const onboardingSlides = [
 interface OnboardingModuleProps {
   isOpen: boolean;
   closeNotice: (closeModal: boolean) => void;
+  searchTerm: (term: string) => void;
 }
 
 export const OnboardingModule = ({
   isOpen,
   closeNotice,
+  searchTerm,
 }: OnboardingModuleProps) => {
   const [slideNumber, setSlideNumber] = React.useState(0);
   let curSlide = slideNumber;
@@ -91,8 +93,8 @@ export const OnboardingModule = ({
   };
 
   const triggerSearch = (term: string) => {
-    console.log("Should trigger search for: ", term);
-    // closeNoticeTrigger(false);
+    closeNoticeTrigger(false);
+    searchTerm(term);
   };
 
   const moveSlide = (dir: string) => {
