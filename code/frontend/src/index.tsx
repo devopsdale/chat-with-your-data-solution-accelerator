@@ -37,7 +37,7 @@ export default function App() {
             <Route path="*" element={<NoPage />} />
           </Route>
         ) : (
-          <Route path="/" element={<LogIn />}></Route>
+          <Route path="*" element={<LogIn />} />
         )}
       </Routes>
     </BrowserRouter>
