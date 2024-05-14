@@ -297,7 +297,10 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                         </MenuItem>
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
-                          onClick={() => setDeleteThreadModalOpen(true)}
+                          onClick={() => { 
+                            setCurrentThread(thread); 
+                            setDeleteThreadModalOpen(true)}
+                          }
                         >
                           <div
                             className={`${styles.threadItemLabel} listItemLabel`}
