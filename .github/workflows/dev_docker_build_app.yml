@@ -39,9 +39,9 @@ jobs:
     - name: Login to Azure
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1EC8C71974184A14A7AFB91F4676FE53 }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_C68709E83D0B4B41815059C3FCED7A93 }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_991984B989F44817B0925FB42F086658 }}                        
     
     - uses: azure/webapps-deploy@v2
       with:
@@ -81,5 +81,5 @@ jobs:
     
   #   - uses: azure/webapps-deploy@v2
   #     with:
-  #       app-name: 'web-5cmvhl67t5ruq'
+  #       app-name: 'web-dsfb352ephiyu'
   #       images:  prontoacr.azurecr.io/pronto-fontend:prod        
