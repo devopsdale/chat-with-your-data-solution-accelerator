@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.ref == 'refs/heads/main'
     environment:
-      name: 'prod'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
