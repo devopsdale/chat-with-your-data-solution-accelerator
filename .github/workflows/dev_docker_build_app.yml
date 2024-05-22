@@ -27,14 +27,14 @@ jobs:
 
     - uses: azure/docker-login@v1
       with:
-        login-server: prontoacr.azurecr.io
+        login-server: prontocontainers.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
 
     - run: |
-        docker build . -t prontoacr.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
-        docker push prontoacr.azurecr.io/pronto-fontend
+        docker build . -t prontocontainers.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
+        docker push prontocontainers.azurecr.io/pronto-fontend
 
     - name: Login to Azure
       uses: azure/login@v1
@@ -63,14 +63,14 @@ jobs:
 
   #   - uses: azure/docker-login@v1
   #     with:
-  #       login-server: prontoacr.azurecr.io
+  #       login-server: prontocontainers.azurecr.io
   #       username: ${{ secrets.REGISTRY_USERNAME }}
   #       password: ${{ secrets.REGISTRY_PASSWORD }}
 
 
   #   - run: |
-  #       docker build . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
-  #       docker push prontoacr.azurecr.io/pronto-fontend
+  #       docker build . -t prontocontainers.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
+  #       docker push prontocontainers.azurecr.io/pronto-fontend
 
   #   - name: Login to Azure
   #     uses: azure/login@v1
@@ -82,4 +82,4 @@ jobs:
   #   - uses: azure/webapps-deploy@v2
   #     with:
   #       app-name: 'web-dsfb352ephiyu'
-  #       images:  prontoacr.azurecr.io/pronto-fontend      
+  #       images:  prontocontainers.azurecr.io/pronto-fontend      
