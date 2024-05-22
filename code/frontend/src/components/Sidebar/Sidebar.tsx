@@ -62,7 +62,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
 
   const createNewThread = () => {
     // alert("Threads coming soon 🎉");
-    const threads = JSON.parse(localStorage.getItem('threads'));
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
     if (threads) {
       const id = uuidv4();
       const thread = [
@@ -124,7 +124,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
       // this is where we can hit the API to rename the thread
       // can use `currentThread` to get threadId until routes established
       // alert("✏ Will soon rename this Thread to '" + newName + "'");
-      const threads = JSON.parse(localStorage.getItem('threads'));
+      const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
       if (threads) {
         const newThreads = threads.map((obj: any) => {
           if (obj?.id === currentThread?.id) {
@@ -143,7 +143,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     // this is where we can hit the API to delete the thread
     // can use `currentThread` to get threadId until routes established
     // alert("🚮 Will soon delete thread id: " + currentThread.id);
-    const threads = JSON.parse(localStorage.getItem('threads'));
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
     if (threads) {
       const newThreads = threads.filter((item: any) => item?.id !== currentThread?.id);
       setThreads(newThreads);
@@ -297,8 +297,8 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                         </MenuItem>
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
-                          onClick={() => { 
-                            setCurrentThread(thread); 
+                          onClick={() => {
+                            setCurrentThread(thread);
                             setDeleteThreadModalOpen(true)}
                           }
                         >
