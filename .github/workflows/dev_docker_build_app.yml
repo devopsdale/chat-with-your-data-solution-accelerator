@@ -45,7 +45,7 @@ jobs:
     
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: 'web-rlbjfs6vicfds'
+        app-name: 'web-dsfb352ephiyu'
         images:  prontoacr.azurecr.io/pronto-fontend:dev
 
   # deploy-to-prod:
