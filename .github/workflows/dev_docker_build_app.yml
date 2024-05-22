@@ -50,7 +50,7 @@ jobs:
 
   deploy-to-prod:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    #if: github.ref == 'refs/heads/main'
     environment:
       name: 'prod'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -76,11 +76,11 @@ jobs:
     - name: Login to Azure
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4B43FB76407F413790F02195360898CA }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_610C1234047F4513B68891CEE4A42C47 }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B2F23215E1C74F3DA47CBB5DC82A8B96 }}                         
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_40F8872A222540F4A90B1A3C4BDD09F6 }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B64A0DAF04094E0EBC57C3F69091FD99 }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DE9C0EC07B6947CBA9333317F147DAA5 }}                      
     
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: 'web-dsfb352ephiyu'
+        app-name: 'web-6fzbc32vpqwni'
         images:  prontocontainers.azurecr.io/pronto-fontend      
