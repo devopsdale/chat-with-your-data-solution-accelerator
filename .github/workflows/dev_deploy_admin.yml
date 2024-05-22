@@ -33,7 +33,6 @@ jobs:
         subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E61CF904F8FF4E4FA283B10496C7B811 }}
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
-      id: deploy-to-webapp
       with:
         app-name: 'web-6fzbc32vpqwni-admin'
         images:  prontocontainers.azurecr.io/pronto-admin
