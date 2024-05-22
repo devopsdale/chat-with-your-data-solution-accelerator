@@ -33,7 +33,7 @@ jobs:
 
 
     - run: |
-        docker build --build-arg  . -t prontoacr.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
+        docker build . -t prontoacr.azurecr.io/pronto-fontend:dev -f ./docker/Frontend.Dockerfile
         docker push prontoacr.azurecr.io/pronto-fontend
 
     - name: Login to Azure
@@ -69,7 +69,7 @@ jobs:
 
 
   #   - run: |
-  #       docker build --build-arg . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
+  #       docker build . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
   #       docker push prontoacr.azurecr.io/pronto-fontend
 
   #   - name: Login to Azure
