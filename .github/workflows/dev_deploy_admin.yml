@@ -34,6 +34,6 @@ jobs:
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'web-6fzbc32vpqwni-admin'
+        app-name: 'web-dsfb352ephiyu-admin'
         images:  prontocontainers.azurecr.io/pronto-admin
         
