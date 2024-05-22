@@ -7,7 +7,6 @@ name: PROD - admin - build container and release
 on:
   push:
     branches:
-      - main
       - development
   workflow_dispatch:
 
