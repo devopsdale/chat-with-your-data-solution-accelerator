@@ -1,12 +1,19 @@
+<<<<<<< HEAD:.github/workflows/deploy_front_end.yml
 name: deploy frontend container
+=======
+name: PROD - FE Deploy to storage
+>>>>>>> 714be06f3b95d4948077e22046a3ac19136ce069:.github/workflows/prod_deploy_front_end.yml
 on:
   push:
-    branches: [ "main", "refactor-frontend-airbus" ]
+    branches: main
   workflow_dispatch:
 
-jobs:
-  build:
+jobs:     
+  deploy_prod:
     runs-on: ubuntu-latest
+    environment: 
+      name: prod
+      url: https://aasdoprontofrontend.z13.web.core.windows.net/    
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1
@@ -20,6 +27,7 @@ jobs:
         npm run build --if-present
         npm run test --if-present
 
+<<<<<<< HEAD:.github/workflows/deploy_front_end.yml
 
     - name: Upload to blob storage
       uses: azure/CLI@v1
@@ -28,6 +36,12 @@ jobs:
             #az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build  --connection-string ${{ secrets.CONNECTION_STRING }}
             #az storage blob upload-batch --account-name aasdoprontofrontend   -d $web -s ./code/frontend/build --overwrite --sas-token ${{ secrets.STORAGE_TOKEN }}
             #az storage blob sync -c $web --account-name aasdoprontofrontend  -s ./code/frontend/build --sas-token ${{ secrets.STORAGE_TOKEN }}
+=======
+    - name: Upload to blob storage
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |            
+>>>>>>> 714be06f3b95d4948077e22046a3ac19136ce069:.github/workflows/prod_deploy_front_end.yml
             az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build --overwrite
 
     - name: Purge CDN endpoint

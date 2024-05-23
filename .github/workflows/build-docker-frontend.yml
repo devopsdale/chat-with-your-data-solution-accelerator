@@ -1,4 +1,4 @@
-name: WebApp Docker Image
+name: og - WebApp Docker Image
 
 on:
   workflow_run:

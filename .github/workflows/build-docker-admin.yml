@@ -1,4 +1,4 @@
-name: Admin Web App Docker Image
+name: og - Admin Web App Docker Image
 
 on:
   workflow_run:

@@ -33,12 +33,12 @@ export default function App() {
       <Routes>
         {userLoggedIn ? (
           <Route path="/" element={<Layout />}>
-            <Route index element={<ChatHistory />} />
+            <Route index element={<Chat />} />
             <Route path="/thread/:threadId" element={<Chat />} />
             <Route path="*" element={<NoPage />} />
           </Route>
         ) : (
-          <Route path="/" element={<LogIn />}></Route>
+          <Route path="*" element={<LogIn />} />
         )}
       </Routes>
     </BrowserRouter>
