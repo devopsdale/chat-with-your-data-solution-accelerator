@@ -35,6 +35,7 @@ export const Header = () => {
   const logOut = () => {
     // setAnimOff(true);
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("threads");
     // setTimeout(() => {
     window.location.href = "/";
     // }, 1000);
@@ -88,7 +89,7 @@ export const Header = () => {
               {/* ↓ this is where the hoverable content goes */}
               <div className={styles.addSourceButtonContainer}>
                 <a
-                  href="https://web-5cmvhl67t5ruq-admin.azurewebsites.net/Ingest_Data"
+                  href="https://web-6fzbc32vpqwni-admin.azurewebsites.net/Ingest_Data"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

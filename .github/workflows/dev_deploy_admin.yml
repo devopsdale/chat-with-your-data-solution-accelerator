@@ -1,0 +1,39 @@
+name: DEV - admin - build container and release
+on:
+  push:
+    branches:
+      - development
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT 
+    steps:
+    # checkout the repo
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+    - uses: azure/docker-login@v1
+      with:
+        login-server: prontocontainers.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . -t prontocontainers.azurecr.io/pronto-admin -f ./docker/Admin.Dockerfile
+        docker push prontocontainers.azurecr.io/pronto-admin
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F85D40AB85B047FEB5ED3378D7CB5108  }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A204C83B469A46BCB930BEFE434FE4C1  }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_484B46252DAB4347A4D95C41EFF9683C  }}
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'web-dsfb352ephiyu-admin'
+        images:  prontocontainers.azurecr.io/pronto-admin
+        

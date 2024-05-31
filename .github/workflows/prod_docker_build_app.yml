@@ -1,0 +1,42 @@
+name: PROD - build and release api
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+        
+  build-prod:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      
+    steps:
+    # checkout the repo
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+
+    - uses: azure/docker-login@v1
+      with:
+        login-server: prontoacr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - run: |
+        docker build --build-arg STAGE=prod . -t prontoacr.azurecr.io/pronto-fontend:prod -f ./docker/Frontend.Dockerfile
+        docker push prontoacr.azurecr.io/pronto-fontend:prod
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3CCE9867662F4BCCAFD500EF251FDD16 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6A1071630B644D3B86BB61F628895073 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C148CAD3124445318F52C6ED346605C6 }}               
+    
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'web-5cmvhl67t5ruq'
+        images:  prontoacr.azurecr.io/pronto-fontend:prod

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, MouseEvent } from "react";
 import { Stack } from "@fluentui/react";
 import {
+  BookInformationFilled,
   BroomRegular,
   DismissRegular,
   RecordStopFilled,
@@ -31,11 +32,14 @@ import { QuestionInput } from "../../components/QuestionInput";
 import { Sidebar } from "../../components/Sidebar";
 import { Avatar, Spinner } from "@fluentui/react-components";
 import moment from "moment";
-import { useParams } from "react-router-dom";
+import { OnboardingModule } from "../../components/OnboardingModule";
+import { useLocation, useParams } from "react-router-dom";
 
 const Chat = () => {
   const [pageAnimOn, setPageAnimOn] = useState<boolean>(false);
   const [pageAnimOff, setPageAnimOff] = useState<boolean>(false);
+  const [openOnboardingModule, setOpenOnboardingModule] =
+    useState<boolean>(false);
   const lastQuestionRef = useRef<string>("");
   const chatMessageStreamEnd = useRef<HTMLDivElement | null>(null);
   const { threadId = "default" } = useParams();
@@ -109,6 +113,11 @@ const Chat = () => {
                 ]);
               } else {
                 setAnswers([
+                  ...answers,
+                  userMessage,
+                  ...result.choices[0].messages,
+                ]);
+                saveThreads([
                   ...answers,
                   userMessage,
                   ...result.choices[0].messages,
@@ -194,6 +203,11 @@ const Chat = () => {
   const clearChat = () => {
     lastQuestionRef.current = "";
     setActiveCitation(undefined);
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
+    if (threads) {
+      const newThreads = threads.filter((item: any) => item.id !== threadId);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
     setAnswers([]);
     setConversationId(uuidv4());
   };
@@ -202,6 +216,11 @@ const Chat = () => {
     abortFuncs.current.forEach((a) => a.abort());
     setShowLoadingMessage(false);
     setIsLoading(false);
+  };
+
+  const triggerSearch = (term: string) => {
+    console.log('got it from modal: ', term);
+    // setRecognizedText(term);
   };
 
   useEffect(
@@ -213,7 +232,74 @@ const Chat = () => {
     setTimeout(() => {
       setPageAnimOn(true);
     }, 250);
+
+
+    // check if User should see onboarding, delay until page load anim is done
+    setTimeout(() => {
+      if (localStorage.getItem("firstVisit") === null) {
+        // console.log("User is seeing site for first time, show OnboardingModule");
+        setOpenOnboardingModule(true);
+        localStorage.setItem("firstVisit", "true");
+      }
+    }, 2500);
   });
+
+  const location = useLocation();
+
+  const [threads, setThread] = useState(() => {
+      const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
+      if (threads) {
+        return threads;
+      } else {
+        localStorage.setItem('threads', JSON.stringify([]));
+        return [];
+      }
+  });
+
+  const saveThreads = (answers: any[]) => {
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
+    if (threads) {
+      let newThreads = threads.map((obj: any) => {
+        if (obj.id === threadId) {
+          return {...obj, answers};
+        }
+        return obj;
+      });
+
+      // TODO: need to test when API is back with a valid answers response
+      // if (location.pathname === '/' && newThreads?.length === 0) {
+      //   newThreads = [{
+      //     id: uuidv4(),
+      //     title: 'New thread',
+      //     answers
+      //   }];
+      // }
+
+      setThread(newThreads);
+      localStorage.setItem('threads', JSON.stringify(newThreads));
+    }
+  };
+
+  useEffect(() => {
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
+    if (threads) {
+      setThread(threads);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (threadId) {
+      const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
+      if (threads) {
+        const newAnswers = threads.find((item: any) => item.id === threadId);
+        setAnswers(newAnswers?.answers || []);
+        const question = newAnswers?.answers[newAnswers?.answers?.length - 1]
+        lastQuestionRef.current = question?.content || '';
+      } else {
+        clearChat();
+      }
+    }
+  }, [location.pathname]);
 
   const onShowCitation = (citation: Citation) => {
     // console.log('citation: ', citation);
@@ -254,7 +340,7 @@ const Chat = () => {
       ${pageAnimOff ? styles.pageAnimOff : ""}
     `}
     >
-      <Sidebar threadId={threadId} />
+      <Sidebar data={threads} threadId={threadId} />
 
       <Stack horizontal className={styles.chatRoot}>
         <div
@@ -276,13 +362,19 @@ const Chat = () => {
               `}
             >
               <h6 className={`${styles.exploreText} ${styles.chatHomeText03}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h6>
               <h5 className={`${styles.exploreText} ${styles.chatHomeText02}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h5>
               <h3 className={`${styles.exploreText} ${styles.chatHomeText01}`}>
-                <span>Let's explore together</span>
+                <span>
+                  <div className={styles.drift}>Let's explore together</div>
+                </span>
               </h3>
             </div>
           </Stack>
@@ -296,7 +388,7 @@ const Chat = () => {
             style={{ marginBottom: isLoading ? "40px" : "0px" }}
           >
             <div className={styles.chatMessageStreamInner}>
-              {answers.map((answer, index) => (
+              {answers?.map((answer, index) => (
                 <div key={index}>
                   {answer.role === "user" ? (
                     <div className={`${styles.chatMessageUser}`} key={index}>
@@ -433,7 +525,7 @@ const Chat = () => {
             />
           </Stack>
         </div>
-        {answers.length > 0 && isCitationPanelOpen && activeCitation && (
+        {answers?.length > 0 && isCitationPanelOpen && activeCitation && (
           <Stack.Item
             className={`${styles.citationPanel} ${styles.mobileStyles}`}
           >
@@ -502,20 +594,36 @@ const Chat = () => {
           </div>
         </div>
       )}
+
+      <div
+        className={styles.launchOnboardingBtn}
+        onClick={(e) => setOpenOnboardingModule(true)}
+      >
+        <BookInformationFilled className={styles.launchOnboardingIcon}/>
+      </div>
+
+      <OnboardingModule
+        isOpen={openOnboardingModule}
+        closeNotice={(close) => setOpenOnboardingModule(close)}
+        searchTerm={(term) => triggerSearch(term)}
+      ></OnboardingModule>
+
       <div
         className={`
         ${styles.bgPatternImgContainer}
         ${pageAnimOn ? styles.pageAnimOn : styles.pageAnimOff}
       `}
       >
-        <img
-          src="../../Airbus_CarbonGrid.png"
-          className={`
-            ${styles.bgPatternImg}
-            ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
-          `}
-          aria-hidden="true"
-        />
+        <div className={styles.drift}>
+          <img
+            src="../../Airbus_CarbonGrid.png"
+            className={`
+              ${styles.bgPatternImg}
+              ${!lastQuestionRef.current ? styles.screenOn : styles.screenOff}
+            `}
+            aria-hidden="true"
+          />
+        </div>
       </div>
     </div>
   );
