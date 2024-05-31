@@ -203,7 +203,7 @@ const Chat = () => {
   const clearChat = () => {
     lastQuestionRef.current = "";
     setActiveCitation(undefined);
-    const threads = JSON.parse(localStorage.getItem('threads'));
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
     if (threads) {
       const newThreads = threads.filter((item: any) => item.id !== threadId);
       localStorage.setItem('threads', JSON.stringify(newThreads));
@@ -247,7 +247,7 @@ const Chat = () => {
   const location = useLocation();
 
   const [threads, setThread] = useState(() => {
-      const threads = JSON.parse(localStorage.getItem('threads'));
+      const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
       if (threads) {
         return threads;
       } else {
@@ -257,7 +257,7 @@ const Chat = () => {
   });
 
   const saveThreads = (answers: any[]) => {
-    const threads = JSON.parse(localStorage.getItem('threads'));
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
     if (threads) {
       let newThreads = threads.map((obj: any) => {
         if (obj.id === threadId) {
@@ -281,7 +281,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    const threads = JSON.parse(localStorage.getItem('threads'));
+    const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
     if (threads) {
       setThread(threads);
     }
@@ -289,7 +289,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (threadId) {
-      const threads = JSON.parse(localStorage.getItem('threads'));
+      const threads = JSON.parse(localStorage.getItem('threads') ?? 'false');
       if (threads) {
         const newAnswers = threads.find((item: any) => item.id === threadId);
         setAnswers(newAnswers?.answers || []);

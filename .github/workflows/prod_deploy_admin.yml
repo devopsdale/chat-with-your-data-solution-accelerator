@@ -7,7 +7,7 @@ name: PROD - admin - build container and release
 on:
   push:
     branches:
-      - main
+      - development
   workflow_dispatch:
 
 jobs:
@@ -24,24 +24,23 @@ jobs:
       uses: actions/checkout@master
     - uses: azure/docker-login@v1
       with:
-        login-server: prontoacr.azurecr.io
+        login-server: prontocontainers.azurecr.io
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t prontoacr.azurecr.io/pronto-admin -f ./docker/Admin.Dockerfile
-        docker push prontoacr.azurecr.io/pronto-admin  
+        docker build . -t prontocontainers.azurecr.io/pronto-admin -f ./docker/Admin.Dockerfile
+        docker push prontocontainers.azurecr.io/pronto-admin  
         
     - name: Login to Azure
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_76CB9641307E4855B139D50CBB94F18D }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_02B8F4CEFF43412C9DE9AAAB41A01FA7 }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5FA4D34A997B4E55A98F6050A71A6564 }}
+        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_73A3FE74C38349A5BB52C79AFAC5BF96 }}
+        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6F3AF3E2BF5949E79CC51223797DA85A }}
+        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E61CF904F8FF4E4FA283B10496C7B811 }}
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
-      id: deploy-to-webapp
       with:
-        app-name: 'web-5cmvhl67t5ruq-admin'
-        images:  prontoacr.azurecr.io/pronto-admin
+        app-name: 'web-6fzbc32vpqwni-admin'
+        images:  prontocontainers.azurecr.io/pronto-admin
           
