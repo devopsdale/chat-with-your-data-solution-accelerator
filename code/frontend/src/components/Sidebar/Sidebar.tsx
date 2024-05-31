@@ -84,8 +84,8 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
     alert("Will soon load thread: " + threadId);
   };
 
-  const handleCopyClick = (thread: any) => {
-    navigator.clipboard.writeText(`${window?.location?.origin}/thread/${thread?.id}`);
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(window.location.href);
     setCopyClicked(true);
     setCopiedThreadNotice(true);
     resetCopyClick();
@@ -285,6 +285,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
                             setCurrentThread(thread);
+                            setLiveRecognizedText("");
                             setRenameThreadModalOpen(true);
                           }}
                         >

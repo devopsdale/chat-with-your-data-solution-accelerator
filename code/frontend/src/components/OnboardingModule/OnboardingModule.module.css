@@ -1,0 +1,231 @@
+.onboardingModuleContainer {
+}
+
+.onboardingModal {
+  width: 80%;
+  max-width: 1155px !important;
+  padding: 0px !important;
+}
+
+.onboardingModal [class*="fui-DialogBody"] {
+  gap: 0px !important;
+  background: transparent;
+}
+.onboardingModal [class*="fui-DialogBody"] [class*="fui-DialogContent"] {
+  padding: 0px !important;
+}
+
+.onboardingContent {
+  display: flex;
+  flex-direction: row;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.leftContentContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35%;
+  background: #ffffff;
+}
+
+.copyContainer {
+  position: absolute;
+  width: calc(100% + 40px);
+  height: 70%;
+  left: 0%;
+  background-color: #ffffff;
+  z-index: 100;
+  border-radius: 6px;
+}
+.copyContainer li {
+  position: absolute;
+  list-style: none;
+  left: 0px;
+  padding: 24px 40px 0px 24px;
+  width: 100%;
+  overflow: auto;
+  max-height: calc(100% - 30px);
+  opacity: 0;
+  z-index: -1;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  transition: all 0.5s ease-in-out;
+}
+.copyContainer li.offLeft {
+  transform: translateX(-10%);
+}
+.copyContainer li.offRight {
+  transform: translateX(10%);
+}
+.copyContainer li.active {
+  transform: translateX(0%);
+  opacity: 1;
+  z-index: 10;
+}
+
+.copyContainer li h5 {
+  font-size: 24px;
+  line-height: 40px;
+  font-weight: 500;
+  color: #14171d;
+  margin: 0px;
+}
+.copyContainer li p {
+  font-size: 16px;
+  line-height: 24px;
+  color: #14171d;
+  margin: 16px 0px;
+}
+
+.ctaContainer {
+  position: absolute;
+  bottom: 17%;
+  left: 24px;
+  display: flex;
+  gap: 16px;
+  opacity: 0;
+  transition: all 0.55s ease-in-out;
+}
+.ctaContainer.offLeft {
+  transform: translateX(-10%);
+}
+.ctaContainer.offRight {
+  transform: translateX(10%);
+}
+.ctaContainer.active {
+  transform: translateX(0%);
+  opacity: 1;
+  z-index: 110;
+}
+
+.onboardingCTA {
+  padding: 8px 16px;
+  border-radius: 3px;
+  background-color: #00205b;
+  cursor: pointer;
+}
+.onboardingCTA.iconRight {
+  flex-direction: row-reverse;
+}
+.onboardingCTA span {
+  color: #ffffff;
+}
+
+.onboardingSlideControls {
+  position: absolute;
+  bottom: 15%;
+  right: 0%;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+.onboardingSlideControls ul {
+  display: flex;
+  list-style: none;
+  padding-inline-start: 0px;
+}
+.onboardingSlideControls ul li {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: #ced5dd;
+  margin: 6px;
+  transition: all 0.5s;
+}
+.onboardingSlideControls ul li.active {
+  background-color: #00205b;
+}
+
+.slideLeftBtn,
+.slideRightBtn {
+  border: none;
+  width: 32px;
+  height: 32px;
+  background-color: transparent;
+}
+
+.blockAction {
+  pointer-events: none !important;
+  opacity: 0.15;
+}
+
+.rightContentContainer {
+  position: relative;
+  display: flex;
+  width: 65%;
+  background-color: #282e3a;
+  overflow: hidden;
+}
+
+.mediaContainer {
+  position: absolute;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.mediaContainer li {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0;
+  transition: all 0.75s ease-in-out;
+}
+.mediaContainer li.offLeft {
+  transform: translateX(-20%);
+}
+.mediaContainer li.offRight {
+  transform: translateX(20%);
+}
+.mediaContainer li.active {
+  transform: translateX(0%);
+  z-index: 5;
+  opacity: 1;
+}
+
+.mediaContainer li img {
+  width: 100%;
+  display: flex;
+  position: absolute;
+}
+
+.mediaContainerSizer {
+  position: relative;
+  width: 100%;
+  opacity: 0;
+  z-index: -1;
+}
+
+
+.getStartedLinks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  opacity: 1.0;
+  padding-inline-start: 0px;
+  gap: 8px;
+}
+.getStartedLinks li{
+  position: relative;
+  display: flex;
+  z-index: 20;
+  opacity: 1.0;
+  cursor: pointer;
+  border: 1px solid #00205B;
+  border-radius: 3px;
+  padding: 4px 8px;
+  width: fit-content;
+}
+.getStartedLinks li span{
+  color: #063B9E;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+}

@@ -4,12 +4,12 @@ on:
     branches: main
   workflow_dispatch:
 
-jobs:     
+jobs:
   deploy_prod:
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: prod
-      url: https://aasdoprontofrontend.z13.web.core.windows.net/    
+      url: https://aasdoprontofrontend.z13.web.core.windows.net/
     steps:
     - uses: actions/checkout@v3
     - uses: azure/login@v1
@@ -26,9 +26,9 @@ jobs:
     - name: Upload to blob storage
       uses: azure/CLI@v1
       with:
-        inlineScript: |            
+        inlineScript: |
             az storage blob upload-batch --account-name aasdoprontofrontend   -d '$web' -s ./code/frontend/build --overwrite
-            
+
     - name: Purge CDN endpoint
       uses: azure/CLI@v1
       with:
