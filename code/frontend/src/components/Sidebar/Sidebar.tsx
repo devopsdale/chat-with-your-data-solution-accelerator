@@ -271,7 +271,7 @@ export const Sidebar = ({ data, threadId }: SidebarProps) => {
                         <MenuItem
                           className={`${styles.threadLink} menuListItem`}
                           onClick={() => {
-                            handleCopyClick(thread);
+                            handleCopyClick();
                           }}
                         >
                           <div
