@@ -93,8 +93,9 @@ export const OnboardingModule = ({
   };
 
   const triggerSearch = (term: string) => {
-    closeNoticeTrigger(false);
-    searchTerm(term);
+    alert("functionality coming soon!");
+    // closeNoticeTrigger(false);
+    // searchTerm(term);
   };
 
   const moveSlide = (dir: string) => {
@@ -109,7 +110,7 @@ export const OnboardingModule = ({
   const getStartedLinks = (
     <ul className={`${styles.getStartedLinks}`}>
       <li
-        className={`listItemLabel`}
+        className={`listItemLabel disabled`}
         onClick={(e) =>
           triggerSearch("What is an STC? Explain it to me like I’m 5.")
         }
@@ -118,14 +119,14 @@ export const OnboardingModule = ({
         <span>What is an STC? Explain it to me like I’m 5.</span>
       </li>
       <li
-        className={`listItemLabel`}
+        className={`listItemLabel disabled`}
         onClick={(e) => triggerSearch("What’s the latest news on SAF?")}
       >
         <img src="../../threadIconFilled.png" />
         <span>What’s the latest news on SAF?</span>
       </li>
       <li
-        className={`listItemLabel`}
+        className={`listItemLabel disabled`}
         onClick={(e) => triggerSearch("Can you summarize this text for me?:")}
       >
         <img src="../../threadIconFilled.png" />
